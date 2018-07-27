@@ -53,3 +53,8 @@ function get_price_angus(data) {
     var match = pattern.exec(data)
     return match;
 }
+
+function doalert() {
+    alert("this");
+    alert("that");
+}
