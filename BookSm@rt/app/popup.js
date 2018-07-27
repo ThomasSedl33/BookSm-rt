@@ -1,10 +1,12 @@
 $(function () {
     $("#btnsave").click(function () {
-        var name = $("#txt_name").val();
+        //var name = $("#txt_name").val();
 
-        alert("Hi" + " " + name);
-        var html = document.documentElement.innerHTML;
-        var site = check_site(html);
+        //alert("Hi" + " " + name);
+        //var html = document.documentElement.innerHTML;
+        //var site = check_site(html);
+
+        alert('this');
 
 
     });
