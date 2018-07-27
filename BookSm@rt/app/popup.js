@@ -54,7 +54,12 @@ function get_price_angus(data) {
     return match;
 }
 
-function doalert() {
-    alert("this");
-    alert("that");
-}
+//function doalert() {
+//    alert("this");
+//    alert("that");
+//}
+
+//akjsdlajsdkajldjaslkdjaskld
+//My Test stuff
+
+//aklsjdlajskdjakljdl
