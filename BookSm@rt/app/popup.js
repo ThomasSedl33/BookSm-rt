@@ -54,6 +54,18 @@ function get_price_angus(data) {
     return match;
 }
 
+//Zoey's code
+//hide the div "cheaperElsewhere"
+function cheaperElsewhere() {
+    var x = document.getElementById("CheaperElsewhere");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    }
+    else {
+        x.style.display = "none";
+    }
+}
+
 //function doalert() {
 //    alert("this");
 //    alert("that");
