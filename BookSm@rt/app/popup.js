@@ -6,8 +6,13 @@ $(function () {
 
         scraper();
 
+
     })
+    
+
+    $("#theBODY").load(dissapear());
 })
+
 
         //let array_thingo = {};
         //let site_list = ['angus', 'qbd'];
