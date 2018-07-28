@@ -10,7 +10,8 @@ $(function () {
     })
     
 
-    $("#theBODY").load(dissapear());
+    $("#displayNow").change(function(){
+        $("#div").css("display", "none")
 })
 
 
