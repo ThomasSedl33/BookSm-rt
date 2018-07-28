@@ -8,31 +8,48 @@ document.addEventListener('DOMContentLoaded', function () {
 var currentHTML = "";
 
 $(function () {
-        $("#btnsave").click(function () {
-            var name = $("#txt_name").val();
+    $("#btnsave").click(function () {
+        var name = $("#txt_name").val();
 
         //alert("Hi" + " " + name);
 
-            let array_thingo = {};
-            let site_list = {
-                'angus': 'www.angusrobertson.com.au',
-                'qbd': 'www.qbd.com.au'
-            };
+        let array_thingo = {};
+        let site_list = {
+            'angus': 'https://www.angusrobertson.com.au/search?text={}&mediatype=BOOKS',
+            'qbd': 'https://www.qbd.com.au/product/{}'
+        };
 
-            // let html = document.documentElement.innerHTML;
-            // console.log(html)
-            html = get_html();
-            array_thingo = check_site(html, array_thingo);
-            console.log(array_thingo);
+        // scraper();
 
-            keys = array_thingo.Object.keys();
-            alert(keys)
+        // let html = document.documentElement.innerHTML;
+        // console.log(html)
+        html = get_html();
+        array_thingo = check_site(html, array_thingo);
+        console.log(array_thingo);
+        let isbn_keys = Object.keys(array_thingo);
+        let website_keys = Object.keys(array_thingo[isbn_keys[0]]);
+        delete site_list[website_keys[0]]
+
+        array_thingo = search_websites(site_list, array_thingo, isbn_keys)
+
+
+        // console.log(isbn_keys, website_keys)
+
+        // for (var key in array_thingo) {
+        //     for (var keyy in array_thingo[key]) {
+        //         console.log(keyy, array_thingo[key][keyy])
+        //         }
+        // }
+        // keys = array_thingo.Object.keys();
+        // alert(keys)
     })
 
     //dissapear();
-        var test = GetCurrentHTML();
-        alert(test);
+    // var test = GetCurrentHTML();
+    // alert(test);
 })
+dissapear();
+
 
 function dissapear() {
     document.getElementById("CheaperElsewhere").style.display = "none";
@@ -50,9 +67,9 @@ function isItCheapest() {
         CheaperElsewhere.style.display = 'none'; //if it is the cheapest, don't display cheaperElseWherediv               
     }
 
-}
 
-        
+
+}
 
 //display the div
 //function toggle_visibility(id) {
@@ -64,2006 +81,176 @@ function isItCheapest() {
 //}
 
 
-
-
-function get_html() {
+function get_html(){
     return "\n" +
-        "<!DOCTYPE html>\n" +
-        "<html lang=\"en\">\n" +
-        "<head>\n" +
-        "\t<title>\n" +
-        "\t\tCheckout | Angus &amp; Robertson</title>\n" +
-        "\t\n" +
-        "\t<!-- recommend IE to use the latest renderer engine -->\n" +
-        "\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
-        "\n" +
-        "\t<meta name=\"level1NavCategory\" content=\"BOOKS\"/>\n" +
-        "\t<meta name=\"currentCategory\" content=\"BOOKS\"/>\n" +
-        "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n" +
-        "    <meta name=\"google-site-verification\" content=\"_b-psRobsjFLB-KQ6lPMD1wHlXqv9p387n_VaLCR1OU\" />\n" +
-        "    \n" +
-        "    <meta name=\"robots\" content=\"index,follow\" />\n" +
-        "            <meta name=\"HandheldFriendly\" content=\"True\" />\n" +
-        "            <meta name=\"MobileOptimized\" content=\"970\" />\n" +
-        "            <meta name=\"viewport\" content=\"width=970, target-densitydpi=160, maximum-scale=1.0\" />\n" +
-        "            \n" +
-        "<script type=\"text/javascript\">window.NREUM||(NREUM={}),__nr_require=function(e,t,n){function r(n){if(!t[n]){var o=t[n]={exports:{}};e[n][0].call(o.exports,function(t){var o=e[n][1][t];return r(o||t)},o,o.exports)}return t[n].exports}if(\"function\"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(e,t,n){function r(){}function o(e,t,n){return function(){return i(e,[f.now()].concat(u(arguments)),t?null:this,n),t?void 0:this}}var i=e(\"handle\"),a=e(2),u=e(3),c=e(\"ee\").get(\"tracer\"),f=e(\"loader\"),s=NREUM;\"undefined\"==typeof window.newrelic&&(newrelic=s);var p=[\"setPageViewName\",\"setCustomAttribute\",\"setErrorHandler\",\"finished\",\"addToTrace\",\"inlineHit\",\"addRelease\"],d=\"api-\",l=d+\"ixn-\";a(p,function(e,t){s[t]=o(d+t,!0,\"api\")}),s.addPageAction=o(d+\"addPageAction\",!0),s.setCurrentRouteName=o(d+\"routeName\",!0),t.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,t){var n={},r=this,o=\"function\"==typeof t;return i(l+\"tracer\",[f.now(),e,n],r),function(){if(c.emit((o?\"\":\"no-\")+\"fn-start\",[f.now(),r,o],n),o)try{return t.apply(this,arguments)}catch(e){throw c.emit(\"fn-err\",[arguments,this,e],n),e}finally{c.emit(\"fn-end\",[f.now()],n)}}}};a(\"setName,setAttribute,save,ignore,onEnd,getContext,end,get\".split(\",\"),function(e,t){m[t]=o(l+t)}),newrelic.noticeError=function(e){\"string\"==typeof e&&(e=new Error(e)),i(\"err\",[e,f.now()])}},{}],2:[function(e,t,n){function r(e,t){var n=[],r=\"\",i=0;for(r in e)o.call(e,r)&&(n[i]=t(r,e[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;t.exports=r},{}],3:[function(e,t,n){function r(e,t,n){t||(t=0),\"undefined\"==typeof n&&(n=e?e.length:0);for(var r=-1,o=n-t||0,i=Array(o<0?0:o);++r<o;)i[r]=e[t+r];return i}t.exports=r},{}],4:[function(e,t,n){t.exports={exists:\"undefined\"!=typeof window.performance&&window.performance.timing&&\"undefined\"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,t,n){function r(){}function o(e){function t(e){return e&&e instanceof r?e:e?c(e,u,i):i()}function n(n,r,o,i){if(!d.aborted||i){e&&e(n,r,o);for(var a=t(o),u=m(n),c=u.length,f=0;f<c;f++)u[f].apply(a,r);var p=s[y[n]];return p&&p.push([b,n,r,a]),a}}function l(e,t){v[e]=m(e).concat(t)}function m(e){return v[e]||[]}function w(e){return p[e]=p[e]||o(n)}function g(e,t){f(e,function(e,n){t=t||\"feature\",y[n]=t,t in s||(s[t]=[])})}var v={},y={},b={on:l,emit:n,get:w,listeners:m,context:t,buffer:g,abort:a,aborted:!1};return b}function i(){return new r}function a(){(s.api||s.feature)&&(d.aborted=!0,s=d.backlog={})}var u=\"nr@context\",c=e(\"gos\"),f=e(2),s={},p={},d=t.exports=o();d.backlog=s},{}],gos:[function(e,t,n){function r(e,t,n){if(o.call(e,t))return e[t];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return e[t]=r,r}var o=Object.prototype.hasOwnProperty;t.exports=r},{}],handle:[function(e,t,n){function r(e,t,n,r){o.buffer([e],r),o.emit(e,t,n)}var o=e(\"ee\").get(\"handle\");t.exports=r,r.ee=o},{}],id:[function(e,t,n){function r(e){var t=typeof e;return!e||\"object\"!==t&&\"function\"!==t?-1:e===window?0:a(e,i,function(){return o++})}var o=1,i=\"nr@id\",a=e(\"gos\");t.exports=r},{}],loader:[function(e,t,n){function r(){if(!x++){var e=h.info=NREUM.info,t=d.getElementsByTagName(\"script\")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&t))return s.abort();f(y,function(t,n){e[t]||(e[t]=n)}),c(\"mark\",[\"onload\",a()+h.offset],null,\"api\");var n=d.createElement(\"script\");n.src=\"https://\"+e.agent,t.parentNode.insertBefore(n,t)}}function o(){\"complete\"===d.readyState&&i()}function i(){c(\"mark\",[\"domContent\",a()+h.offset],null,\"api\")}function a(){return E.exists&&performance.now?Math.round(performance.now()):(u=Math.max((new Date).getTime(),u))-h.offset}var u=(new Date).getTime(),c=e(\"handle\"),f=e(2),s=e(\"ee\"),p=window,d=p.document,l=\"addEventListener\",m=\"attachEvent\",w=p.XMLHttpRequest,g=w&&w.prototype;NREUM.o={ST:setTimeout,SI:p.setImmediate,CT:clearTimeout,XHR:w,REQ:p.Request,EV:p.Event,PR:p.Promise,MO:p.MutationObserver};var v=\"\"+location,y={beacon:\"bam.nr-data.net\",errorBeacon:\"bam.nr-data.net\",agent:\"js-agent.newrelic.com/nr-1071.min.js\"},b=w&&g&&g[l]&&!/CriOS/.test(navigator.userAgent),h=t.exports={offset:u,now:a,origin:v,features:{},xhrWrappable:b};e(1),d[l]?(d[l](\"DOMContentLoaded\",i,!1),p[l](\"load\",r,!1)):(d[m](\"onreadystatechange\",o),p[m](\"onload\",r)),c(\"mark\",[\"firstbyte\",u],null,\"api\");var x=0,E=e(4)},{}]},{},[\"loader\"]);</script><link rel=\"apple-touch-icon\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-57x57.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"57x57\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-57x57.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"60x60\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-60x60.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"72x72\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-72x72.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-76x76.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-114x114.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-120x120.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"144x144\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-144x144.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-152x152.png\">\n" +
-        "<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/apple-touch-icon-180x180.png\">\n" +
-        "<link rel=\"icon\" type=\"image/png\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/favicon-32x32.png\" sizes=\"32x32\">\n" +
-        "<link rel=\"icon\" type=\"image/png\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/android-chrome-192x192.png\" sizes=\"192x192\">\n" +
-        "<link rel=\"icon\" type=\"image/png\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/favicon-96x96.png\" sizes=\"96x96\">\n" +
-        "<link rel=\"icon\" type=\"image/png\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/favicon-16x16.png\" sizes=\"16x16\">\n" +
-        "<link rel=\"manifest\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/manifest.json\">\n" +
-        "<link rel=\"shortcut icon\" href=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/favicon.ico\">\n" +
-        "<meta name=\"msapplication-TileColor\" content=\"#f0f0f0\">\n" +
-        "<meta name=\"msapplication-TileImage\" content=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/mstile-144x144.png\">\n" +
-        "<meta name=\"msapplication-config\" content=\"https://cdn.angusrobertson.com.au/_ui/shared/theme-arbw/images/favicons/browserconfig.xml\"><link rel=\"stylesheet\" href=\"https://cdn.angusrobertson.com.au/wro/20180719 1128/arbw.css\"/>\n" +
-        "\n" +
-        "\t<script type=\"text/javascript\">\n" +
-        " \t\t\twindow.universal_variable = {\n" +
-        " \t\t\t  \"version\" : \"1.2.0\",\n" +
-        " \t\t\t  page: {\n" +
-        " \t\t\t    type: \t\t\t\t\"CART\",\n" +
-        " \t\t\t    \n" +
-        " \t\t\t\tbreadcrumb : \t\t[\n" +
-        " \t\t\t\t\t\"Bookworld Checkout\"\n" +
-        " \t\t\t\t]\n" +
-        " \t\t\t\t\n" +
-        " \t\t\t  },\n" +
-        " \t\t\t  \n" +
-        " \t\t\t     \n" +
-        "\t \t \t\t  basket: {\n" +
-        "\t \t \t\t\tid: \t\t\t\t \"c_02876890\",\n" +
-        "\t \t \t \t    currency:\t\t\t \"AUD\",\n" +
-        "\t \t \t \t    subtotal:            92.01, \n" +
-        "\t \t \t \t    total: \t\t\t\t 92.01,\n" +
-        "\t\t \t \t    tax:\t\t\t\t 8.37,\n" +
-        "\t\t \t \t    shipping_cost: \t\t 0.00,\n" +
-        "\t\t\t\t\tpromotions:          [\n" +
-        "\t\t\t\t\t                    \t\n" +
-        "\t\t\t\t\t\t\t\t\t    ],\n" +
-        " \t\t \t \t    line_items:       \t[\n" +
-        " \t\t \t \t                      \t \n" +
-        " \t\t \t \t                      \t \t{\n" +
-        "\t\t\t \t \t                     \t\tquantity:\t\t\t1,\n" +
-        "\t\t\t \t \t                  \t \t\tsubtotal:\t\t\t40.03,\n" +
-        "\t\t\t \t \t \t\t\t\t\t \t\tproduct:{\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tid:\t\t\t\t\t\"9781631491177\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tsku_code:\t\t\t\"9781631491177\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tname: \t\t\t\t\"The Prison Letters of Nelson Mandela\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tdescription:\t\t\"\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\turl:\t\t\t\t\"/books/the-prison-letters-of-nelson-mandela-nelson-mandela-sahm-venter/p/9781631491177\",\t\t\t\t\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tunit_price:\t\t\t49.95, unit_sale_price:\t\t40.03, \t\t\t\t\t\t\t\t\t\t\t\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tcurrency:\t\t\t\"AUD\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tcategory:\t\t\t\"\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tsize:\t\t\t\t\"\"\n" +
-        "\t\t\t \t \t\t\t\t\t\t\t\t}\n" +
-        "\t\t\t \t \t                  \t\t}\n" +
-        "\t\t\t\t\t \t \t          \t\t,\n" +
-        " \t\t \t \t                      \t \t{\n" +
-        "\t\t\t \t \t                     \t\tquantity:\t\t\t1,\n" +
-        "\t\t\t \t \t                  \t \t\tsubtotal:\t\t\t25.99,\n" +
-        "\t\t\t \t \t \t\t\t\t\t \t\tproduct:{\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tid:\t\t\t\t\t\"9780733637933\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tsku_code:\t\t\t\"9780733637933\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tname: \t\t\t\t\"The Other Wife\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tdescription:\t\t\"\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\turl:\t\t\t\t\"/books/the-other-wife-michael-robotham/p/9780733637933\",\t\t\t\t\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tunit_price:\t\t\t32.95, unit_sale_price:\t\t25.99, \t\t\t\t\t\t\t\t\t\t\t\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tcurrency:\t\t\t\"AUD\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tcategory:\t\t\t\"\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tsize:\t\t\t\t\"\"\n" +
-        "\t\t\t \t \t\t\t\t\t\t\t\t}\n" +
-        "\t\t\t \t \t                  \t\t}\n" +
-        "\t\t\t\t\t \t \t          \t\t,\n" +
-        " \t\t \t \t                      \t \t{\n" +
-        "\t\t\t \t \t                     \t\tquantity:\t\t\t1,\n" +
-        "\t\t\t \t \t                  \t \t\tsubtotal:\t\t\t25.99,\n" +
-        "\t\t\t \t \t \t\t\t\t\t \t\tproduct:{\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tid:\t\t\t\t\t\"9781460751756\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tsku_code:\t\t\t\"9781460751756\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tname: \t\t\t\t\"Pieces of Her\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tdescription:\t\t\"\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\turl:\t\t\t\t\"/books/pieces-of-her-karin-slaughter/p/9781460751756\",\t\t\t\t\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tunit_price:\t\t\t32.99, unit_sale_price:\t\t25.99, \t\t\t\t\t\t\t\t\t\t\t\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tcurrency:\t\t\t\"AUD\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tcategory:\t\t\t\"\",\n" +
-        "\t\t\t\t\t \t \t\t \t\t\t\t\tsize:\t\t\t\t\"\"\n" +
-        "\t\t\t \t \t\t\t\t\t\t\t\t}\n" +
-        "\t\t\t \t \t                  \t\t}\n" +
-        "\t\t\t\t\t \t \t          \t\t\n" +
-        "\t\t\t \t \t               \t\t] \n" +
-        "\t \t \t\t  },\n" +
-        " \t\t\t \n" +
-        "             \n" +
-        "  \t \t     user: {\n" +
-        "\t \t \t\tname: \t\t\t\t\"\",\n" +
-        "\t \t\t    user_id: \t\t\t\"000000002\",\n" +
-        "\t \t\t    email: \t\t\t\t\"anonymous\",\n" +
-        "\t \t\t    facebook_id: \t\t\"\",\n" +
-        "\t \t\t    twitter_id: \t\t\"\",\n" +
-        "\t \t\t\n" +
-        "\t \t\t    language: \t\t\t\"English\"\n" +
-        "\t \t \t }\n" +
-        " \t\t\t}\n" +
-        "</script><script src=\"//d3c3cq33003psk.cloudfront.net/opentag-79846-918449.js\" async defer></script>\n" +
-        "<script src=\"//d3c3cq33003psk.cloudfront.net/opentag-79846-2135483.js\"></script>\n" +
-        "<script type=\"text/javascript\">\n" +
-        "  var ScarabQueue = ScarabQueue || [];\n" +
-        "  (function(id) {\n" +
-        "    if (document.getElementById(id)) return;\n" +
-        "    var js = document.createElement('script'); js.id = id;\n" +
-        "    js.src = '//cdn.scarabresearch.com/js/1EFF7B284367DE4E/scarab-v2.js';\n" +
-        "    var fs = document.getElementsByTagName('script')[0];\n" +
-        "    fs.parentNode.insertBefore(js, fs);\n" +
-        "  })('scarab-js-api');\n" +
-        "</script>\n" +
-        "<script type=\"text/javascript\">\n" +
-        "    var formSuccess = \"\";\n" +
-        "    var form = \"\";\n" +
-        "    var popupMessage = \"\";\n" +
-        "    var popupErrorMessage = \"\";\n" +
-        "    var ajaxTimeout = \"700000\";\n" +
-        "    var ajaxCMSComponentTimeout = \"7000\";\n" +
-        "    var EMARSYS_TEST_MODE = false;\n" +
-        "</script>\n" +
-        "\n" +
-        "<script type='text/javascript'>\n" +
-        "    var _vwo_code=(function(){\n" +
-        "        var account_id=343342,\n" +
-        "            settings_tolerance=2000,\n" +
-        "            library_tolerance=2500,\n" +
-        "            use_existing_jquery=false,\n" +
-        "            /* DO NOT EDIT BELOW THIS LINE */\n" +
-        "            f=false,d=document;return{use_existing_jquery:function(){return use_existing_jquery;},library_tolerance:function(){return library_tolerance;},finish:function(){if(!f){f=true;var a=d.getElementById('_vis_opt_path_hides');if(a)a.parentNode.removeChild(a);}},finished:function(){return f;},load:function(a){var b=d.createElement('script');b.src=a;b.type='text/javascript';b.innerText;b.onerror=function(){_vwo_code.finish();};d.getElementsByTagName('head')[0].appendChild(b);},init:function(){settings_timer=setTimeout('_vwo_code.finish()',settings_tolerance);var a=d.createElement('style'),b='body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}',h=d.getElementsByTagName('head')[0];a.setAttribute('id','_vis_opt_path_hides');a.setAttribute('type','text/css');if(a.styleSheet)a.styleSheet.cssText=b;else a.appendChild(d.createTextNode(b));h.appendChild(a);this.load('//dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&r='+Math.random());return settings_timer;}};}());_vwo_settings_timer=_vwo_code.init();\n" +
-        "</script></head>\n" +
-        "\n" +
-        "<body class=\" page-cartPage pageType-ContentPage template-pages-CartPageTemplate pageLabel-cart language-en  theme-arbw anonymous\">\n" +
-        "\t<div class=\"container-fluid no-gutter header\">\n" +
-        "            <nav class=\"navbar navbar-default\">\n" +
-        "\t\t\t<div class=\"container\">\n" +
-        "\t\t\t\t<div class=\"nav navbar-nav navbar-text\">\n" +
-        "\t\t\t\t\t<a class=\"btn-return\" href=\"/\">Return to shop</a>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t\t<div class=\"navbar-right\">\n" +
-        "\t\t\t\t\t<ul class=\"nav navbar-nav cart-links\">\n" +
-        "\t\t\t\t\t\t<li>\n" +
-        "\t\t\t\t\t\t\t<a href=\"/cart/terms-and-conditions\" data-toggle=\"modal\" data-target=\"#ajaxResponse\">Terms &amp; Conditions</a>\n" +
-        "\t\t\t\t\t\t</li>\n" +
-        "\t\t\t\t\t\t<li class=\"list-divider\">|</li>\n" +
-        "\t\t\t\t\t\t<li>\n" +
-        "\t\t\t\t\t\t\t<a href=\"/cart/returns-policy\" data-toggle=\"modal\" data-target=\"#ajaxResponse\">Returns Policy</a>\n" +
-        "\t\t\t\t\t\t</li>\n" +
-        "\t\t\t\t\t\t<li class=\"list-divider\">|</li>\n" +
-        "\t\t\t\t\t\t<li>\n" +
-        "\t\t\t\t\t\t\t<a href=\"/cart/delivery-information\" data-toggle=\"modal\" data-target=\"#ajaxResponse\">Delivery Information</a>\n" +
-        "\t\t\t\t\t\t</li>\n" +
-        "\t\t\t\t\t\t<li class=\"list-divider\">|</li>\n" +
-        "\t\t\t\t\t\t<li>\n" +
-        "\t\t\t\t\t\t\t<a href=\"/cart/privacy\" data-toggle=\"modal\" data-target=\"#ajaxResponse\">Privacy Policy</a>\n" +
-        "\t\t\t\t\t\t</li>\n" +
-        "\t\t\t\t\t</ul>\n" +
-        "\t\t\t\t</div>\n" +
+        "<!doctype html>\n" +
+        "<html class=\"no-js\" lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:fb=\"http://ogp.me/ns/fb#\">\n" +
+        "\t<head>\n" +
+        "\t\t<meta charset=\"utf-8\">\n" +
+        "\t\t<meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\n" +
+        "\t\t<title>Cart - QBD Books | Buy Books Online From Australia's Best Book Store</title>\n" +
+        "\t\t<meta name=\"copyright\" content=\"Copyright © 2018 QBD Books\" />\n" +
+        "\t\t<meta name=\"language\" content=\"en\" />\n" +
+        "\t\t<meta name=\"googlebot\" content=\"index,follow\" />\n" +
+        "\t\t<meta name=\"robots\" content=\"index,follow\" />\n" +
+        "\t\t<meta name=\"description\" content=\"Buy books online or in store from Australia's premier bookshop. Online Books, Discount Books, eBooks - Cart - QBD Books - Buy Online for Better Range and Value.\" />\n" +
+        "\t\t<meta name=\"verify-v1\" content=\"Hox+LsWFY82aAC0mUojK1qIHT7cYwke4ehlBsn4ho3M=\" />\n" +
+        "\t\t<meta name=\"google-site-verification\" content=\"g8f2tm6k97gBrdUCcCT2qRIKCRaeb2HnRMAebF-ZOsw\" />\n" +
+        "\t\t<meta name=\"msvalidate.01\" content=\"ADAB2492E18D7ED69E8ED7799E0BD9DC\" />\n" +
+        "\t\t<link rel=\"canonical\" href=\"https://www.qbd.com.au/cart/\" />\n" +
+        "<meta property=\"og:title\" content=\"Australia's premier bookshop - QBD Books\" />\n" +
+        "\t\t<meta property=\"og:image\" content=\"https://www.qbd.com.au/res/img/logo-square-512x512.png\" />\n" +
+        "\t\t<meta property=\"og:url\" content=\"https://www.qbd.com.au\" />\n" +
+        "\t\t<meta property=\"og:description\" content=\"Over 1,000,000 titles online.\n" +
+        "57 stores and growing.\" />\n" +
+        "\t\t<meta name=\"twitter:card\" content=\"summary\" />\n" +
+        "\t\t<meta name=\"twitter:site\" content=\"@qbdthebookshop\" />\n" +
+        "\t\t<meta name=\"twitter:title\" content=\"Cart - QBD Books | Buy Books Online From Australia's Best Book Store\" />\n" +
+        "\t\t<meta name=\"twitter:description\" content=\"Buy books online or in store from Australia's premier bookshop. Online Books, Discount Books, eBooks - Cart - QBD Books - Buy Online for Better Range and Value.\" />\n" +
+        "\t\t<meta name=\"twitter:image\" content=\"https://pbs.twimg.com/profile_images/481562749957185537/DPmoobc8_reasonably_small.png\" />\n" +
+        "\t\t<meta name=\"twitter:url\" content=\"https://www.qbd.com.au\" />\n" +
+        "\t\t<meta property=\"twitter:account_id\" content=\"81306718\" />\n" +
+        "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no\" id=\"viewport\" />\n" +
+        "\t\t<style type=\"text/css\">@font-face{font-family:'Avenir Black';src:url('/res/fonts/ab/ab.eot');src:url('/res/fonts/ab/ab.eot?#iefix') format('embedded-opentype'),url('/res/fonts/ab/ab.woff') format('woff'),url('/res/fonts/ab/ab.ttf') format('truetype'),url('/res/fonts/ab/ab.svg#AvenirBlack') format('svg')}@font-face{font-family:'Avenir Light';src:url('/res/fonts/al/al.eot');src:url('/res/fonts/al/al.eot?#iefix') format('embedded-opentype'),url('/res/fonts/al/al.woff') format('woff'),url('/res/fonts/al/al.ttf') format('truetype'),url('/res/fonts/al/al.svg#AvenirLight') format('svg')}@font-face{font-family:'Komika Title';src:url('/res/fonts/kt/kt.eot');src:url('/res/fonts/kt/kt.eot?#iefix') format('embedded-opentype'),url('/res/fonts/kt/kt.woff') format('woff'),url('/res/fonts/kt/kt.ttf') format('truetype'),url('/res/fonts/kt/kt.svg#KomikaTitle') format('svg')}@font-face{font-family:'Dancing Script';font-style:normal;font-weight:400;src:local('Dancing Script Regular'),local('DancingScript-Regular'),url(https://fonts.gstatic.com/s/dancingscript/v9/DK0eTGXiZjN6yA8zAEyM2ZsM3FTMmj2kTPH3yX99Yaw.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2212,U+2215}BODY>.v6{overflow-x:hidden}BODY>.v6>.page{margin:auto auto;width:1000px}BODY>.v6>.page>.header{background:#921736;height:100px;position:fixed;top:0;width:1000px;z-index:1000}BODY>.v6>.page>.header H1{display:none}BODY>.v6>.page>.header:before{background-color:#921736;content:' ';display:block;height:inherit;left:0;position:fixed;top:0;width:100%;z-index:-10}BODY>.v6>.page>.header .free-shipping{background-image:url('/res/img/freeshipping.png');background-repeat:no-repeat;height:90px;margin-right:-605px;position:fixed;right:50%;top:5px;width:90px;display:none}BODY>.v6>.page>.header .logo{height:112px;position:absolute;top:0;width:139px}BODY>.v6>.page>.header .nav-main{display:table;height:30px;left:150px;position:absolute;top:60px;width:850px}BODY>.v6>.page>.header .nav-main LI{display:table-cell;vertical-align:top}BODY>.v6>.page>.header .nav-main LI>A{color:#fff;display:block;font-size:14px;font-weight:bold;height:inherit;line-height:30px;padding:0 10px;position:relative;text-align:center}BODY>.v6>.page>.header .nav-main LI>A H2{color:inherit;font-family:inherit;font-size:inherit;font-weight:inherit;margin:0;padding:0}BODY>.v6>.page>.header .nav-main LI.mobile-hide{display:table-cell}BODY>.v6>.page>.header .nav-main LI.mobile-show{display:none}BODY>.v6>.page>.header .nav-main LI.cart{padding-left:10px;width:130px}BODY>.v6>.page>.header .nav-main LI.cart A{background:#090;padding:0}BODY>.v6>.page>.header .nav-main LI.cart A:after{content:\"\\f054\";padding:10px}BODY>.v6>.page>.header .nav-main LI.cart A:before{content:\"\\f07a\";padding:10px}BODY>.v6>.page>.header .nav-main LI.cart A:after{font-decoration:inherit;font-family:FontAwesome !important;font-style:normal;font-weight:normal;right:0;position:absolute;top:-9px}BODY>.v6>.page>.header .nav-main LI.cart A:before{font-decoration:inherit;font-family:FontAwesome !important;font-style:normal;font-weight:normal;left:0;position:absolute;top:-10px}BODY>.v6>.page>.header .nav-main LI.item>A{background:#661026}BODY>.v6>.page>.header .nav-main LI.item>A:hover{background:#921736;color:#fff}BODY>.v6>.page>.header .nav-main LI.item>A.active{background:#921736;color:#fff}BODY>.v6>.page>.header .nav-mobile{display:none}BODY>.v6>.page>.header .nav-top{display:table;height:40px;left:150px;position:absolute;top:10px;width:850px}BODY>.v6>.page>.header .nav-top>LI{display:table-cell;line-height:40px;vertical-align:top}BODY>.v6>.page>.header .nav-top>LI.mobile-hide{display:table-cell}BODY>.v6>.page>.header .nav-top>LI.mobile-show{display:none}BODY>.v6>.page>.header .nav-top>LI.item{padding-left:10px;width:130px}BODY>.v6>.page>.header .nav-top>LI.search{padding-left:0;width:auto}BODY>.v6>.page>.header .nav-top>LI.search INPUT{border:solid 1px #700000;font-size:16px;height:40px;margin:0;outline:0;padding:0 10px;width:100%}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete{background:#fff;border:solid 1pt #921736;border-top:transparent;display:block;position:absolute;top:29.25pt;z-index:1210}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI{cursor:pointer;display:block;height:30pt;line-height:39pt;width:458px}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI:hover{background:#921736;color:#fff}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI:hover B{color:#fff200}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI.selected{background:#921736;color:#fff}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI.selected B{color:#fff200}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI B{color:#921736}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI SPAN{display:block;float:left;height:inherit;overflow:hidden}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI SPAN.author{font-size:10pt;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:300pt}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI SPAN.binding{text-align:center;width:70pt}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI SPAN.cover{text-align:center;width:30pt}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI SPAN.cover IMG{height:24pt;margin:3pt;width:auto}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete LI SPAN.title{line-height:13.63636364pt;width:235pt;padding-top:5px}BODY>.v6>.page>.header .nav-top>LI.search>.menu{display:none}BODY>.v6>.page>.header .nav-top>LI.search>.submit{display:none}BODY>.v6>.page>.header .nav-top>LI A{background:#fff200;background:-moz-linear-gradient(top,#fff200 0,#fff200 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#fff200),color-stop(100%,#fff200));background:-webkit-linear-gradient(top,#fff200 0,#fff200 100%);background:-o-linear-gradient(top,#fff200 0,#fff200 100%);background:-ms-linear-gradient(top,#fff200 0,#fff200 100%);background:linear-gradient(to bottom,#fff200 0,#fff200 100%);border:solid 1px #700000;color:#333;display:block;font-size:16px;font-weight:bold;height:40px;padding-left:20px;position:relative;width:120px;text-align:center}BODY>.v6>.page>.header .nav-top>LI A:before{color:#921736;font-size:16px;left:5px;position:absolute;margin-left:8px;text-shadow:1px 1px #fffe6f}BODY>.v6>.page>.header .nav-top>LI A:hover{color:#333}BODY>.v6>.page>.header .nav-top>LI A:hover:before{color:#921736}BODY>.v6>.page>.footer{background:#921736;color:#fff;height:320px;margin:0 auto;position:relative;width:1000px;z-index:1000}BODY>.v6>.page>.footer:before{background-color:#921736;content:' ';display:block;height:inherit;left:500px;margin-left:-50vw;margin-right:-50vw;position:absolute;top:0;width:100vw;z-index:-10}BODY>.v6>.page>.footer.fixed{bottom:-264px;position:fixed}BODY>.v6>.page>.footer .disclaimer{font-size:8pt;line-height:10pt;margin:10pt 20pt;max-width:80%}BODY>.v6>.page>.footer A.social.icon{background:#fff;border-radius:50%;color:#921736;display:block;float:left;height:21pt !important;margin:0 5pt 5pt 0;padding:5pt;width:21pt !important}BODY>.v6>.page>.footer A.social.icon:before{font-size:16pt;left:0 !important;padding-right:0 !important}BODY>.v6>.page>.footer A.social.icon.icon-facebook{padding:5.5pt 1pt 5pt 5.5pt}BODY>.v6>.page>.footer A.social.icon.icon-goodreads{padding:4.5pt 3pt 4pt 3.5pt}BODY>.v6>.page>.footer A.social.icon.icon-instagram{padding:4.5pt 3pt 5pt 4pt}BODY>.v6>.page>.footer A.social.icon.icon-snapchat{padding:4.5pt 3pt 4pt 3pt}BODY>.v6>.page>.footer A.social.icon.icon-twitter{padding:5.5pt 3pt 5pt 3.5pt}BODY>.v6>.page>.footer A.social.icon.icon-wordpress{padding:4.5pt 3pt 4pt 3pt}BODY>.v6>.page>.footer .top{height:56px;overflow:hidden}BODY>.v6>.page>.footer .top BUTTON{background-color:#090}BODY>.v6>.page>.footer A{color:#fff}BODY>.v6>.page>.footer B.heading{font-family:'Avenir Black';font-size:15pt;font-weight:normal;line-height:18pt;color:#fff;display:block}BODY>.page>.body{padding-top:100px !important}BODY>.page>.body>.slices{margin-top:0 !important}BODY>.page>.body>.content>.v6{margin:-15pt -15pt 0}BODY>.page>.body>.content>.v6 .body{margin:0 -10pt;padding:0}BODY>.page>.body>.content>.v6 .body>.breadcrumbs{background-color:#fff;border-bottom:solid 1px #ccc;height:30px;line-height:32px;margin:0;position:absolute;top:0;width:1024px;z-index:999}BODY>.page>.body>.content>.v6 .body>.breadcrumbs:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.page>.body>.content>.v6 .body>.breadcrumbs.full LI:last-child{display:block !important}BODY>.page>.body>.content>.v6 .body>.breadcrumbs LI{display:block;float:left;font-size:11pt}BODY>.page>.body>.content>.v6 .body>.breadcrumbs LI:before{content:'>';padding:0 .35em;position:relative}BODY>.page>.body>.content>.v6 .body>.breadcrumbs LI:first-child:before{content:''}BODY>.page>.body>.content>.v6 .body>.breadcrumbs LI:last-child{display:none}BODY>.page>.body>.content>.v6 .body>.breadcrumbs LI .pagination{right:3px;position:absolute;top:2px}BODY>.page>.body>.content>.v6 .body>.breadcrumbs LI .pagination BUTTON{background-color:#eee;border:solid 1px #ddd;height:24px;line-height:22px;padding:0 6px !important}BODY>.page>.body>.content>.v6 .body>.breadcrumbs LI .pagination BUTTON.disabled{background-color:#921736;border:solid 1px #24060d}BODY>.page>.body>.content>.v6 .body>.content{position:relative;text-align:justify}BODY>.page>.body>.content>.v6 .body>.content.has-sidebar{padding:0}BODY>.page>.body>.content>.v6 .body>.content.has-sidebar:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.page>.body>.content>.v6 .body>.content>.main{float:right;padding:10px 15px 10px 0;width:770px}BODY>.page>.body>.content>.v6 .body>.content>.sidebar{border:0 !important;float:left;margin:0 !important;width:250px}BODY>.page>.body>.content>.v6 .body>.content>.sidebar UL{border:0 !important;margin:10px}BODY>.page>.body>.content>.v6 .body>.content>.sidebar UL LI{border:0 !important;line-height:25px;min-height:15px;padding:5px;padding-bottom:0;text-align:left}BODY>.page>.body>.content>.v6 .body>.content>.sidebar UL LI.heading{background-color:#921736;color:#fff;font-weight:bold;text-shadow:none}BODY>.page>.body>.content>.v6 .body>.content>.sidebar UL LI.item{border-bottom:solid 1px #ccc !important;padding-left:5px}BODY>.page>.body>.content>.v6 .body>.content>.sidebar UL LI.item:last-child{border-bottom:solid 0 !important}BODY>.page>.body>.content>.v6 .body>.content H2.title{border-bottom:solid 2px #921736;margin-bottom:5px;margin-top:20px;text-shadow:-3px -3px 0 #fff,3px -3px 0 #fff,-3px 3px 0 #fff,3px 3px 0 #fff}BODY>.page>.body>.content>.v6 .body>.content .product .description{margin-left:195pt;width:540pt}BODY>.page>.body>.content>.v6 .body>.content .product .description:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.page>.body>.content>.v6 .body>.content .product .information{height:310pt;overflow:hidden;position:relative}BODY>.page>.body>.content>.v6 .body>.content .product .information .author{height:25pt;left:195pt;position:absolute;top:0;width:520pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .author H2{font-size:18pt;height:25pt;line-height:25pt;overflow:hidden;text-overflow:ellipsis;width:inherit;white-space:nowrap}BODY>.page>.body>.content>.v6 .body>.content .product .information .author H2:before{color:#999;content:\"By \"}BODY>.page>.body>.content>.v6 .body>.content .product .information .cover{background-color:#f7f7f7;border:solid 1pt #ccc;display:table;height:270pt;padding:5pt;position:absolute;width:180pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .cover .image{display:table-cell;width:inherit;overflow:hidden;text-align:center;vertical-align:middle}BODY>.page>.body>.content>.v6 .body>.content .product .information .cover .image A.multibuy{background-image:url('https://www.qbd.com.au/img/common/starburst.png');background-size:100pt 100pt;background-repeat:no-repeat;bottom:-10pt;color:#921736;font-size:18pt;height:100pt;line-height:35pt;padding:12pt;position:absolute;right:-10pt;text-align:center;width:100pt;z-index:1}BODY>.page>.body>.content>.v6 .body>.content .product .information .cover .image A.multibuy B{font-size:30pt;position:absolute;top:45pt;right:0;line-height:10pt;text-align:center;width:100pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .cover .image A.preview{background-image:url('https://www.qbd.com.au/img/common/preview-peel.png');background-size:90pt 135pt;color:#fff;display:block;height:135pt;padding:5pt;position:absolute;right:0;text-align:center;top:5pt;width:90pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .cover .image>IMG{max-height:260pt;max-width:170pt}BODY>.page>.body>.content>.v6 .body>.content .product .information>.details{height:100pt;left:195pt;position:absolute;top:170pt;width:285pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats{position:absolute;left:195pt;top:40pt;width:540pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format{border:solid 1pt #ccc;height:70pt;margin-bottom:5pt;padding-left:24pt;position:relative;width:100%}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format:hover{background-color:#f7f7f7;-webkit-box-shadow:0 0 5px 0 rgba(0,0,0,0.15);-moz-box-shadow:0 0 5px 0 rgba(0,0,0,0.15);box-shadow:0 0 5px 0 rgba(0,0,0,0.15)}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format:hover H3{background-color:#921736}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format H3{background-color:#921736;color:#fff;font-size:12pt;height:24pt;left:0;padding:5pt;position:absolute;bottom:-24pt;text-align:center;width:70pt;transform-origin:left top 0;-webkit-transform:rotate(-90deg);-moz-transform:rotate(-90deg);-ms-transform:rotate(-90deg);-o-transform:rotate(-90deg);filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3)}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .availability{text-align:center}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .availability .cart{background-color:#090;color:#fff;font-weight:bold;height:20pt;line-height:20pt;margin:auto auto;text-align:center;width:80%}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .details SPAN{color:#921736;display:block;float:left;width:70pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .details .icon-search:after{font-decoration:inherit;font-family:FontAwesome !important;font-style:normal;font-weight:normal;background-color:#921736;border-radius:50%;color:#fff;content:\"\\f129\";display:inline-block;float:left;font-size:7pt;height:11pt;margin-right:3pt;padding-left:4pt;width:7pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price{position:relative}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .cart{background-color:#090;bottom:0;color:#fff;cursor:pointer;font-size:12pt;font-weight:bold;height:30pt;line-height:30pt;padding-left:30pt;position:absolute;width:130pt;text-align:center;text-transform:uppercase}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .cart INPUT[type=\"text\"]{border:solid 1pt #008000;cursor:default;font-size:13pt;height:24pt;left:3pt;position:absolute;text-align:center;top:3pt;width:24pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .save{background-image:url('https://www.qbd.com.au/img/common/starburst.png');background-size:50pt 50pt;color:#921736;font-size:13pt;font-weight:bold;height:50pt;padding:12pt;position:absolute;line-height:10pt;right:0;text-align:center;top:10pt;width:50pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .save:after{content:\" Off RRP\";font-size:8pt;text-transform:uppercase}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .save B{font-size:10pt;font-weight:normal}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .sell{font-size:26pt;font-weight:bold;line-height:70pt;height:70pt;position:absolute;right:55pt;top:0}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .sell.discounted:before{color:#921736;content:\"QBD Price!\";font-size:12pt;position:absolute;top:-18pt;right:0;white-space:nowrap}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .was{font-size:12pt;position:absolute;top:48pt;right:55pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .formats .format .price .was:before{content:\"RRP: \";font-size:10pt;font-weight:bold}BODY>.page>.body>.content>.v6 .body>.content .product .information .location{height:230pt;position:absolute;right:0;top:40pt;width:220pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .location .search{margin-top:10pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .location .search BUTTON{font-weight:bold;line-height:22pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating{height:25pt;padding-left:13pt;position:absolute;left:0;top:275pt;width:180pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars{border:0;float:left}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>INPUT{display:none}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>LABEL{color:#ccc;cursor:pointer;float:right}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>LABEL:before{padding:5px;font-size:20pt;font-family:FontAwesome;display:inline-block;content:\"\\f005\";text-shadow:0 0 1px #000}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>.half:before{position:absolute;content:\"\\f089\";text-shadow:none}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>input:checked ~ label,BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars:not(:checked)>label:hover,BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars:not(:checked)>label:hover ~ label{color:#fff200}BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>input:checked+label:hover,BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>input:checked ~ label:hover,BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>label:hover ~ input:checked ~ label,BODY>.page>.body>.content>.v6 .body>.content .product .information .rating .stars>input:checked ~ label:hover ~ label{color:#fff200}BODY>.page>.body>.content>.v6 .body>.content .product .information .reviews{height:50pt;position:absolute;left:195pt;top:285pt;width:520pt}BODY>.page>.body>.content>.v6 .body>.content .product .information .reviews BLOCKQUOTE{border-radius:5pt;-moz-border-radius:5pt;-webkit-border-top-left-radius:5pt;-webkit-border-top-right-radius:5pt;-webkit-border-bottom-right-radius:5pt;-webkit-border-bottom-left-radius:5pt;color:#000;font-size:12pt;height:55pt;line-height:15pt;margin:0;padding:5pt 6.66666667pt;position:relative;width:inherit;background:#f5b83e;background:-webkit-gradient(linear,0 0,0 100%,from(#fbfa57),to(#f5b83e));background:-moz-linear-gradient(#fbfa57,#f5b83e);background:-o-linear-gradient(#fbfa57,#f5b83e);background:linear-gradient(#fbfa57,#f5b83e)}BODY>.page>.body>.content>.v6 .body>.content .product .information .reviews BLOCKQUOTE SPAN{display:block;height:45pt;line-height:15pt;overflow:hidden;text-shadow:1pt 1pt #fbfa57}BODY>.page>.body>.content>.v6 .body>.content .product .information .reviews BLOCKQUOTE:before{content:\"\";position:absolute;bottom:-20px;right:40px;border-width:0 0 20px 40px;border-style:solid;border-color:transparent #f5b83e;display:block;width:0}BODY>.page>.body>.content>.v6 .body>.content .product .information .reviews BLOCKQUOTE:after{content:\"\";position:absolute;bottom:-20px;right:70px;border-width:0 0 20px 10px;border-style:solid;border-color:transparent #fff;display:block;width:0}BODY>.page>.body>.content>.v6 .body>.content .product .information .reviews BLOCKQUOTE+P{margin:10px 90px 2em 0;text-align:right;font-style:italic}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small{height:94pt;margin:0 0 10pt 0 !important;padding:0;width:100%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI{float:left;margin:0;margin-bottom:10pt !important;padding:0;width:32%;position:relative}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI:nth-child(3n+1){margin-right:2%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI:nth-child(3n+3){margin-left:2%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI.submenu{box-shadow:0 0 10pt #999;margin-bottom:77pt !important}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI.submenu>A{background:#f7f7f7}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI.submenu>UL{position:absolute;top:94pt;margin:0;padding:0;border:solid 1pt #921736;width:100%;height:62pt;overflow:hidden;background:#fff}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI.submenu>UL>LI{height:20pt;line-height:24pt !important;padding-left:5pt;border-bottom:solid 1pt #f7f7f7}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI.submenu>UL>LI.more{position:absolute;width:30pt;bottom:0;right:15pt}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI.submenu>UL>LI.more:after{font-decoration:inherit;font-family:FontAwesome !important;font-style:normal;font-weight:normal;font-size:8pt;content:\"\\f101\";color:#333;margin-left:5pt;margin-right:5pt}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI.submenu>UL>LI>A{color:#333}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI>A{border:solid 2pt #921736;display:block;height:94pt;position:relative;overflow:hidden;width:100%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI>A IMG{height:91pt;left:0;position:absolute;top:0;width:100%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI>A IMG.product{top:18pt;left:50%;margin-left:-15%;height:90pt;border:solid 1pt #333;box-shadow:0 0 10pt #333;width:26%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI>A IMG.product:nth-child(1){-ms-transform:rotate(-10deg);-webkit-transform:rotate(-10deg);transform:rotate(-10deg);margin-left:-38%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI>A IMG.product:nth-child(2){-ms-transform:rotate(10deg);-webkit-transform:rotate(10deg);transform:rotate(10deg);margin-left:12%}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI>A IMG.product:nth-child(3){width:30%;top:10px}BODY>.page>.body>.content>.v6 .body>.content .spotlight-small>LI>A SPAN{font-family:'Avenir Light';font-size:11pt;font-weight:normal;line-height:17pt;background-color:#921736;color:#fff;bottom:0;display:block;height:15pt;left:0;padding:2pt;position:absolute;text-align:center;width:100%}BODY>.page>.body>.content>.v6 .body>.content .tiles{height:300px;margin:auto auto;margin-bottom:35px;position:relative}BODY>.page>.body>.content>.v6 .body>.content .tiles .tile{height:150px;left:0;position:absolute;top:0;width:100px}BODY>.page>.body>.content>.v6 .body>.content .tiles .tile.tile-1{height:310px;width:200px}BODY>.page>.body>.content>.v6 .body>.content .tiles .tile A{height:inherit;width:inherit}BODY>.page>.body>.content>.v6 .body>.content .tiles .tile A.more{background-color:rgba(0,0,0,0.75);color:#fff;left:0;padding-top:50px;position:absolute;text-align:center;top:0;z-index:2}BODY>.page>.body>.content>.v6 .body>.content .tiles .tile A.more B{font-size:40px}BODY>.page>.body>.content>.v6 .body>.content .tiles .tile A IMG{height:inherit;width:inherit}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-1{width:200px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-2{width:410px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-2 .tile-2{left:210px;height:310px;width:200px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-3{width:620px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-3 .tile-2{left:210px;height:310px;width:200px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-3 .tile-3{left:420px;height:310px;width:200px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-4{width:520px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-4 .tile-2{left:210px;height:310px;width:200px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-4 .tile-3{left:420px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-4 .tile-4{top:160px;left:420px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-5{width:420px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-5 .tile-2{left:210px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-5 .tile-3{left:320px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-5 .tile-4{top:160px;left:210px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-5 .tile-5{top:160px;left:320px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-6{width:630px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-6 .tile-2{left:210px;height:310px;width:200px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-6 .tile-3{left:420px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-6 .tile-4{left:530px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-6 .tile-5{top:160px;left:420px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-6 .tile-6{top:160px;left:530px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-7{width:530px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-7 .tile-2{left:210px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-7 .tile-3{left:320px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-7 .tile-4{left:430px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-7 .tile-5{top:160px;left:210px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-7 .tile-6{top:160px;left:320px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-7 .tile-7{top:160px;left:430px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8{width:430px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-1{height:150px;width:100px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-2{left:110px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-3{left:220px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-4{left:330px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-5{top:160px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-6{top:160px;left:110px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-7{top:160px;left:220px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-8 .tile-8{top:160px;left:330px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9{width:640px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-2{left:210px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-3{left:320px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-4{left:430px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-5{left:540px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-6{top:160px;left:210px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-7{top:160px;left:320px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-8{top:160px;left:430px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-9 .tile-9{top:160px;left:540px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10{width:540px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-1{height:150px;width:100px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-2{left:110px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-3{left:220px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-4{left:330px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-5{left:440px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-6{top:160px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-7{top:160px;left:110px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-8{top:160px;left:220px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-9{top:160px;left:330px}BODY>.page>.body>.content>.v6 .body>.content .tiles.tiles-10 .tile-10{top:160px;left:440px}BODY>.page>.body>.content>.v6 .body>.heading{background-attachment:fixed;background-position:top center;background-repeat:no-repeat;padding-bottom:15px;padding-top:48px;text-shadow:none !important}BODY>.page>.body>.content>.v6 .body>.heading H1{font-family:'Avenir Black';font-size:25pt;font-weight:normal;line-height:30pt}BODY>.page>.body>.content>.v6 .body>.heading H1.logo{text-align:center}BODY>.page>.body>.content>.v6 .body>.heading H1>.logo{max-height:150px;width:auto}BODY>.page>.body>.content>.v6 .body>.heading H2.logo{text-align:center}BODY>.page>.body>.content>.v6 .body>.heading H2>.logo{max-height:150px;width:auto}BODY>.page>.header{display:none !important}@media(max-width:580px){@viewport{width:480px;min-zoom:1;max-zoon:1;overflow:hidden;orientation:portrait}@-ms-viewport{width:device-width}BODY>.v6{width:100% !important;overflow-x:hidden}BODY>.v6>.page{margin:0;width:100% !important}BODY>.v6>.page>.body{margin-bottom:50px}BODY>.v6>.page>.breadcrumbs{width:100% !important}BODY>.v6>.page>.breadcrumbs:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.v6>.page>.header{height:64px;width:100%}BODY>.v6>.page>.header .free-shipping{display:none}BODY>.v6>.page>.header .logo{height:48px;left:72px;top:8px;clip:rect(0,105px,48px,0);width:64px}BODY>.v6>.page>.header .nav-main{display:none}BODY>.v6>.page>.header .nav-main.active{display:block;height:auto;left:0;top:64px;width:100%;z-index:1999}BODY>.v6>.page>.header .nav-main.active LI{display:block;height:64px;width:100%}BODY>.v6>.page>.header .nav-main.active LI>A{font-size:24px;line-height:64px;text-align:left;padding:0 16px}BODY>.v6>.page>.header .nav-main.active LI>A H2{line-height:64px}BODY>.v6>.page>.header .nav-main.active LI.cart{padding:0;width:100%}BODY>.v6>.page>.header .nav-main.active LI.cart>A{padding-left:64px}BODY>.v6>.page>.header .nav-main.active LI.mobile-hide{display:none}BODY>.v6>.page>.header .nav-main.active LI.mobile-show{display:block}BODY>.v6>.page>.header .nav-mobile{display:block}BODY>.v6>.page>.header .nav-mobile .menu{padding:0 !important;background:transparent;border:0;height:64px;left:0;position:absolute;top:0;width:64px}BODY>.v6>.page>.header .nav-mobile .menu:before{content:\"\\f0c9\"}BODY>.v6>.page>.header .nav-mobile .menu:before{font-decoration:inherit;font-family:FontAwesome !important;font-style:normal;font-weight:normal;color:#fff;font-size:40px !important;left:5px;position:absolute;margin-left:10px;margin-top:24px;top:0}BODY>.v6>.page>.header .nav-top{left:158px;top:0;width:222px}BODY>.v6>.page>.header .nav-top>LI.mobile-hide{display:none}BODY>.v6>.page>.header .nav-top>LI.mobile-show{display:table-cell}BODY>.v6>.page>.header .nav-top>LI.cart{float:right}BODY>.v6>.page>.header .nav-top>LI.item{padding-left:0;height:64px;max-width:64px;overflow:hidden;width:64px}BODY>.v6>.page>.header .nav-top>LI.locations{display:none;margin-right:-10px}BODY>.v6>.page>.header .nav-top>LI.locations A:before{margin-left:25px;margin-right:-10px}BODY>.v6>.page>.header .nav-top>LI.members{float:right}BODY>.v6>.page>.header .nav-top>LI.members A:before{margin-left:12px}BODY>.v6>.page>.header .nav-top>LI.search{float:right}BODY>.v6>.page>.header .nav-top>LI.search INPUT{display:none}BODY>.v6>.page>.header .nav-top>LI.search INPUT.active{border:solid 16px #921736;border-top:0;border-radius:0 !important;display:block;font-size:24px;height:64px;left:0;margin-left:-158px;position:absolute;top:64px;width:400px !important}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete{background:#fff;border:solid 1pt #921736;border-top:transparent;display:none !important;left:0 !important;margin-left:-158px;position:absolute;top:128px !important;z-index:1210}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete.active{display:block !important}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI{cursor:pointer;display:block;height:64px;line-height:64px;width:400px;max-width:400px}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI:hover{background:#921736;color:#fff}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI:hover B{color:#fff200}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI.selected{background:#921736;color:#fff}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI.selected B{color:#fff200}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI B{color:#921736}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI SPAN{display:block;float:left;height:inherit;overflow:hidden}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI SPAN.author{font-size:14px;line-height:16px;margin-top:-12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI SPAN.binding{text-align:center;width:30%}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI SPAN.cover{text-align:center;width:15%}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI SPAN.cover IMG{height:48px;margin:8px;width:auto}BODY>.v6>.page>.header .nav-top>LI.search>.autocomplete>LI SPAN.title{font-size:20px;line-height:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:50%}BODY>.v6>.page>.header .nav-top>LI.search>.menu{padding:0 !important;padding-left:10px;background:transparent;border:0;display:block;height:64px;right:0;position:absolute;top:0;width:64px}BODY>.v6>.page>.header .nav-top>LI.search>.menu:before{content:\"\\f002\"}BODY>.v6>.page>.header .nav-top>LI.search>.menu:before{font-decoration:inherit;font-family:FontAwesome !important;font-style:normal;font-weight:normal;color:#fff;font-size:40px !important;right:15px;position:absolute;margin-left:-10px;margin-right:0;margin-top:23px;top:0}BODY>.v6>.page>.header .nav-top>LI.search>.submit{display:none}BODY>.v6>.page>.header .nav-top>LI.vouchers{display:none}BODY>.v6>.page>.header .nav-top>LI A{background:transparent;border:0;height:64px;overflow:hidden;padding-left:64px;width:64px}BODY>.v6>.page>.header .nav-top>LI A:before{color:#fff;font-size:40px;left:5px;position:absolute;margin-left:8px;margin-top:12px;text-shadow:none}BODY>.v6>.page>.header .nav-top>LI A:hover{color:#fff}BODY>.v6>.page>.header .nav-top>LI A:hover:before{color:#fff}BODY>.v6>.page>.footer{width:100% !important;height:540px;overflow:hidden}BODY>.v6>.page>.footer.fixed{bottom:-484px;position:fixed}BODY>.v6>.page>.footer.fixed:before{display:none}BODY>.v6>.page>.footer .top .p5{width:100% !important}BODY>.v6>.page>.footer .top .p5:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.v6>.page>.footer .cols .col4{width:40% !important;height:200px}BODY>.v6>.page>.footer .disclaimer{max-width:100%}BODY>.page{margin:0 !important;width:100% !important}BODY>.page>.body{width:100% !important;padding-top:64px !important;margin-bottom:50px}BODY>.page>.body>.content>.v6>.body{margin:0}BODY>.page>.body>.content>.v6>.body>.breadcrumbs{left:0;overflow:hidden;width:100% !important;white-space:nowrap}BODY>.page>.body>.content>.v6>.body>.content{width:100%;padding:10px}BODY>.page>.body>.content>.v6>.body>.content.has-sidebar{padding:10px}BODY>.page>.body>.content>.v6>.body>.content>.main{float:none;padding:0;width:100%}BODY>.page>.body>.content>.v6>.body>.content>.main .product-list .product-thumb{width:50%}BODY>.page>.body>.content>.v6>.body>.content>.main .product-list .product-thumb A IMG{height:auto}BODY>.page>.body>.content>.v6>.body>.content>.main .product-list:after{clear:both;content:'.';display:block;height:0;visibility:hidden}BODY>.page>.body>.content>.v6>.body>.heading{background-size:100%}BODY>.page>.body>.content>.v6>.body>.heading>H1.logo>IMG.logo{width:90%}BODY>.page>.body>.promotional{width:100% !important}BODY>.page>.body>.promotional .line>.square{display:none}BODY>.page>.body>.promotional .line>.promo A IMG{height:auto;width:100% !important}BODY>.page>.body>.slices{height:148px !important;overflow:hidden !important}BODY>.page>.body>.slices .slice{background-size:190% 46.875%;width:100% !important}BODY>.page>.body>.slices .slice .ticket{margin-left:-30px !important;padding-right:-110px !important;padding-top:90px !important;transform:scale(0.46875);width:480px !important}BODY>.page>.body>.slices .slice .ticket .sell{margin-left:-25px !important}BODY>.page>.body .v5-productstrip{width:100%}BODY>.page>.footer{height:350px !important}BODY>.page>.footer .cols .col4{width:100% !important}}</style>\n" +
+        "\t\t<link rel=\"stylesheet\" href=\"/res/css/main.v4.css?v=201804111145\" type=\"text/css\" />\n" +
+        "\t\t<link rel=\"shortcut icon\" href=\"/favicon.ico\" />\n" +
+        "\t\t<link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\" />\n" +
+        "\t</head>\n" +
+        "\t<body data-device=\"desktop\" data-user=\"inactive\" data-promotional-url=\"https://www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/\">\n" +
+        "\t\t\t\t<div class=\"v6\">\n" +
+        "\t\t\t<div class=\"page\">\n" +
+        "\t\t\t\t<div class=\"header\">\n" +
+        "\t\t\t\t\t<a href=\"/\"><img src=\"/res/img/logo-square-overhang.png\" width=\"139\" height=\"112\" class=\"logo\" title=\"QBD Books\" alt=\"QBD Books\" /></a><ul class=\"nav-top\"><li class=\"item search\"><button class=\"menu\"></button><button class=\"submit\"></button><input class=\"query\" type=\"text\" placeholder=\"Search by Title, Author or ISBN\" /><ul class=\"autocomplete\"></ul></li><li class=\"item vouchers\"><a href=\"/cart/voucher/\" class=\"icon icon-card\">Vouchers</a></li><li class=\"item locations\"><a href=\"/locations/\" class=\"icon icon-pin\">Locations</a></li><li class=\"item cart mobile-show\"><a href=\"/cart/\" class=\"icon icon-shopping-cart\">2 Items</a></li><li class=\"item members\"><a href=\"/club/login/\" class=\"icon icon-user\">Log In</a></li></ul><ul class=\"nav-main\"><li class=\"item mobile-show\"><a href=\"/locations/\" class=\"locations\">Store Locations</a></li><li class=\"item mobile-show\"><a href=\"/cart/voucher/\" class=\"vouchers\">Vouchers</a></li><li class=\"item\"><a href=\"/sale/\" class=\"sale\">Sale</a></li><li class=\"item\"><a href=\"/fiction/\">Fiction</a></li><li class=\"item\"><a href=\"/fiction/young-adult/\">Young Adult</a></li><li class=\"item\"><a href=\"/childrens/\">Childrens</a></li><li class=\"item mobile-hide\"><a href=\"/biographies/\">Biographies</a></li><li class=\"item mobile-hide\"><a href=\"/cooking/\">Cooking</a></li><li class=\"item\"><a href=\"/categories/\" class=\"categories\">All Categories</a></li><li class=\"item mobile-hide\"><a href=\"/events/\" class=\"events\">Events</a></li><li class=\"cart\"><a href=\"/cart/\">2 Items</a></li></ul><div class=\"nav-mobile\"><button class=\"menu\"></button></div><div class=\"free-shipping\"></div>\t\t\t\t</div>\n" +
         "\t\t\t</div>\n" +
-        "\t\t</nav>\n" +
-        "\t<div class=\"container\">\n" +
-        "\t<div class=\"page-header row\">\n" +
-        "    <div class=\"col-sm-3 site-logo\">\n" +
-        "    \t<a id=\"logo\" href=\"/\">\n" +
-        "\t<img title=\"\" alt=\"\" src=\"https://covers.angusrobertson.com.au/medias/logo-site.png?context=bWFzdGVyfGltYWdlc3w2OTM1fGltYWdlL3BuZ3xzeXMtbWFzdGVyL2ltYWdlcy9oYWUvaDhlLzEyODAwNzQ0NDIzNDU0L2xvZ28tc2l0ZS5wbmd8MzViZGVmNzAzMTM0ZDUyZDZlYzE5MjNiMjg3MzQyMWMxNTJlMDU5NDI1OTc0OGYyZjRlMjIyZmE0MTg0NTQzYQ\">\n" +
-        "</a>\n" +
-        "</div>\n" +
-        "\t\n" +
-        "\t<div class=\"col-sm-9\">\n" +
-        "    \t<div class=\"secured-by\">\n" +
-        "    \t\t\t\tProudly secured by:\n" +
-        "    \t\t\t\t<img itemprop=\"image\" src=\"https://cdn.angusrobertson.com.au/_ui/desktop/theme-arbw/images/logos_gt_white.png\" alt=\"GeoTrust\" title=\"\" class=\"\"/>\n" +
-        "\t<img itemprop=\"image\" src=\"https://www.eway.com.au/images/site-seal/wizz/dark/88x40-nocard.png\" alt=\"eWay\" title=\"\" class=\"\"/>\n" +
-        "\t</div>\n" +
-        "    \t\t</div>\n" +
-        "</div></div>\n" +
-        "</div>\n" +
-        "        <div id=\"page-content-container\" class=\"container content\">\n" +
-        "        \t\t<div class=\"row usp-banner\">\n" +
-        "\t\t\t\t\t\t\t\t</div>\n" +
-        "            <div class=\"leaderboardBanner\">\n" +
-        "                </div>\n" +
-        "            <div id=\"cart_popup\" class=\"cart_popup\"></div><div id=\"popup_wishlist\" class=\"wishlist\" style=\"width: 700px\"></div><div class=\"information_message negative\" id=\"noStoreSelected\" style=\"display:none\" tabindex=\"0\">\n" +
-        "\t<span class=\"single\"></span>\n" +
-        "\t<p>Please select stores for the entries highlighted in red</p>\n" +
-        "</div><div class=\"span-24\">\n" +
-        "\t\t<div class=\"span-20\">\n" +
-        "\t\t\t<div class=\"span-20\">\n" +
-        "\t\t\t\t<div class=\"main_content clearfix\">\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t\t<div class=\"checkout main_content clearfix\">\n" +
-        "\t\t\t\t\t<div class=\"main_content clearfix\" style=\"margin-left: 0 !important;\">\n" +
-        "\t\t\t\t\t\t<div id=\"item_container_holder_bw\">\n" +
-        "\t<div id=\"order_summary\" class=\"item_container\">\n" +
-        "\t\t<div class=\"cart-wrapper\">\n" +
-        "\t\t  <table class=\"table cart-table\">\n" +
-        "\t\t\t<thead>\n" +
-        "\t\t\t  <tr>\n" +
-        "\t\t\t\t<th class=\"product-col\">Your shopping cart</th>\n" +
-        "\t\t\t\t<th>Price</th>\n" +
-        "\t\t\t\t<th>Quantity</th>\n" +
-        "\t\t\t\t<th>Total</th>\n" +
-        "\t\t\t  </tr>\n" +
-        "\t\t\t</thead>\n" +
-        "\t\t\t<tbody>\n" +
-        "\t\t\t  <tr data-product=\"9781631491177\">\n" +
-        "                <td class=\"product-col cell\">\n" +
-        "                <div class=\"cell half-height\">\n" +
-        "                  <div class=\"cell inline\">\n" +
-        "                    <a href=\"/books/the-prison-letters-of-nelson-mandela-nelson-mandela-sahm-venter/p/9781631491177\"><img class=\"image-modal\"  width=\"50\" src=\"https://covers.angusrobertson.com.au/images/9781631491177.jpg?width=50\" alt=\"The Prison Letters of Nelson Mandela\" title=\"The Prison Letters of Nelson Mandela\" />\n" +
-        "\t\t  </a>\n" +
-        "                  </div>\n" +
-        "                  <div class=\"cell inline\">\n" +
-        "                    <div class=\"cell half-height\">\n" +
-        "                      <a href=\"/books/the-prison-letters-of-nelson-mandela-nelson-mandela-sahm-venter/p/9781631491177\">The Prison Letters of Nelson Mandela</a>\n" +
-        "                    </div>\n" +
-        "                    <div class=\"cell contributor\">\n" +
-        "                      by <a title=\"Browse all products by Nelson Mandela\" href=\"/by/Nelson Mandela\">Nelson Mandela</a><span>,&nbsp;</span><a title=\"Browse all products by Sahm Venter\" href=\"/by/Sahm Venter\">Sahm Venter</a><span> and </span>\n" +
-        "\t\t\t\t\t\t<a title=\"Browse all products by Sahm Venter\" href=\"/by/Sahm Venter\">Sahm Venter</a>\n" +
-        "\t\t\t\t\t |\n" +
-        "                      Hardback<br/>\n" +
-        "                    <!-- BLOCK: AvailableToBuy -->\n" +
-        "<!-- BLOCK: CartPage -->\n" +
-        "\t\t\t<a href=\"#\">\n" +
-        "\t\t\t<span class=\"availability\" data-toggle=\"modal\" data-target=\"#delivery_info_9781631491177\">\n" +
-        "                <span class=\"okau-instock\">1-2 Weeks</span></span>\n" +
-        "\t\t\t</a>\n" +
-        "\t\t<!-- BLOCK: CartPage -->\n" +
-        "\t\t<!-- Delivery messaging -->\n" +
-        "<div id=\"delivery_info_9781631491177\" class=\"popModal modal fade\">\n" +
-        "\t\t\t<div class=\"modal-dialog delivery-dialog\">\n" +
-        "\t\t\t\t<div class=\"modal-content\">\n" +
-        "\t\t\t\t\t<div class=\"modal-body\">\n" +
-        "                        <ul style=\"padding-left: 20px;\"> <li>On order from our local supplier to our Sydney distribution centre</li><li>Once received into our distribution centre, we will despatch and inform you via email.</li><li>Arrives in 2-4 days after despatch for most Australian capitals.</li></ul></div>\n" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "\t<!-- ENDBLOCK: AvailableToBuy -->\n" +
-        "</div>\n" +
-        "                  </div>\n" +
-        "                </div>\n" +
-        "                </td>\n" +
-        "    \n" +
-        "                <td class=\"basePrice\"><!-- price.tag: start -->\n" +
-        "$40.03<!-- price.tag: end -->\n" +
-        "</td>\n" +
-        "                <td class=\"quantity\">\n" +
-        "                            <div class=\"quantity-container\">\n" +
-        "                              <select class=\"form-control quantity select \" >\n" +
-        "                                <option value=0 >0</option>\n" +
-        "                                <option value=1 selected>1</option>\n" +
-        "                                <option value=2 >2</option>\n" +
-        "                                <option value=3 >3</option>\n" +
-        "                                <option value=4 >4</option>\n" +
-        "                                <option value=5 >5</option>\n" +
-        "                                <option value=6 >6</option>\n" +
-        "                                <option value=7 >7</option>\n" +
-        "                                <option value=8 >8</option>\n" +
-        "                                <option value=9 >9</option>\n" +
-        "                                <option value=10+ >10+</option>\n" +
-        "                              </select>\n" +
-        "                              <input class=\"form-control quantity input collapse\" value=\"1\" />\n" +
-        "                              <label class=\"quantity-output hidden\" data-input=\"text\">1</label>\n" +
-        "                            </div>\n" +
-        "                </td>\n" +
-        "                <td class=\"entryTotal\"><!-- price.tag: start -->\n" +
-        "$40.03<!-- price.tag: end -->\n" +
-        "</td>\n" +
-        "              </tr>\n" +
-        "            <tr data-product=\"9780733637933\">\n" +
-        "                <td class=\"product-col cell\">\n" +
-        "                <div class=\"cell half-height\">\n" +
-        "                  <div class=\"cell inline\">\n" +
-        "                    <a href=\"/books/the-other-wife-michael-robotham/p/9780733637933\"><img class=\"image-modal\"  width=\"50\" src=\"https://covers.angusrobertson.com.au/images/9780733637933.jpg?width=50\" alt=\"The Other Wife\" title=\"The Other Wife\" />\n" +
-        "\t\t  </a>\n" +
-        "                  </div>\n" +
-        "                  <div class=\"cell inline\">\n" +
-        "                    <div class=\"cell half-height\">\n" +
-        "                      <a href=\"/books/the-other-wife-michael-robotham/p/9780733637933\">The Other Wife</a>\n" +
-        "                    </div>\n" +
-        "                    <div class=\"cell contributor\">\n" +
-        "                      by <a title=\"Browse all products by Michael Robotham\" href=\"/by/Michael Robotham\">Michael Robotham</a> |\n" +
-        "                      Paperback / softback<br/>\n" +
-        "                    <!-- BLOCK: AvailableToBuy -->\n" +
-        "<!-- BLOCK: CartPage -->\n" +
-        "\t\t\t<a href=\"#\">\n" +
-        "\t\t\t<span class=\"availability\" data-toggle=\"modal\" data-target=\"#delivery_info_9780733637933\">\n" +
-        "                <span class=\"bt-instock\">In Stock | 2-4 Days</span></span>\n" +
-        "\t\t\t</a>\n" +
-        "\t\t<!-- BLOCK: CartPage -->\n" +
-        "\t\t<!-- Delivery messaging -->\n" +
-        "<div id=\"delivery_info_9780733637933\" class=\"popModal modal fade\">\n" +
-        "\t\t\t<div class=\"modal-dialog delivery-dialog\">\n" +
-        "\t\t\t\t<div class=\"modal-content\">\n" +
-        "\t\t\t\t\t<div class=\"modal-body\">\n" +
-        "                        <ul style=\"padding-left: 20px;\"> <li>Typically received within 2-4 working days for most Australian capitals.</li>  <li>Please allow additional time for regional areas.</li>  <li>Once received into our distribution centre, we will despatch and inform you via email.</li>  <li>Tracking is available for this item via Australia Post.</li> </ul></div>\n" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "\t<!-- ENDBLOCK: AvailableToBuy -->\n" +
-        "</div>\n" +
-        "                  </div>\n" +
-        "                </div>\n" +
-        "                </td>\n" +
-        "    \n" +
-        "                <td class=\"basePrice\"><!-- price.tag: start -->\n" +
-        "$25.99<!-- price.tag: end -->\n" +
-        "</td>\n" +
-        "                <td class=\"quantity\">\n" +
-        "                            <div class=\"quantity-container\">\n" +
-        "                              <select class=\"form-control quantity select \" >\n" +
-        "                                <option value=0 >0</option>\n" +
-        "                                <option value=1 selected>1</option>\n" +
-        "                                <option value=2 >2</option>\n" +
-        "                                <option value=3 >3</option>\n" +
-        "                                <option value=4 >4</option>\n" +
-        "                                <option value=5 >5</option>\n" +
-        "                                <option value=6 >6</option>\n" +
-        "                                <option value=7 >7</option>\n" +
-        "                                <option value=8 >8</option>\n" +
-        "                                <option value=9 >9</option>\n" +
-        "                                <option value=10+ >10+</option>\n" +
-        "                              </select>\n" +
-        "                              <input class=\"form-control quantity input collapse\" value=\"1\" />\n" +
-        "                              <label class=\"quantity-output hidden\" data-input=\"text\">1</label>\n" +
-        "                            </div>\n" +
-        "                </td>\n" +
-        "                <td class=\"entryTotal\"><!-- price.tag: start -->\n" +
-        "$25.99<!-- price.tag: end -->\n" +
-        "</td>\n" +
-        "              </tr>\n" +
-        "            <tr data-product=\"9781460751756\">\n" +
-        "                <td class=\"product-col cell\">\n" +
-        "                <div class=\"cell half-height\">\n" +
-        "                  <div class=\"cell inline\">\n" +
-        "                    <a href=\"/books/pieces-of-her-karin-slaughter/p/9781460751756\"><img class=\"image-modal\"  width=\"50\" src=\"https://covers.angusrobertson.com.au/images/9781460751756.jpg?width=50\" alt=\"Pieces of Her\" title=\"Pieces of Her\" />\n" +
-        "\t\t  </a>\n" +
-        "                  </div>\n" +
-        "                  <div class=\"cell inline\">\n" +
-        "                    <div class=\"cell half-height\">\n" +
-        "                      <a href=\"/books/pieces-of-her-karin-slaughter/p/9781460751756\">Pieces of Her</a>\n" +
-        "                    </div>\n" +
-        "                    <div class=\"cell contributor\">\n" +
-        "                      by <a title=\"Browse all products by Karin Slaughter\" href=\"/by/Karin Slaughter\">Karin Slaughter</a> |\n" +
-        "                      Paperback / softback<br/>\n" +
-        "                    <!-- BLOCK: AvailableToBuy -->\n" +
-        "<!-- BLOCK: CartPage -->\n" +
-        "\t\t\t<a href=\"#\">\n" +
-        "\t\t\t<span class=\"availability\" data-toggle=\"modal\" data-target=\"#delivery_info_9781460751756\">\n" +
-        "                <span class=\"bt-instock\">In Stock | 2-4 Days</span></span>\n" +
-        "\t\t\t</a>\n" +
-        "\t\t<!-- BLOCK: CartPage -->\n" +
-        "\t\t<!-- Delivery messaging -->\n" +
-        "<div id=\"delivery_info_9781460751756\" class=\"popModal modal fade\">\n" +
-        "\t\t\t<div class=\"modal-dialog delivery-dialog\">\n" +
-        "\t\t\t\t<div class=\"modal-content\">\n" +
-        "\t\t\t\t\t<div class=\"modal-body\">\n" +
-        "                        <ul style=\"padding-left: 20px;\"> <li>Typically received within 2-4 working days for most Australian capitals.</li>  <li>Please allow additional time for regional areas.</li>  <li>Once received into our distribution centre, we will despatch and inform you via email.</li>  <li>Tracking is available for this item via Australia Post.</li> </ul></div>\n" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "\t<!-- ENDBLOCK: AvailableToBuy -->\n" +
-        "</div>\n" +
-        "                  </div>\n" +
-        "                </div>\n" +
-        "                </td>\n" +
-        "    \n" +
-        "                <td class=\"basePrice\"><!-- price.tag: start -->\n" +
-        "$25.99<!-- price.tag: end -->\n" +
-        "</td>\n" +
-        "                <td class=\"quantity\">\n" +
-        "                            <div class=\"quantity-container\">\n" +
-        "                              <select class=\"form-control quantity select \" >\n" +
-        "                                <option value=0 >0</option>\n" +
-        "                                <option value=1 selected>1</option>\n" +
-        "                                <option value=2 >2</option>\n" +
-        "                                <option value=3 >3</option>\n" +
-        "                                <option value=4 >4</option>\n" +
-        "                                <option value=5 >5</option>\n" +
-        "                                <option value=6 >6</option>\n" +
-        "                                <option value=7 >7</option>\n" +
-        "                                <option value=8 >8</option>\n" +
-        "                                <option value=9 >9</option>\n" +
-        "                                <option value=10+ >10+</option>\n" +
-        "                              </select>\n" +
-        "                              <input class=\"form-control quantity input collapse\" value=\"1\" />\n" +
-        "                              <label class=\"quantity-output hidden\" data-input=\"text\">1</label>\n" +
-        "                            </div>\n" +
-        "                </td>\n" +
-        "                <td class=\"entryTotal\"><!-- price.tag: start -->\n" +
-        "$25.99<!-- price.tag: end -->\n" +
-        "</td>\n" +
-        "              </tr>\n" +
-        "            <!-- Gift wrapping -->\n" +
-        "\t\t\t\t  <tr id=\"gift-wrapping-row\" >\n" +
-        "\t\t\t\t  \t<td colspan=\"3\" class=\"gift-wrapping-col\">\n" +
-        "\t\t\t\t  \t\t<input type=\"checkbox\" id=\"checkout_select_gift_wrapping\" />\n" +
-        "\t\t\t\t  \t\t<label for=\"checkout_select_gift_wrapping\"><span></span><div class=\"glyphicon glyphicon-gift\"></div> Please wrap my order - Each item is individually gift-wrapped for $4.95 per item</label>\n" +
-        "\t\t\t\t  \t\t</td>\n" +
-        "\t\t\t\t  \t<td id=\"giftWrapTotal\">-</td>\n" +
-        "\t\t\t\t  \t\t</tr>\n" +
-        "\t\t\t\t</tbody>\n" +
-        "\t\t  </table>\n" +
-        "\t\t  <table class=\"table cart-info\">\n" +
-        "\t\t\t<tbody>\n" +
-        "\t\t\t  <tr>\n" +
-        "\t\t\t\t<td>\n" +
-        "\t\t\t\t  <form id=\"frmRemoveAll\" name=\"frmRemoveAll\" action=\"/cart/removeall\" method=\"post\"><input type=\"hidden\" name=\"entries\" value=\"\" />\n" +
-        "\t\t\t\t\t  <p>\n" +
-        "\t\t\t\t\t\t<a class=\"remove removeAll\" href=\"#\"> Remove all items from basket</a>\n" +
-        "\t\t\t\t\t  </p>\n" +
-        "\t\t\t\t\t</form></td>\n" +
-        "\t\t\t\t<td class=\"cart-details\">\n" +
-        "\t\t\t\t  <table class=\"table\">\n" +
-        "\t\t\t\t\t<tbody>\n" +
-        "\t\t\t\t\t  <tr id=\"promo-code-form-wrapper\" class=\"promo\">\n" +
-        "\t\t\t\t\t\t<td colspan=\"2\">\n" +
-        "\t\t\t\t\t\t\t<a id=\"promo-code-show\" href=\"#\">Enter a promotional code</a>\n" +
-        "\n" +
-        "\t\t\t\t\t\t\t<form id=\"promo-code-form\" class=\"hidden\" method=\"post\" role=\"form\">\n" +
-        "\t\t\t\t\t\t\t\t<div class=\"form-inline form-group\">\n" +
-        "\t\t\t\t\t\t\t\t\t<div id=\"promo-code-input\">\n" +
-        "\t\t\t\t\t\t\t\t\t\t<input class=\"form-control input\" type=\"text\" name=\"voucherCode\" placeholder=\"Your Promo Code\" required>\n" +
-        "\t\t\t\t\t\t\t\t\t</div>\n" +
-        "\t\t\t\t\t\t\t\t\t<button id=\"promo-apply-btn\" class=\"btn btn-action\" type=\"submit\" data-action=\"redeem\">Apply</button>\n" +
-        "\t\t\t\t\t\t\t\t\t<button id=\"promo-remove-btn\" class=\"hide\" class=\"btn btn-secondary\" type=\"submit\" data-action=\"release\">Remove</button>\n" +
-        "\t\t\t\t\t\t\t\t\t<input type=\"hidden\" name=\"giftWrapMessage\"/>\n" +
-        "\t\t\t\t\t\t\t\t\t<div id=\"promo-submit-status\"></div>\n" +
+        "\t\t</div>\n" +
+        "\t\t<div class=\"page\">\n" +
+        "\t\t\t<div class=\"header\">\n" +
+        "\t\t\t</div>\n" +
+        "\t\t\t<div class=\"body bodypush\">\n" +
+        "\t\t\t\t<div class=\"heading\"><a class=\"button action right expand-30 ta-center icon icon-lock icon-chevron-right\" href=\"/cart/checkout/\">Secure Checkout</a><h1>Cart</h1><ul class=\"breadcrumbs\"><li><a href=\"/\">Home</a></li></ul></div><div class=\"content\"><form class=\"cart-summary\" data-agreed=\"no\" data-checked=\"no\"><h2 class=\"title red\">PRODUCTS</h2><div class=\"cart-list-products zebra\"><div class=\"head\"><div class=\"column thumb\">Information</div><div class=\"column tools\">&nbsp;</div><div class=\"column total\">Total</div><div class=\"column quantity\">Qty</div><div class=\"column price\">Price</div><div class=\"column binding\">Binding</div><div class=\"column details\"></div></div><div class=\"line product\" id=\"cart-line-9781460751756\"><div class=\"thumb\"><img src=\"https://www.qbd.com.au/img/products/0/9781460751756.jpg\" /></div><div class=\"tools\"><button class=\"cart small pull-right\" data-function=\"remove\" data-isbn=\"9781460751756\" data-remove=\"cart-line-9781460751756\">Remove</button></div><div class=\"total\">$20.99</div><div class=\"quantity\"><input type=\"number\" min=\"0\" value=\"1\" class=\"qty\" data-type=\"product\" data-isbn=\"9781460751756\" data-price=\"20.99\" /></div><div class=\"price\">$20.99</div><div class=\"binding\">Paperback</div><div class=\"details\"><div class=\"title\">Pieces of Her</div><div class=\"author\">By: <span itemprop=\"author\"><span itemscope itemtype=\"http://schema.org/Person\"><a href=\"/karin-slaughter/\" itemprop=\"url\"><span itemprop=\"name\">Karin Slaughter</span></a></span></span></div></div></div><div class=\"line product\" id=\"cart-line-9781846059995\"><div class=\"thumb\"><img src=\"https://www.qbd.com.au/img/products/0/9781846059995.jpg\" /></div><div class=\"tools\"><button class=\"cart small pull-right\" data-function=\"remove\" data-isbn=\"9781846059995\" data-remove=\"cart-line-9781846059995\">Remove</button></div><div class=\"total\">$12.99</div><div class=\"quantity\"><input type=\"number\" min=\"0\" value=\"1\" class=\"qty\" data-type=\"product\" data-isbn=\"9781846059995\" data-price=\"12.99\" /></div><div class=\"price\">$12.99</div><div class=\"binding\">Hardcover</div><div class=\"details\"><div class=\"title\">Cop Town</div><div class=\"author\">By: <span itemprop=\"author\"><span itemscope itemtype=\"http://schema.org/Person\"><a href=\"/karin-slaughter/\" itemprop=\"url\"><span itemprop=\"name\">Karin Slaughter</span></a></span></span></div></div></div></div><br /><button class=\"dull right update expand-20 clear\">Update</button><button class=\"dull left giftwrapping clickable expand-20 clear\">Add Giftwrap</button><br clear=\"both\" />&nbsp;<br clear=\"both\" />&nbsp;<div class=\"giftwrapping-options hidden ta-center\"><i>Paper shown is indicative of the type of wrapping available. Actual wrapping may vary.</i><br /><br /><div class=\"mb20 expand-15 mr8 left\"><img style=\"width:100%;border:solid 1px #000;\" src=\"https://www.qbd.com.au/img/assets/0f8af71f1e3a1a4951f8189720a92791.jpg\" /><div class=\"lh15 h25\">Birthday</div><br /><div><button class=\"small expand-100 cart\" data-function=\"add\" data-type=\"extra\" data-isbn=\"8100000000026\" data-quantity=\"1\" >Add</button></div></div><div class=\"mb20 expand-15 mr8 left\"><img style=\"width:100%;border:solid 1px #000;\" src=\"https://www.qbd.com.au/img/assets/2748b77000bec1a161afc7a171de006b.jpg\" /><div class=\"lh15 h25\">General Purpose</div><br /><div><button class=\"small expand-100 cart\" data-function=\"add\" data-type=\"extra\" data-isbn=\"8100000000023\" data-quantity=\"1\" >Add</button></div></div><div class=\"mb20 expand-15 mr8 left\"><img style=\"width:100%;border:solid 1px #000;\" src=\"https://www.qbd.com.au/img/assets/7e6df935d085fce3ec246e8340777044.jpg\" /><div class=\"lh15 h25\">For Her</div><br /><div><button class=\"small expand-100 cart\" data-function=\"add\" data-type=\"extra\" data-isbn=\"8100000000024\" data-quantity=\"1\" >Add</button></div></div><div class=\"mb20 expand-15 mr8 left\"><img style=\"width:100%;border:solid 1px #000;\" src=\"https://www.qbd.com.au/img/assets/661c2fbdccc53273ae475aa2e89dcc05.jpg\" /><div class=\"lh15 h25\">For Him</div><br /><div><button class=\"small expand-100 cart\" data-function=\"add\" data-type=\"extra\" data-isbn=\"8100000000025\" data-quantity=\"1\" >Add</button></div></div><div class=\"mb20 expand-15 mr8 left\"><img style=\"width:100%;border:solid 1px #000;\" src=\"https://www.qbd.com.au/img/assets/05a83512927af6ac50e1c86aeb367504.jpg\" /><div class=\"lh15 h25\">Christmas</div><br /><div><button class=\"small expand-100 cart\" data-function=\"add\" data-type=\"extra\" data-isbn=\"8100000000027\" data-quantity=\"1\" >Add</button></div></div><div class=\"mb20 expand-15 mr8 left\"><img style=\"width:100%;border:solid 1px #000;\" src=\"https://www.qbd.com.au/img/assets/c824e4d31f7e77c06a8c8f588b49a88b.jpg\" /><div class=\"lh15 h25\">Romantic</div><br /><div><button class=\"small expand-100 cart\" data-function=\"add\" data-type=\"extra\" data-isbn=\"8100000000028\" data-quantity=\"1\" >Add</button></div></div><div class=\"mb20 expand-15 mr8 left\"><img style=\"width:100%;border:solid 1px #000;\" src=\"https://www.qbd.com.au/img/assets/eab36cf820b85637b8a7100b58d452b5.jpg\" /><div class=\"lh15 h25\">Children's</div><br /><div><button class=\"small expand-100 cart\" data-function=\"add\" data-type=\"extra\" data-isbn=\"8100000000030\" data-quantity=\"1\" >Add</button></div></div><br clear=\"both\" /></div><br /><h2 class=\"title red\">Coupons</h2><div class=\"line\"><div class=\"input-append\"><input type=\"text\" class=\"coupon-code mb0\" /><button class=\"dull coupon-submit mb0\">Apply Code</button></div></div><br /><br /><div class=\"line\"><div class=\"tools\"></div><div class=\"total\">$33.98</div><div class=\"quantity\">&nbsp;</div><div class=\"price\"><b>Subtotal</b></div></div><div class=\"line\"><div class=\"tools\"></div><div class=\"total\">$4.95</div><div class=\"quantity\">&nbsp;</div><div class=\"price\"><b>Shipping</b></div></div><div class=\"line\"><div class=\"tools\"></div><div class=\"total\">$38.93</div><div class=\"quantity\">&nbsp;</div><div class=\"price\"><b>Total</b></div></div><br /><button class=\"button action right ta-center cart checkout icon icon-lock icon-chevron-right expand-30 data-function=\"checkout\">Secure Checkout</button><br clear=\"both\" /><br /><button class=\"button dull right expand-30 ta-center cart continue expand-30\">Back to Shopping</button></form><div class=\"marketing-criteo\" data-type=\"cart\" data-account=\"13151\" data-customer=\"\" data-sitetype=\"d\" data-hashed=\"\" ><div class=\"marketing-criteo-list\"><div data-isbn=\"9781460751756\" data-price=\"20.99\" data-quantity=\"1\" ></div><div data-isbn=\"9781846059995\" data-price=\"12.99\" data-quantity=\"1\" ></div></div></div></div><br clear=\"both\" /><div class=\"google-analytics\" data-type=\"pageview\"></div><div class=\"emarsys-event\" data-type=\"pageview\"><div class=\"emarsys-event-cart\"><div data-isbn=\"9781460751756\" data-price=\"20.99\" data-quantity=\"1\" ></div><div data-isbn=\"9781846059995\" data-price=\"12.99\" data-quantity=\"1\" ></div></div></div><div class=\"facebook-event\" data-type=\"pageview\"></div>\t\t\t</div>\n" +
+        "\t\t\t<div class=\"footer\">\n" +
+        "\t\t\t</div>\n" +
+        "\t\t</div>\n" +
+        "\t\t<div class=\"v6\">\n" +
+        "\t\t\t<div class=\"page\">\n" +
+        "\t\t\t\t<div class=\"footer\">\n" +
+        "\t\t\t\t\t<div class=\"top clear\">\n" +
+        "\t\t\t\t\t\t<div class=\"left expand-20 p5 ta-center\">\n" +
+        "\t\t\t\t\t\t\t<b class=\"heading\">Need Help?</b>\n" +
+        "\t\t\t\t\t\t\t<i class=\"icon icon-phone\"></i> <a href=\"tel:+61732917444\" class=\"google-analytics-event-click\" data-type=\"contact\" data-action=\"CTC\" data-stop=\"yes\">(07) 3291 7444</a>\n" +
+        "\t\t\t\t\t\t</div>\n" +
+        "\t\t\t\t\t\t<div class=\"right expand-30 p5\">\n" +
+        "\t\t\t\t\t\t\t<div class=\"payment-information left\">\n" +
+        "\t\t\t\t\t\t\t\t<img src=\"/res/img/payment-types.png\" style=\"height:30px;width:auto;margin:5px 0;\" alt=\"Accepted Payment Types\" />\n" +
+        "\t\t\t\t\t\t\t</div>\n" +
+        "\t\t\t\t\t\t</div>\n" +
+        "\t\t\t\t\t\t<div class=\"left expand-50 p5 footer-subscribe\">\n" +
+        "\t\t\t\t\t\t\t<form method=\"post\" action=\"/club/subscribe/\">\n" +
+        "\t\t\t\t\t\t\t\t<div class=\"input-append\">\n" +
+        "\t\t\t\t\t\t\t\t\t<input type=\"text\" name=\"subscribe_email\" class=\"email\" placeholder=\"Your email address\" />\n" +
+        "\t\t\t\t\t\t\t\t\t<button type=\"submit\" class=\"submit\">&nbsp; Subscribe &nbsp;</button>\n" +
         "\t\t\t\t\t\t\t\t</div>\n" +
         "\t\t\t\t\t\t\t</form>\n" +
-        "\t\t\t\t\t\t</td>\n" +
-        "\t\t\t\t\t  </tr>\n" +
-        "\n" +
-        "\t\t\t\t\t  <tr class=\"total delivery standard\">\n" +
-        "\t\t\t\t\t\t<td>\n" +
-        "\t\t\t\t\t\t  <input type=\"radio\" id=\"standard-shipping\" name=\"shipping-method\" checked/>\n" +
-        "\n" +
-        "              <label for=\"standard-shipping\"  style=\"display:none\">\n" +
-        "                  <span></span>\n" +
-        "                </label>\n" +
-        "              <span class=\"shipping-message\">\n" +
-        "                Standard Delivery</span>\n" +
-        "\t\t\t\t\t\t\t<span class=\"delivery-info\" data-toggle=\"modal\" data-target=\"#delivery_info_standard\"></span>\n" +
-        "\t\t\t\t\t\t\t<div class=\"delivery-free-gap promo delivery  alone \">\n" +
-        "\t\t\t\t\t\t\t\t</div>\n" +
-        "\t\t\t\t\t\t</td>\n" +
-        "\t\t\t\t\t\t<td class=\"delivery-cost\">\n" +
-        "              <span class=\"cost\">\n" +
-        "                  FREE</span>\n" +
-        "              </td>\n" +
-        "\t\t\t\t\t  </tr>\n" +
-        "\t\t\t\t\t  \n" +
-        "\t\t\t\t\t  <tr class=\"total delivery express\" id=\"express-shipping-row\" style=\"display:none;\">\n" +
-        "\t\t\t\t\t    <td>\n" +
-        "                <input type=\"radio\" id=\"express-shipping\" name=\"shipping-method\" />\n" +
-        "                <label for=\"express-shipping\">\n" +
-        "                  <span></span>\n" +
-        "                </label>\n" +
-        "                <span class=\"shipping-message\">\n" +
-        "                  <span class=\"cost\">$14.95</span>\n" +
-        "                  Express Delivery</span>\n" +
-        "\t\t\t\t\t      <span class=\"delivery-info\" data-toggle=\"modal\" data-target=\"#delivery_info_express\"></span>\n" +
-        "\t\t\t\t\t    </td>\n" +
-        "\t\t\t\t\t    <td class=\"delivery-cost\">\n" +
-        "\t\t\t\t\t      </td>\n" +
-        "\t\t\t\t\t  </tr>\n" +
-        "\t\t\t\t\t</tbody>\n" +
-        "\t\t\t\t  </table>\n" +
-        "\t\t\t\t  <table class=\"table table-grandtotal\">\n" +
-        "\t\t\t\t\t<tbody>\n" +
-        "\t\t\t\t\t\t<tr class=\"total grandtotal\">\n" +
-        "\t\t\t\t\t\t<td><strong>Order Total</strong></td>\n" +
-        "\t\t\t\t\t\t<td id=\"order-total-amount\">\n" +
-        "\t\t\t\t\t\t\t<strong><!-- price.tag: start -->\n" +
-        "$92.01<!-- price.tag: end -->\n" +
-        "</strong>\n" +
-        "\t\t\t\t\t\t\t<div class=\"order-total-savings\" style=display:none;>Total savings : &nbsp;\n" +
-        "\t\t\t\t\t\t\t\t<span>\n" +
-        "\t\t\t\t\t\t\t\t\t$0.00</span>\n" +
-        "\t\t\t\t\t\t\t</div>\n" +
-        "\t\t\t\t\t\t</td>\n" +
-        "\t\t\t\t\t  </tr>\n" +
-        "\t\t\t\t   </tbody>\n" +
-        "\t\t\t\t  </table>\n" +
-        "\t\t\t\t  <table class=\"table table-grandtotal\">\n" +
-        "\t\t\t\t\t<tbody>\n" +
-        "\t\t\t\t\t  <tr class=\"total afterpay\">\n" +
-        "\t\t\t\t\t  <td colspan=\"2\">\n" +
-        "\t\t\t\t\t  <div id=\"div_afterpay\" class=\"\">\n" +
-        "    <div id=\"span_afterpay_gap\" class=\"afterpay hidden\">Spend another <span id=\"afterpay-gap-amount\" class=\"emph\">{0}</span> to pay with</div>\n" +
-        "    <div id=\"span_afterpay_installment\" class=\"afterpay\">or 4 easy payments of <span id=\"afterpay-installment-amount\" class=\"emph\">$23.00</span> with</div>\n" +
-        "    <div class=\"afterpay\"><img itemprop=\"image\" src=\"https://cdn.angusrobertson.com.au/_ui/desktop/theme-arbw/images/afterpay.png\" alt=\"afterpay\" title=\"\" class=\"\"/>\n" +
-        "\t<span class=\"afterpay-info\" data-toggle=\"modal\" data-target=\"#afterpay_info\"></span></div>\n" +
-        "</div>\n" +
-        "<div id=\"afterpay_info\" class=\"modal fade\">\n" +
-        "    <div class=\"modal-dialog\">\n" +
-        "        <div class=\"modal-content\">\n" +
-        "            <div class=\"modal-body\">\n" +
-        "                <a href=\"https://www.afterpay.com/en-AU/terms\" target=\"_blank\">\n" +
-        "                    <img class=\"afterpay-modal-image\" src=\"https://static.secure-afterpay.com.au/banner-large.png\" alt=\"Afterpay\">\n" +
-        "                </a>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div></td>\n" +
-        "\t\t\t\t\t  </tr>\n" +
-        "\t\t\t\t\t</tbody>\n" +
-        "\t\t\t\t  </table>\n" +
-        "\t\t\t\t</td>\n" +
-        "\t\t\t  </tr>\n" +
-        "\t\t\t</tbody>\n" +
-        "\t\t  </table>\n" +
-        "\t\t</div>\n" +
-        "\t</div>\n" +
-        "  <!-- standard popup -->\n" +
-        "  <div id=\"delivery_info_standard\" class=\"modal fade\">\n" +
-        "    <div class=\"modal-dialog delivery-dialog\">\n" +
-        "      <div class=\"modal-content\">\n" +
-        "        <div class=\"modal-body\">\n" +
-        "          <div class=\"content\"><p style=\"text-align: left;\"><span style=\"font-size: larger;\"><span style=\"color: rgb(51, 153, 102);\"><u><strong>STANDARD SHIPPING</strong></u></span></span><br />\n" +
-        "<br />\n" +
-        "We use the Australia Post eParcel service to send your item directly from our Sydney warehouse in almost all cases.*<br />\n" +
-        "<br />\n" +
-        "You will receive a tracking link via email when your item has been sent.<br />\n" +
-        "<br />\n" +
-        "We also provide updates via text message in addition to email if you have provided your number.<br />\n" +
-        "<br />\n" +
-        "More information can be found on <a href=\"delivery-information\"><strong>our delivery information page</strong></a>.<br />\n" +
-        "<em><br />\n" +
-        "* In some cases your parcel may be shipped to you directly from an external supplier and in these cases tracking is not available.</em></p></div></div>\n" +
-        "      </div>\n" +
-        "    </div>\n" +
-        "  </div>\n" +
-        "  <!-- express popup -->\n" +
-        "  <div id=\"delivery_info_express\" class=\"modal fade\">\n" +
-        "    <div class=\"modal-dialog delivery-dialog\">\n" +
-        "      <div class=\"modal-content\">\n" +
-        "        <div class=\"modal-body\">\n" +
-        "          <div class=\"content\"><p><span style=\"color: rgb(51, 153, 102);\"><span style=\"font-size: larger;\"><u><strong>EXPRESS SHIPPING</strong></u></span></span></p>\n" +
-        "<p><!--[if gte mso 9]><xml>\n" +
-        "<o:OfficeDocumentSettings>\n" +
-        "<o:AllowPNG />\n" +
-        "</o:OfficeDocumentSettings>\n" +
-        "</xml><![endif]--></p>\n" +
-        "<p><!--[if gte mso 9]><xml>\n" +
-        "<w:WordDocument>\n" +
-        "<w:View>Normal</w:View>\n" +
-        "<w:Zoom>0</w:Zoom>\n" +
-        "<w:TrackMoves />\n" +
-        "<w:TrackFormatting />\n" +
-        "<w:PunctuationKerning />\n" +
-        "<w:ValidateAgainstSchemas />\n" +
-        "<w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>\n" +
-        "<w:IgnoreMixedContent>false</w:IgnoreMixedContent>\n" +
-        "<w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>\n" +
-        "<w:DoNotPromoteQF />\n" +
-        "<w:LidThemeOther>EN-US</w:LidThemeOther>\n" +
-        "<w:LidThemeAsian>X-NONE</w:LidThemeAsian>\n" +
-        "<w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>\n" +
-        "<w:Compatibility>\n" +
-        "<w:BreakWrappedTables />\n" +
-        "<w:SnapToGridInCell />\n" +
-        "<w:WrapTextWithPunct />\n" +
-        "<w:UseAsianBreakRules />\n" +
-        "<w:DontGrowAutofit />\n" +
-        "<w:SplitPgBreakAndParaMark />\n" +
-        "<w:EnableOpenTypeKerning />\n" +
-        "<w:DontFlipMirrorIndents />\n" +
-        "<w:OverrideTableStyleHps />\n" +
-        "</w:Compatibility>\n" +
-        "<m:mathPr>\n" +
-        "<m:mathFont m:val=\"Cambria Math\" />\n" +
-        "<m:brkBin m:val=\"before\" />\n" +
-        "<m:brkBinSub m:val=\"&#45;-\" />\n" +
-        "<m:smallFrac m:val=\"off\" />\n" +
-        "<m:dispDef />\n" +
-        "<m:lMargin m:val=\"0\" />\n" +
-        "<m:rMargin m:val=\"0\" />\n" +
-        "<m:defJc m:val=\"centerGroup\" />\n" +
-        "<m:wrapIndent m:val=\"1440\" />\n" +
-        "<m:intLim m:val=\"subSup\" />\n" +
-        "<m:naryLim m:val=\"undOvr\" />\n" +
-        "</m:mathPr></w:WordDocument>\n" +
-        "</xml><![endif]--><!--[if gte mso 9]><xml>\n" +
-        "<w:LatentStyles DefLockedState=\"false\" DefUnhideWhenUsed=\"false\"\n" +
-        "DefSemiHidden=\"false\" DefQFormat=\"false\" DefPriority=\"99\"\n" +
-        "LatentStyleCount=\"374\">\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"0\" QFormat=\"true\" Name=\"Normal\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" QFormat=\"true\" Name=\"heading 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 7\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 8\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 9\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 5\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 6\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 7\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 8\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index 9\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 7\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 8\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"toc 9\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Normal Indent\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"footnote text\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"annotation text\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"header\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"footer\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"index heading\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"35\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"caption\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"table of figures\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"envelope address\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"envelope return\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"footnote reference\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"annotation reference\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"line number\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"page number\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"endnote reference\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"endnote text\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"table of authorities\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"macro\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"toa heading\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Bullet\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Number\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List 5\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Bullet 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Bullet 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Bullet 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Bullet 5\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Number 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Number 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Number 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Number 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"10\" QFormat=\"true\" Name=\"Title\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Closing\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Signature\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"1\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"Default Paragraph Font\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text Indent\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Continue\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Continue 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Continue 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Continue 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"List Continue 5\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Message Header\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"11\" QFormat=\"true\" Name=\"Subtitle\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Salutation\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Date\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text First Indent\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text First Indent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Note Heading\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text Indent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Body Text Indent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Block Text\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Hyperlink\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"FollowedHyperlink\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"22\" QFormat=\"true\" Name=\"Strong\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"20\" QFormat=\"true\" Name=\"Emphasis\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Document Map\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Plain Text\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"E-mail Signature\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Top of Form\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Bottom of Form\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Normal (Web)\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Acronym\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Address\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Cite\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Code\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Definition\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Keyboard\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Preformatted\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Sample\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Typewriter\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"HTML Variable\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Normal Table\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"annotation subject\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"No List\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Outline List 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Outline List 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Outline List 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Simple 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Simple 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Simple 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Classic 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Classic 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Classic 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Classic 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Colorful 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Colorful 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Colorful 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Columns 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Columns 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Columns 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Columns 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Columns 5\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 5\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 6\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 7\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Grid 8\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 4\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 5\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 6\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 7\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table List 8\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table 3D effects 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table 3D effects 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table 3D effects 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Contemporary\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Elegant\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Professional\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Subtle 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Subtle 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Web 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Web 2\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Web 3\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Balloon Text\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" Name=\"Table Grid\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Table Theme\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" Name=\"Placeholder Text\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"1\" QFormat=\"true\" Name=\"No Spacing\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" Name=\"Revision\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"34\" QFormat=\"true\"\n" +
-        "Name=\"List Paragraph\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"29\" QFormat=\"true\" Name=\"Quote\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"30\" QFormat=\"true\"\n" +
-        "Name=\"Intense Quote\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"19\" QFormat=\"true\"\n" +
-        "Name=\"Subtle Emphasis\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"21\" QFormat=\"true\"\n" +
-        "Name=\"Intense Emphasis\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"31\" QFormat=\"true\"\n" +
-        "Name=\"Subtle Reference\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"32\" QFormat=\"true\"\n" +
-        "Name=\"Intense Reference\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"33\" QFormat=\"true\" Name=\"Book Title\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"37\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" Name=\"Bibliography\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n" +
-        "UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"TOC Heading\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"41\" Name=\"Plain Table 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"42\" Name=\"Plain Table 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"43\" Name=\"Plain Table 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"44\" Name=\"Plain Table 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"45\" Name=\"Plain Table 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"40\" Name=\"Grid Table Light\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\" Name=\"Grid Table 1 Light\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\" Name=\"Grid Table 6 Colorful\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\" Name=\"Grid Table 7 Colorful\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"Grid Table 1 Light Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"Grid Table 6 Colorful Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"Grid Table 7 Colorful Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"Grid Table 1 Light Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"Grid Table 6 Colorful Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"Grid Table 7 Colorful Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"Grid Table 1 Light Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"Grid Table 6 Colorful Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"Grid Table 7 Colorful Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"Grid Table 1 Light Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"Grid Table 6 Colorful Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"Grid Table 7 Colorful Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"Grid Table 1 Light Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"Grid Table 6 Colorful Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"Grid Table 7 Colorful Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"Grid Table 1 Light Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"Grid Table 6 Colorful Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"Grid Table 7 Colorful Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\" Name=\"List Table 1 Light\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\" Name=\"List Table 6 Colorful\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\" Name=\"List Table 7 Colorful\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"List Table 1 Light Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"List Table 6 Colorful Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"List Table 7 Colorful Accent 1\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"List Table 1 Light Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"List Table 6 Colorful Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"List Table 7 Colorful Accent 2\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"List Table 1 Light Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"List Table 6 Colorful Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"List Table 7 Colorful Accent 3\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"List Table 1 Light Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"List Table 6 Colorful Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"List Table 7 Colorful Accent 4\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"List Table 1 Light Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"List Table 6 Colorful Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"List Table 7 Colorful Accent 5\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"46\"\n" +
-        "Name=\"List Table 1 Light Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"51\"\n" +
-        "Name=\"List Table 6 Colorful Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" Priority=\"52\"\n" +
-        "Name=\"List Table 7 Colorful Accent 6\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Mention\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Smart Hyperlink\" />\n" +
-        "<w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n" +
-        "Name=\"Hashtag\" />\n" +
-        "</w:LatentStyles>\n" +
-        "</xml><![endif]--><!--[if gte mso 10]>\n" +
-        "<style>\n" +
-        "/* Style Definitions */\n" +
-        "table.MsoNormalTable\n" +
-        "{mso-style-name:\"Table Normal\";\n" +
-        "mso-tstyle-rowband-size:0;\n" +
-        "mso-tstyle-colband-size:0;\n" +
-        "mso-style-noshow:yes;\n" +
-        "mso-style-priority:99;\n" +
-        "mso-style-parent:\"\";\n" +
-        "mso-padding-alt:0in 5.4pt 0in 5.4pt;\n" +
-        "mso-para-margin-top:0in;\n" +
-        "mso-para-margin-right:0in;\n" +
-        "mso-para-margin-bottom:8.0pt;\n" +
-        "mso-para-margin-left:0in;\n" +
-        "line-height:107%;\n" +
-        "mso-pagination:widow-orphan;\n" +
-        "font-size:11.0pt;\n" +
-        "font-family:\"Calibri\",sans-serif;\n" +
-        "mso-ascii-font-family:Calibri;\n" +
-        "mso-ascii-theme-font:minor-latin;\n" +
-        "mso-hansi-font-family:Calibri;\n" +
-        "mso-hansi-theme-font:minor-latin;}\n" +
-        "</style>\n" +
-        "<![endif]--></p>\n" +
-        "<p class=\"MsoNormal\">Express Shipping is via the Australia Post Express Post service.<span style=\"mso-spacerun:yes\">&nbsp; </span><span style=\"mso-spacerun:yes\">&nbsp;</span>We send your item from our Sydney warehouse on the next business day after ordering and delivery timeframes are subject to the Express Post network.</p>\n" +
-        "<p class=\"MsoNormal\">All Express Post items are trackable and you will receive a tracking link via email when your item has been sent.</p>\n" +
-        "<p class=\"MsoNormal\">We also provide updates via text message in addition to email if you have provided your number.</p>\n" +
-        "<p class=\"MsoNormal\">Please note that this is not a guaranteed overnight delivery service.</p>\n" +
-        "<p class=\"MsoNormal\">More information can be found on our <a href=\"/delivery-information\"><strong>our delivery information page</strong></a> or at <a href=\"https://auspost.com.au/parcels-mail/sending-in-australia/domestic-parcels/express-post-parcels/express-post-guarantee\"><strong>Australia Post</strong></a>.</p>\n" +
-        "<p>&nbsp;</p></div></div>\n" +
-        "      </div>\n" +
-        "    </div>\n" +
-        "  </div>\n" +
-        "\t<!-- end order total container -->\n" +
-        "\t    <div class=\"span-4 last\">\n" +
-        "            <div class=\"span-4\">\n" +
-        "                    </div>\n" +
-        "            </div>\n" +
-        "\n" +
-        "\n" +
-        "\t<!-- begin citizen container -->\n" +
-        "\t<!--  end citizen container -->\n" +
-        "\n" +
-        "\t<div id=\"cart_popup\" class=\"cart_popup\"></div>\n" +
-        "\t<!-- begin tab -->\n" +
-        "\t<div id=\"loginFocus\">\n" +
-        "\t\t<div id=\"content\">\n" +
-        "\t<h3 class=\"text-center\">How would you like to checkout?</h3>\n" +
-        "\t<ul id=\"checkout-nav-tabs\" class=\"nav nav-tabs nav-justified\">\n" +
-        "\t\t<li class=\"active\">\n" +
-        "\t\t\t<a data-toggle=\"tab\" href=\"#user-gateway\">\n" +
-        "\t\t\t\tSign In & Checkout<span>For returning customers</span>\n" +
-        "\t\t\t</a>\n" +
-        "\t\t</li>\n" +
-        "\t\t<li>\n" +
-        "\t\t\t\t<a data-toggle=\"tab\" href=\"#paypal-express\">\n" +
-        "\t\t\t\t\tPayPal Express<span>Express checkout with PayPal</span>\n" +
-        "\t\t\t\t</a>\n" +
-        "\t\t\t</li>\n" +
-        "\t\t<li>\n" +
-        "\t\t\t<a data-toggle=\"tab\" href=\"#anon_checkout_container\">\n" +
-        "\t\t\t\tInstant Checkout<span>Shop now and register later</span>\n" +
-        "\t\t\t</a>\n" +
-        "\t\t</li>\n" +
-        "\t</ul>\n" +
-        "\t<div class=\"tab-content\">\n" +
-        "\t\t<div id=\"user-gateway\" class=\"tab-pane fade in active\">\n" +
-        "\t\t\t<div class=\"two-column-wrapper clearfix\">\n" +
-        "\t\t\t\t<div class=\"anon-wrap clearfix\">\n" +
-        "\t\t\t\t\t<div class=\"login full\">\n" +
-        "        <form id=\"loginForm\" data-toggle=\"validator\" role=\"form\" class=\"row\" action=\"/j_spring_security_check\" method=\"post\"><fieldset>\n" +
-        "            <input type=\"hidden\" name=\"currentPage\" value=\"\" />\n" +
-        "            <input type=\"hidden\" name=\"nextView\" value=\"/cart\" />\n" +
-        "            <legend>\n" +
-        "            Sign in with your account</legend>\n" +
-        "            <div class=\"form-group has-feedback\">\n" +
-        "            <label for=\"j_username\" class=\"control-label\">\n" +
-        "            Email Address</label>\n" +
-        "            <input type=\"email\" class=\"form-control\" id=\"j_username\" name=\"j_username\" placeholder=\"name@email.com\" value=\"\" required>\n" +
-        "            <span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "            <div class=\"help-block with-errors\"></div>\n" +
-        "            </div>\n" +
-        "            <div class=\"form-group has-feedback\">\n" +
-        "            <label for=\"j_password\" class=\"control-label\">\n" +
-        "            Password</label>\n" +
-        "            <input type=\"password\" class=\"form-control\" id=\"j_password\" name=\"j_password\" placeholder=\"Please enter your password\" required data-minlength=\"6\">\n" +
-        "            <span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "            <div class=\"help-block with-errors\"></div>\n" +
-        "            </div>\n" +
-        "            <div class=\"form-group row\">\n" +
-        "            <div class=\"col-half\">\n" +
-        "            <a href=\"/password-reminder\" class=\"btn btn-link\">\n" +
-        "            Forgotten password?</a>\n" +
-        "            </div>\n" +
-        "            <div class=\"col-sm-6\">\n" +
-        "            <button type=\"submit\" class=\"btn btn-action\">\n" +
-        "            Sign In</button>\n" +
-        "            </div>\n" +
-        "            </div>\n" +
-        "            <div class=\"or\">or</div>\n" +
-        "            </fieldset>\n" +
-        "        </form><div class=\"row social\">\n" +
-        "\n" +
-        "        <fieldset>\n" +
-        "        <legend>\n" +
-        "        Sign in using<br/>\n" +
-        "        Facebook or Twitter</legend>\n" +
-        "        <div class=\"col\">\n" +
-        "        <a title=\"Sign in with Facebook\" href=\"/login/facebook?nextView=%2fcart\" class=\"btn btn-link\">\n" +
-        "        <span class=\"icon icon-facebook\"></span> Sign in with Facebook</a>\n" +
-        "        </div>\n" +
-        "        <div class=\"col\">\n" +
-        "        <a title=\"Sign in with Twitter\" href=\"/login/tw?nextView=%2fcart\" class=\"btn btn-link\">\n" +
-        "        <span class=\"icon icon-twitter\"></span> Sign in with Twitter</a>\n" +
-        "        </div>\n" +
-        "        <div class=\"col\">\n" +
-        "        <a href=\"/register?nextView=%2fcart\" class=\"btn btn-link register\">\n" +
-        "        Register A New Account</a>\n" +
-        "        </div>\n" +
-        "        </fieldset>\n" +
-        "        </div>\n" +
-        "        </div></div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "\n" +
-        "\t\t<div id=\"paypal-express\" class=\"tab-pane fade\">\n" +
-        "\t\t\t\t<div class=\"anon-paypal\">\n" +
-        "\t\t\t\t\t<div class=\"authority_to_leave\" style=\"display:none;\" data-eligible=\"false\">\n" +
-        "\t<input type=\"checkbox\" id=\"authority_to_leave_paypal\" name=\"authorityToLeave\" />\n" +
-        "\t<label for=\"authority_to_leave_paypal\"><span></span> <em>I give Australia Post the authority to leave the parcel unattended at this address.</em></label>\n" +
-        "\t<textarea class=\"form-control authority_to_leave_message\" id=\"authority_to_leave_paypal_message\" name=\"authorityToLeaveComment\"\n" +
-        "\t\t placeholder=\"Any special instructions for Australia Post contractor?\" autocomplete=\"false\"></textarea>\n" +
-        "\t<p><span class=\"authority_to_leave_chars_left\">100</span> characters left</p>\n" +
-        "</div><button id=\"paypalExpress\" class=\"btn-paypal\" data-backdrop=\"static\" data-keyboard=\"false\" data-toggle=\"modal\" data-target=\"#ajaxResponse\"></button>\n" +
-        "\t\t\t\t\t<p class=\"paypal-instructions\">Simply enter your PayPal account details and confirm to place your order.</p>\n" +
-        "\t\t\t\t\t<div class=\"paypal-extrainfo\">\n" +
-        "\t\t\t\t\t\t<p>Please note that we only ship to addresses in Australia.</p>\n" +
-        "\t\t\t\t\t</div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t<div id=\"anon_checkout_container\" class=\"tab-pane fade\">\n" +
-        "\t\t\t<div class=\"two-column-wrapper clearfix\">\n" +
-        "\t\t\t\t<div class=\"anon-wrap clearfix\">\n" +
-        "\t<form id=\"guestCheckoutForm\" data-toggle=\"validator\" role=\"form\" action=\"/cart/placeorderguest\" method=\"post\"><div id=\"guest-checkout-container\">\n" +
-        "\t\t<div class=\"checkout-giftcard-container\">\n" +
-        "\t\t\t</div>\n" +
-        "\t\t<div class=\"guest-checkout\">\n" +
-        "\t\t\t\t<div id=\"delivery-details-container\">\n" +
-        "\t\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t\t<label for=\"email\" class=\"control-label\">Email Address<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t\t\t\t<input id=\"email\" name=\"emailAddressDelivery\" data-error=\"Please enter a valid email address\" name=\"emailAddressDelivery\" placeholder=\"name@email.com\" type=\"email\" class=\"form-control\" required=\"required\" value=\"\"/><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t\t</div>\n" +
-        "\t\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t\t<label for=\"contactPhoneNumber\" class=\"label-with-note\">Mobile Number <span>(We'll text you the tracking details)</span></label>\n" +
-        "\t\t\t\t\t\t<input id=\"contactPhoneNumber\" type=\"text\" class=\"form-control\" name=\"contactPhoneNumber\" placeholder=\"0400123888\" value=\"\" minlength=\"10\" maxlength=\"10\" data-restrictnumeric=\"true\">\n" +
-        "\t\t\t\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t\t</div>\n" +
-        "\t\t\t\t\t<h2>DELIVERY DETAILS</h2>\n" +
-        "\t\t\t\t\t<div id=\"delivery_address_form_container\" data-autocomplete=\"bans_\">\n" +
-        "\t\t\t\t\t\t<input id=\"countryIsobans_\" name=\"countryIsoDelivery\" type=\"hidden\" value=\"AU\"/>\n" +
-        "<input id=\"regionIsobans_\" name=\"regionIsoDelivery\"  type=\"hidden\" value=\"\"/>\n" +
-        "<input id=\"countryNamebans_\" name=\"countryNameDelivery\" type=\"hidden\" value=\"AUSTRALIA\"/>\n" +
-        "<input id=\"regionNamebans_\" name=\"regionNameDelivery\"  type=\"hidden\" value=\"\"/>\n" +
-        "<div id=\"address-form-fields\">\n" +
-        "\t<fieldset>\n" +
-        "\t\t<div class=\"form-group has-feedback form-group-firstname\">\n" +
-        "\t\t\t<label for=\"bans__firstname\">First name<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t<input id=\"bans__firstname\" name=\"firstNameDelivery\" class=\"form-control\" data-error=\"Please enter a first name\" name=\"firstNameDelivery\" placeholder=\"Jane\" required=\"required\" type=\"text\" value=\"\"/><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"form-group has-feedback form-group-lastname\">\n" +
-        "\t\t\t<label for=\"bans__lastname\">Last name<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t<input id=\"bans__lastname\" name=\"lastNameDelivery\" class=\"form-control\" data-error=\"Please enter a last name\" name=\"lastNameDelivery\" placeholder=\"Smith\" required=\"required\" type=\"text\" value=\"\"/><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"clearfix\"></div>\n" +
-        "\t\t<div class=\"form-address\">\n" +
-        "\t\t\t<div class=\"form-group has-feedback address-line1\">\n" +
-        "\t\t\t\t<label for=\"bans__line1\">Address<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t\t<input id=\"bans__line1\" name=\"line1Delivery\" class=\"form-control\" data-error=\"Please enter your address\" name=\"line1Delivery\" placeholder=\"42 Wallaby Way\" required=\"required\" type=\"text\" value=\"\"/><a class=\"add-line\">add another line</a>\n" +
-        "\t\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t\t<div class=\"form-group has-feedback address-line2\">\n" +
-        "\t\t\t\t<input id=\"bans__line2\" name=\"line2Delivery\" class=\"form-control\" tabindex=\"-1\" name=\"line2Delivery\" type=\"text\" value=\"\"/></div>\t\t\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"row address-extrainfo-row\">\n" +
-        "\t\t\t<div class=\"col-sm-4\">\n" +
-        "\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"bans_postcode\">Postcode<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t\t\t<input id=\"bans_postcode\" name=\"postcodeDelivery\" class=\"form-control\" data-error=\"Please enter a Postcode\" data-minlength=\"4\" name=\"postcodeDelivery\" placeholder=\"2000\" required=\"required\" type=\"text\" value=\"\" maxlength=\"4\"/><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t\t<div class=\"col-sm-8\">\n" +
-        "\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"bans_townCity\">Suburb<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t\t\t<select id=\"bans_townCity\" name=\"townCityDelivery\" class=\"form-control\" data-error=\"Please enter a Suburb\" name=\"townCityDelivery\" placeholder=\"Sydney, NSW\" required=\"required\"><option value=\"\" selected=\"selected\"></option></select><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<p class=\"postcode_note\">\n" +
-        "\t\t\tPlease enter the first few characters of your post code or suburb and make a selection from the list.</p>\n" +
-        "\t</fieldset>\n" +
-        "</div>\n" +
-        "</div>\n" +
-        "\t\t\t\t\t<div class=\"authority_to_leave\" style=\"display:none;\" data-eligible=\"false\">\n" +
-        "\t<input type=\"checkbox\" id=\"authority_to_leave_guest\" name=\"authorityToLeave\" />\n" +
-        "\t<label for=\"authority_to_leave_guest\"><span></span> <em>I give Australia Post the authority to leave the parcel unattended at this address.</em></label>\n" +
-        "\t<textarea class=\"form-control authority_to_leave_message\" id=\"authority_to_leave_guest_message\" name=\"authorityToLeaveComment\"\n" +
-        "\t\t placeholder=\"Any special instructions for Australia Post contractor?\" autocomplete=\"false\"></textarea>\n" +
-        "\t<p><span class=\"authority_to_leave_chars_left\">100</span> characters left</p>\n" +
-        "</div><div id=\"billing-selection\">\n" +
-        "\t\t\t\t\t\t<h2>BILLING ADDRESS</h2>\n" +
-        "\t\t\t\t\t\t<div class=\"form-group\">\n" +
-        "\t\t\t\t\t\t\t<input type=\"checkbox\" id=\"billing-use-same-notsignin\" value=\"true\" checked=\"checked\"/>\n" +
-        "\t\t\t\t\t\t\t<label for=\"billing-use-same-notsignin\">\n" +
-        "\t\t\t\t\t\t\t\t<span></span>\n" +
-        "\t\t\t\t\t\t\t\tSame as delivery address<input type=\"hidden\" id=\"isBillingSimilarDelivery\" name=\"isBillingSimilarDelivery\" value=\"true\"/>\n" +
-        "\t\t\t\t\t\t\t</label>\n" +
         "\t\t\t\t\t\t</div>\n" +
-        "\t\t\t\t\t\t<div id=\"billing_address_form_container_notsignin\" data-autocomplete=\"babns_\">\n" +
-        "\t\t\t\t\t\t\t<input id=\"countryIsobabns_\" name=\"countryIsoBilling\" type=\"hidden\" value=\"AU\"/>\n" +
-        "<input id=\"regionIsobabns_\" name=\"regionIsoBilling\"  type=\"hidden\" value=\"\"/>\n" +
-        "<input id=\"countryNamebabns_\" name=\"countryNameBilling\" type=\"hidden\" value=\"AUSTRALIA\"/>\n" +
-        "<input id=\"regionNamebabns_\" name=\"regionNameBilling\"  type=\"hidden\" value=\"\"/>\n" +
-        "<div id=\"address-form-fields\">\n" +
-        "\t<fieldset>\n" +
-        "\t\t<div class=\"form-group has-feedback form-group-firstname\">\n" +
-        "\t\t\t<label for=\"babns__firstname\">First name<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t<input id=\"babns__firstname\" name=\"firstNameBilling\" class=\"form-control\" data-error=\"Please enter a first name\" name=\"firstNameBilling\" placeholder=\"Jane\" required=\"required\" type=\"text\" value=\"\"/><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"form-group has-feedback form-group-lastname\">\n" +
-        "\t\t\t<label for=\"babns__lastname\">Last name<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t<input id=\"babns__lastname\" name=\"lastNameBilling\" class=\"form-control\" data-error=\"Please enter a last name\" name=\"lastNameBilling\" placeholder=\"Smith\" required=\"required\" type=\"text\" value=\"\"/><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"clearfix\"></div>\n" +
-        "\t\t<div class=\"form-address\">\n" +
-        "\t\t\t<div class=\"form-group has-feedback address-line1\">\n" +
-        "\t\t\t\t<label for=\"babns__line1\">Address<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t\t<input id=\"babns__line1\" name=\"line1Billing\" class=\"form-control\" data-error=\"Please enter your address\" name=\"line1Billing\" placeholder=\"42 Wallaby Way\" required=\"required\" type=\"text\" value=\"\"/><a class=\"add-line\">add another line</a>\n" +
-        "\t\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t\t<div class=\"form-group has-feedback address-line2\">\n" +
-        "\t\t\t\t<input id=\"babns__line2\" name=\"line2Billing\" class=\"form-control\" tabindex=\"-1\" name=\"line2Billing\" type=\"text\" value=\"\"/></div>\t\t\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"row address-extrainfo-row\">\n" +
-        "\t\t\t<div class=\"col-sm-4\">\n" +
-        "\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"babns_postcode\">Postcode<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t\t\t<input id=\"babns_postcode\" name=\"postcodeBilling\" class=\"form-control\" data-error=\"Please enter a Postcode\" data-minlength=\"4\" name=\"postcodeBilling\" placeholder=\"2000\" required=\"required\" type=\"text\" value=\"\" maxlength=\"4\"/><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t\t<div class=\"col-sm-8\">\n" +
-        "\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"babns_townCity\">Suburb<span class=\"form-required\">*</span></label>\n" +
-        "\t\t\t\t\t<select id=\"babns_townCity\" name=\"townCityBilling\" class=\"form-control\" data-error=\"Please enter a Suburb\" name=\"townCityBilling\" placeholder=\"Sydney, NSW\" required=\"required\"><option value=\"\" selected=\"selected\"></option></select><span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<p class=\"postcode_note\">\n" +
-        "\t\t\tPlease enter the first few characters of your post code or suburb and make a selection from the list.</p>\n" +
-        "\t</fieldset>\n" +
-        "</div>\n" +
-        "</div>\n" +
+        "\t\t\t\t\t</div>\n" +
+        "\t\t\t\t\t<ul class=\"cols clear\">\n" +
+        "\t\t\t\t\t\t<li class=\"col col4\">\n" +
+        "\t\t\t\t\t\t\t<b class=\"heading\"><a href=\"/contact/\">Contact QBD</a></b>\n" +
+        "\t\t\t\t\t\t\t\t<br />\n" +
+        "\t\t\t\t\t\t\t(07) 3291 7444<br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"mailto:online@qbd.com.au\">online@qbd.com.au</a><br />\n" +
+        "\t\t\t\t\t\t</li>\n" +
+        "\t\t\t\t\t\t<li class=\"col col4\">\n" +
+        "\t\t\t\t\t\t\t<b class=\"heading\"><a href=\"/site/about/\">About QBD</a></b>\n" +
+        "\t\t\t\t\t\t\t\t<br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/site/privacy/\">Privacy Policy</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/site/terms/\">Terms of Use</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/site/about/\">About QBD</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"https://blog.qbd.com.au/\">Blog</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/events/\">Events</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/sitemap/\">Sitemap</a>\n" +
+        "\t\t\t\t\t\t</li>\n" +
+        "\t\t\t\t\t\t<li class=\"col col4\">\n" +
+        "\t\t\t\t\t\t\t<b class=\"heading\"><a href=\"/help/faq/\">Help</a></b>\n" +
+        "\t\t\t\t\t\t\t\t<br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/contact/\">Contact</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/help/faq/\">FAQ</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/help/faq/delivery/\">Shipping & Delivery</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/site/returns/\">Returns Policy</a><br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"/site/payments/zippay/\">About ZipPay</a>\n" +
+        "\t\t\t\t\t\t</li>\n" +
+        "\t\t\t\t\t\t<li class=\"col col4\">\n" +
+        "\t\t\t\t\t\t\t<b class=\"heading\"><a href=\"https://blog.qbd.com.au/\" target=\"_blank\">Social</a></b>\n" +
+        "\t\t\t\t\t\t\t\t<br />\n" +
+        "\t\t\t\t\t\t\t<a href=\"https://www.facebook.com/QBDTheBookshop\" target=\"_blank\" class=\"social icon icon-facebook\"></a>\n" +
+        "\t\t\t\t\t\t\t<a href=\"https://www.twitter.com/QBDTheBookshop\" target=\"_blank\" class=\"social icon icon-twitter\"></a>\n" +
+        "\t\t\t\t\t\t\t<a href=\"https://www.instagram.com/QBDTheBookshop\" target=\"_blank\" class=\"social icon icon-instagram\"></a>\n" +
+        "\t\t\t\t\t\t\t<a href=\"#\" target=\"_blank\" rel=\"nofollow\" class=\"social icon icon-snapchat modal-open\" data-modal-title=\"Snapcode\" data-modal-feed=\"asset/snapcode\"></a>\n" +
+        "\t\t\t\t\t\t\t<a href=\"https://www.goodreads.com/user/show/56576465-qbd-the-bookshop\" target=\"_blank\" class=\"social icon icon-goodreads\"></a>\n" +
+        "\t\t\t\t\t\t\t<a href=\"https://blog.qbd.com.au/\" target=\"_blank\" class=\"social icon icon-wordpress\"></a>\n" +
+        "\t\t\t\t\t\t\t\t<br clear=\"both\" />\n" +
+        "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<br />\n" +
+        "\t\t\t\t\t\t\t&copy; 2018 - QBD Books<br />ABN: 54 614 038 765\t\t\t\t\t\t</li>\n" +
+        "\t\t\t\t\t</ul>\n" +
+        "\t\t\t\t\t<div class=\"disclaimer\">\n" +
+        "\t\t\t\t\t\tRRP refers to the Recommended Retail Price as set out by the original publisher at time of release.\n" +
+        "\t\t\t\t\t\tThe RRP set by overseas publishers may vary to those set by local publishers due to exchange rates and\n" +
+        "\t\t\t\t\t\tshipping costs. Due to our competitive pricing, we may have not sold all products at their original RRP.\n" +
         "\t\t\t\t\t</div>\n" +
         "\t\t\t\t</div>\n" +
-        "\t\t\t\t\n" +
-        "\t\t\t\t<div id=\"billing-details-container\">\n" +
-        "\t\t\t\t<div id=\"gift_card_container\">\n" +
-        "\t<h2>USE YOUR GIFT CARDS</h2>\n" +
-        "\t<div id=\"allocation-container\" class=\"checkedGift\">\n" +
-        "\t\t<table class=\"table\">\n" +
-        "\t\t\t<thead>\n" +
-        "\t\t\t\t<tr>\n" +
-        "\t\t\t\t\t<th class=\"table-code\">Code</th>\n" +
-        "\t\t\t\t\t<th class=\"table-balance\">Balance</th>\n" +
-        "\t\t\t\t\t<th class=\"table-allocation\">Amount</th>\n" +
-        "\t\t\t\t\t<th></th>\n" +
-        "\t\t\t\t</tr>\n" +
-        "\t\t\t</thead>\n" +
-        "\t\t\t<tbody id=\"allocation-rows\">\n" +
-        "\t\t\t</tbody>\n" +
-        "\t\t</table>\n" +
-        "\t</div>\n" +
-        "\t<span id=\"add-another\">\n" +
-        "\t\t<a class=\"btn-add-another\">Add another gift card</a>\n" +
-        "\t\t<a class=\"btn-hide-add\">( Hide )</a>\n" +
-        "\t</span>\n" +
-        "\t<div id=\"add-another-form\">\n" +
-        "\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t<input id=\"useGiftCard\" name=\"useGiftCard\" value=\"false\" type=\"hidden\"/>\n" +
-        "\t\t\t<input id=\"codeGiftCard\" name=\"codeGiftCard\" class=\"form-control\" placeholder=\"Gift card code\"/>\n" +
-        "\t\t\t<input type=\"button\" class=\"btn btn-checkgift\" value=\"Check\"/>\n" +
-        "\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t</div>\n" +
-        "\t</div>\n" +
-        "\t<div id=\"breakdown-container\">\n" +
-        "\t\t<table class=\"table\">\n" +
-        "\t\t\t<tbody>\n" +
-        "\t\t\t\t<tr>\n" +
-        "\t\t\t\t\t<th>Order Total</th>\n" +
-        "\t\t\t\t\t<td>&nbsp;<span>$</span><span id=\"giftCard_BasketTotal\"></span></td>\n" +
-        "\t\t\t\t</tr>\n" +
-        "\t\t\t\t<tr>\n" +
-        "\t\t\t\t\t<th>Gift Card Payment</th>\n" +
-        "\t\t\t\t\t<td>-<span>$</span><span id=\"giftCard_CreditAmount\"></span></td>\n" +
-        "\t\t\t\t</tr>\n" +
-        "\t\t\t\t<tr id=\"giftCard_TotalToPay_row\">\n" +
-        "\t\t\t\t\t<th>Outstanding Amount</th>\n" +
-        "\t\t\t\t\t<td>&nbsp;<span>$</span><span id=\"giftCard_TotalToPay\"></span></td>\n" +
-        "\t\t\t\t</tr>\n" +
-        "\t\t\t</tbody>\n" +
-        "\t\t</table>\n" +
-        "\t</div>\n" +
-        "\t<p class=\"helptext\">\n" +
-        "\t\tGift cards cannot be used in conjuction with PayPal.<br>\n" +
-        "\t\tYou can use up to 5 gift cards.<br>\n" +
-        "\t</p>\n" +
-        "</div>\n" +
-        "<div id=\"payment-selection\">\n" +
-        "\t\t\t\t\t<h2>PAYMENT METHOD</h2>\n" +
-        "          <div class=\"panel-group\" id=\"payment-method-accordian\">\n" +
-        "            <div class=\"panel panel-default\">\n" +
-        "              <div class=\"panel-heading credit-panel-heading\">\n" +
-        "                <h4 class=\"panel-title clearfix\">\n" +
-        "                  <div class=\"col-sm-6 no-gutter\">\n" +
-        "                    <div class=\"card-header\">\n" +
-        "                      <input type=\"radio\" id=\"anon-payment-method-credit\" name=\"payment_method_section\" checked=\"checked\" value=\"credit_card_new\">\n" +
-        "                      <label class=\"cart-credit-card-tab\" for=\"anon-payment-method-credit\" data-toggle=\"collapse\" data-parent=\"#payment-method-accordian\" data-target=\"#payment-method-creditcard\" data-selected-payment-radio-id=\"anon-payment-method-credit\">\n" +
-        "                          <span></span>\n" +
-        "                      </label>\n" +
-        "                      Credit Card</div>\n" +
-        "                  </div>\n" +
-        "                  <div class=\"col-sm-6 no-gutter\">\n" +
-        "                    <span class=\"icon-cardtypes\"></span>\n" +
-        "                  </div>\n" +
-        "                </h4>\n" +
-        "              </div>\n" +
-        "              <div id=\"payment-method-creditcard\" class=\"panel-collapse collapse in\">\n" +
-        "                <div class=\"panel-body\">\n" +
-        "                  <div class=\"form-group\" id=\"credit-card-form-group\">\n" +
-        "                    <fieldset>\n" +
-        "\t<div id=\"creditCardDataSection\">\n" +
-        "\t\t<input type=\"hidden\" id=\"cardSelectedItem\"/>\n" +
-        "\t\t<input type=\"hidden\" id=\"cardCode\"/>\n" +
-        "\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t<label for=\"bans_card_holder\">Card holder name</label>\n" +
-        "\t\t\t<input id=\"bans_card_holder\" class=\"form-control\" placeholder=\"Jane Smith\" data-error=\"Please enter the cardholder name\" required/>\n" +
-        "\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"row\" id=\"card-number-ccv-row\">\n" +
-        "\t\t\t<div class=\"col-sm-8\">\n" +
-        "\t\t\t\t<div id=\"ccnum-formgroup\" class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"bans_card_number\">Card number</label>\n" +
-        "\t\t\t\t\t<input id=\"bans_card_number\" class=\"form-control\" data-ccnum=\"bans_card_number\" data-error=\"Please enter a valid card number\" required/>\n" +
-        "\t\t\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t\t<div class=\"col-sm-4\">\n" +
-        "\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"bas_card_security\">CCV</label>\n" +
-        "\t\t\t\t\t<input type=\"text\" id=\"bas_card_security\" class=\"form-control\" data-ccv=\"bas_card_security\" placeholder=\"000\" data-error=\"Invalid security number\" required data-minlength=\"3\" maxlength=\"4\"/>\n" +
-        "\t\t\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
         "\t\t\t</div>\n" +
         "\t\t</div>\n" +
-        "\t\t<div class=\"row\" id=\"card-extrainfo-row\">\n" +
-        "\t\t\t<div class=\"col-sm-5\">\n" +
-        "\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"anon-payment-card-month-guest\">Valid to</label>\n" +
-        "\t\t\t\t\t<select class=\"form-control\" id=\"anon-payment-card-month-guest\" data-ccmonth=\"anon-payment-card-month-guest\" required data-error=\"Invalid month\">\n" +
-        "\t\t\t\t\t\t<option value='' disabled selected style='display:none;'>Month</option>\n" +
-        "\t\t\t\t\t\t<option value=\"01\">01</option>\n" +
-        "\t\t\t\t\t\t<option value=\"02\">02</option>\n" +
-        "\t\t\t\t\t\t<option value=\"03\">03</option>\n" +
-        "\t\t\t\t\t\t<option value=\"04\">04</option>\n" +
-        "\t\t\t\t\t\t<option value=\"05\">05</option>\n" +
-        "\t\t\t\t\t\t<option value=\"06\">06</option>\n" +
-        "\t\t\t\t\t\t<option value=\"07\">07</option>\n" +
-        "\t\t\t\t\t\t<option value=\"08\">08</option>\n" +
-        "\t\t\t\t\t\t<option value=\"09\">09</option>\n" +
-        "\t\t\t\t\t\t<option value=\"10\">10</option>\n" +
-        "\t\t\t\t\t\t<option value=\"11\">11</option>\n" +
-        "\t\t\t\t\t\t<option value=\"12\">12</option>\n" +
-        "\t\t\t\t\t\t</select>\n" +
-        "\t\t\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t\t<div class=\"col-sm-5\">\n" +
-        "\t\t\t\t<div class=\"form-group has-feedback\">\n" +
-        "\t\t\t\t\t<label for=\"anon-payment-card-year-guest\">&nbsp;</label>\n" +
-        "\t\t\t\t\t<select class=\"form-control\" id=\"anon-payment-card-year-guest\" data-ccyear=\"anon-payment-card-year-guest\" required data-error=\"Invalid year\">\n" +
-        "\t\t\t\t\t\t<option value='' disabled selected style='display:none;'>Year</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2018\">2018</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2019\">2019</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2020\">2020</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2021\">2021</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2022\">2022</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2023\">2023</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2024\">2024</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2025\">2025</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2026\">2026</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2027\">2027</option>\n" +
-        "\t\t\t\t\t\t<option value=\"2028\">2028</option>\n" +
-        "\t\t\t\t\t\t</select>\n" +
-        "\t\t\t\t\t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "</fieldset></div>\n" +
-        "                </div>\n" +
-        "              </div>\n" +
-        "            </div>\n" +
-        "            <div class=\"panel panel-default\">\n" +
-        "              <div class=\"panel-heading paypal-panel-heading\">\n" +
-        "                <div class=\"paypal-giftcard-message\" data-toggle=\"tooltip\" title=\"Gift Cards cannot be used in conjunction with PayPal\">\n" +
-        "                  <input type=\"hidden\" name=\"giftWrapMessage\">\n" +
-        "                  <input type=\"hidden\" id=\"isUsePaypal\" name=\"isUsePaypal\" value=\"\"/>             \n" +
-        "                  <input type=\"radio\" id=\"anon_payment_method_paypal\" name=\"payment_method_section\" value=\"paypal\">\n" +
-        "                  <label id=\"paypal-radio-label\" class=\"cart-paypal-tab\" for=\"anon_payment_method_paypal\" data-toggle=\"collapse\" data-parent=\"#payment-method-accordian\" data-target=\"#payment-method-paypal\" data-selected-payment-radio-id=\"anon_payment_method_paypal\">\n" +
-        "                      <span></span>\n" +
-        "                  </label>\n" +
-        "                  <span class=\"icon-paypal\"></span>\n" +
-        "                </div>\n" +
-        "              </div>\n" +
-        "              <div id=\"payment-method-paypal\" class=\"panel-collapse collapse\">\n" +
-        "                <div class=\"panel-body\">\n" +
-        "                    <div class=\"form-group\">You will be redirected to PayPal to complete your purchase</div>\n" +
-        "                </div>\n" +
-        "              </div>\n" +
-        "            </div>\n" +
-        "            <script type=\"text/javascript\">\n" +
-        "      var afterpayMin = 80\n" +
-        "      var afterpayMax = 1200</script>\n" +
-        "    <div class=\"panel panel-default\">\n" +
-        "        <div class=\"panel-heading afterpay-panel-heading \">\n" +
-        "            <input type=\"radio\" id=\"payment_method_afterpay\" name=\"payment_method_section\" value=\"afterpay\">\n" +
-        "            <label id=\"afterpay-radio-label\" class=\"cart-afterpay-tab\" for=\"payment_method_afterpay\"\n" +
-        "                data-toggle=\"collapse\" data-parent=\"#payment-method-accordian\" data-target=\"#payment-method-afterpay\" data-selected-payment-radio-id=\"payment_method_afterpay\">\n" +
-        "                <span></span>\n" +
-        "            </label>\n" +
-        "            <span class=\"icon-afterpay\"></span>\n" +
-        "        </div>\n" +
-        "        <div id=\"payment-method-afterpay\" class=\"panel-collapse collapse\">\n" +
-        "            <div class=\"panel-body\">\n" +
-        "                Four interest free fortnightly installments totalling&nbsp;<strong class=\"afterpay-total-amount\"><!-- price.tag: start -->\n" +
-        "$92.01<!-- price.tag: end -->\n" +
-        "</strong>\n" +
-        "                <span>\n" +
-        "                    <a href=\"#\" data-toggle=\"modal\" data-target=\"#afterpay_info\">Terms and Conditions</a>\n" +
-        "                </span>\n" +
-        "                <div class=\"afterpay-installments clearfix\">\n" +
-        "                    <div class=\"col-sm-3 no-gutter installment\">\n" +
-        "                        <span class=\"amount\">$23.00</span>\n" +
-        "                        <span class=\"installment-icon first\"></span>\n" +
-        "                        First payment</div>\n" +
-        "                    <div class=\"col-sm-3 no-gutter installment\">\n" +
-        "                        <span class=\"amount\">$23.00</span>\n" +
-        "                        <span class=\"installment-icon second\"></span>\n" +
-        "                        2 weeks later</div>\n" +
-        "                    <div class=\"col-sm-3 no-gutter installment\">\n" +
-        "                        <span class=\"amount\">$23.00</span>\n" +
-        "                        <span class=\"installment-icon third\"></span>\n" +
-        "                        4 weeks later</div>\n" +
-        "                    <div class=\"col-sm-3 no-gutter installment\">\n" +
-        "                        <span class=\"amount\">$23.00</span>\n" +
-        "                        <span class=\"installment-icon forth\"></span>\n" +
-        "                        6 weeks later</div>\n" +
-        "                </div>\n" +
-        "                <div id=\"afterpay_info\" class=\"modal fade\">\n" +
-        "    <div class=\"modal-dialog\">\n" +
-        "        <div class=\"modal-content\">\n" +
-        "            <div class=\"modal-body\">\n" +
-        "                <a href=\"https://www.afterpay.com/en-AU/terms\" target=\"_blank\">\n" +
-        "                    <img class=\"afterpay-modal-image\" src=\"https://static.secure-afterpay.com.au/banner-large.png\" alt=\"Afterpay\">\n" +
-        "                </a>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div></div>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div>\n" +
-        "        </div>\n" +
-        "        <div id=\"payment_handling\">\n" +
-        "          <input type=\"hidden\" id=\"paymentMode\" name=\"paymentMode\">\n" +
-        "\t\t\t\t\t\t\t<input type=\"checkbox\" id=\"checkout_guest_signup_newsletter\" value=\"true\" checked=\"checked\"/>\n" +
-        "\t\t\t\t\t\t\t<label for=\"checkout_guest_signup_newsletter\">\n" +
-        "\t\t\t\t\t\t\t\t<span></span>\n" +
-        "\t\t\t\t\t\t\t\tAlso sign me up for the VIP newsletter<input type=\"hidden\" id=\"signupGuestForNewsletter\" name=\"signupGuestForNewsletter\" value=\"true\"/>\n" +
-        "\t\t\t\t\t\t\t</label>\t\t \n" +
-        "          <button type=\"submit\" data-disable=\"true\" class=\"btn btn-submitorder\">Place Order</button>\n" +
-        "        </div>\n" +
-        "      </div>\n" +
-        "    </div>\n" +
-        "  </div>\n" +
-        "  </form></div></div>\n" +
-        "\t\t</div>\n" +
-        "\t</div>\n" +
-        "</div>\n" +
-        "</div>\n" +
-        "\t<!-- end tab -->\n" +
-        "</div>\n" +
-        "<div id=\"popup_store_pickup_form\" class=\"pickup_store_search clear_fix\" style=\"display: none\">\n" +
-        "\t<div class=\"item_container_holder clearfix\">\n" +
-        "\t\t<div class=\"title_holder\">\n" +
-        "\t\t\t<h2>\n" +
-        "\t\t\t\tProduct Availability by Store Location</h2>\n" +
-        "\t\t</div>\n" +
-        "\t</div>\n" +
-        "\t<div class=\"prod_grid span-4\">\n" +
-        "\t\t<span class=\"thumb\"></span>\n" +
-        "\t\t<strong class=\"details\"></strong>\n" +
-        "\t\t<div class=\"cart\">\n" +
-        "\t\t\t<p>\n" +
-        "\t\t\t\t<strong></strong>\n" +
-        "\t\t\t</p>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t<div class=\"quantity pickup_store_search-quantity\">\n" +
-        "\t\t\t<label data-for=\"pickupQty\">Quantity</label>\n" +
-        "\t\t\t<input type=\"text\" size=\"1\" maxlength=\"3\" data-id=\"pickupQty\" name=\"qty\" class=\"qty\" />\n" +
-        "\t\t</div>\n" +
-        "\t</div>\n" +
-        "\t<div class=\"span-17 last\">\n" +
-        "\t\t<div class=\"pickup_store_search-form\">\n" +
-        "\t\t\t<form name=\"pickupInStoreForm\" action=\"#\" method=\"post\" class=\"form_field-input\">\n" +
-        "\t\t\t\t<label for=\"locationForSearch\" class=\"nostyle\">Enter a Town/City or Zip Code:</label> \n" +
-        "\t\t\t\t<input type=\"text\" name=\"locationQuery\" data-id=\"locationForSearch\" />\n" +
-        "\t\t\t\t<input type=\"hidden\" name=\"cartPage\" data-id=\"atCartPage\" value=\"\" />\n" +
-        "\t\t\t\t<input type=\"hidden\" name=\"entryNumber\" value=\"\" class=\"entryNumber\" />\n" +
-        "\t\t\t\t<button type=\"button\" class=\"form\" data-id=\"pickupstore_search_button\">\n" +
-        "\t\t\t\t\tFind Stores</button>\n" +
-        "\t\t\t\t<button type=\"button\" class=\"form\" data-id=\"find_pickupStoresNearMe_button\">\n" +
-        "\t\t\t\t\tFind stores near me</button>\n" +
-        "\t\t\t</form>\n" +
-        "\t\t</div>\n" +
-        "\t\t<div data-id=\"pickup_store_results\" class=\"pickup_store_results\"></div>\n" +
-        "\t</div>\n" +
-        "</div></div>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "\t\t<div class=\"span-20\">\n" +
-        "\t\t\t\t<div class=\"right\">\n" +
-        "\t\t\t\t\t<input type=\"hidden\" name=\"flow\" id=\"flow\"/>\n" +
-        "\t\t\t\t\t<input type=\"hidden\" name=\"pci\" id=\"pci\"/>\n" +
-        "\t\t\t\t\t<select id=\"selectPciOption\" style=\"margin-left: 10px; display: none;\">\n" +
-        "\t\t\t\t\t\t<option value=\"\">Select a PCI option</option>\n" +
-        "\t\t\t\t\t\t<option value=\"default\">PCI-Default</option>\n" +
-        "\t\t\t\t\t\t\t<option value=\"hop\">PCI-HOP</option>\n" +
-        "\t\t\t\t\t\t<option value=\"sop\">PCI-SOP</option>\n" +
-        "\t\t\t\t\t</select>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "\t\n" +
-        "\t<script src=\"https://www.secure-afterpay.com.au/afterpay.js\" async></script>\n" +
-        "\t<form method=\"post\" id=\"creditCardDataFormHidden\">\n" +
-        "\t<input type=\"hidden\" name=\"EWAY_ACCESSCODE\" id=\"creditCard_SessionId\">\n" +
-        "\t\t<input type=\"hidden\" name=\"EWAY_PAYMENTTYPE\" value=\"Credit Card\">\n" +
-        "\t\t<input type=\"hidden\" name=\"EWAY_CARDNUMBER\" id=\"creditCard_CardNumber\">\n" +
-        "\t\t<input type=\"hidden\" name=\"EWAY_CARDEXPIRYMONTH\" id=\"creditCard_ExpiryMonth\">\n" +
-        "\t\t<input type=\"hidden\" name=\"EWAY_CARDEXPIRYYEAR\" id=\"creditCard_ExpiryYear\">\n" +
-        "\t\t<input type=\"hidden\" name=\"EWAY_CARDNAME\" id=\"creditCard_CardHolderName\"> \n" +
-        "\t\t<input type=\"hidden\" name=\"EWAY_CARDCVN\" id=\"creditCard_Cvc2\">\n" +
-        "\t</form></div>\n" +
-        "        <div id=\"footer-container\" class=\"container-fluid footer\">\n" +
-        "            <!-- START - FOOTER -->\n" +
-        "<div class=\"seotext-container row cartPageFooter\" data-toggle=\"collapse\" data-target=\".seotext-content\">\n" +
-        "    <div class=\"col-sm-11 col-md-10 col-lg-8 col-centered text-center\">\n" +
-        "        <div class=\"seotext-header\"></div>\n" +
-        "        <div class=\"seotext-content collapse\"></div>\n" +
-        "        <div>\n" +
-        "            <span class=\"seotext-expand-arrow glyphicon glyphicon-menu-down text-center\" aria-hidden=\"true\"></span>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div>\n" +
-        "<div class=\"footer-fineprint row\">\n" +
-        "    <div class=\"container\">\n" +
-        "        <img class=\"ribbon\" src=\"https://cdn.angusrobertson.com.au/_ui/desktop/theme-arbw/images/footer_help_ribbon.png\" width=\"240\" height=\"113\">\n" +
-        "        <div class=\"row\">\n" +
-        "            <div class=\"fineprint\">\n" +
-        "                Copyright 2018. All rights reserved.</div>\n" +
-        "            <div class=\"fineprint\">\n" +
-        "                <a href=\"/privacy\">Privacy Policy</a> |\n" +
-        "                <a href=\"/terms-and-conditions\">Terms &amp; Conditions</a> |\n" +
-        "                <a href=\"/product-content-policy\">Product Content Policy</a>\n" +
-        "            </div>\n" +
-        "            <div>\n" +
-        "                <img class=\"the-end\" src=\"https://cdn.angusrobertson.com.au/_ui/desktop/theme-arbw/images/the_end.png\" alt=\"The end.\" width=\"124\" height=\"33\">\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div>\n" +
-        "<!-- END - FOOTER --></div>\n" +
-        "\t<div class=\"modal fade \" id=\"ajaxResponse\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"ajaxResponseLabel\">\n" +
-        "      <div class=\"modal-dialog\" role=\"document\">\n" +
-        "        <div class=\"modal-content\">\n" +
-        "          <div class=\"modal-header\">\n" +
-        "            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n" +
-        "          </div>\n" +
-        "          <div class=\"modal-body\">\n" +
-        "            Hold on while we process your request.</div>\n" +
-        "          <div class=\"modal-footer\">\n" +
-        "          </div>\n" +
-        "        </div>\n" +
-        "      </div>\n" +
-        "    </div>\n" +
-        "    \n" +
-        "    <div class=\"modal fade\" id=\"loginRegisterForgottenPwdModal\" tabindex=\"-1\" role=\"dialog\">\n" +
-        "\t\t<div class=\"modal-dialog modal-sm\" role=\"document\">\n" +
-        "\t\t\t<div class=\"modal-content\">\n" +
-        "\t\t\t\t<div class=\"modal-body\">\n" +
-        "\t\t\t\t\t<!-- Login panel -->\n" +
-        "<div class=\"login_register_panel login full\" id=\"login_panel\">\n" +
-        "\t<h2>Please sign in to continue</h2>\n" +
-        "    <form id=\"loginForm\" data-toggle=\"validator\" role=\"form\" class=\"row\" action=\"/j_spring_security_check\" method=\"post\"><fieldset>\n" +
-        "        \t<input type=\"hidden\" name=\"currentPage\" value=\"\" />\n" +
-        "        \t<input type=\"hidden\" name=\"nextView\" value=\"/cart\"/>\n" +
-        "        \t<div class=\"form-field form-group\">\n" +
-        "           \t \t<input type=\"email\" class=\"form-control\" id=\"j_username\" name=\"j_username\" placeholder=\"Email Address\" value=\"\" required>\n" +
-        "           \t \t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "        \t</div>\n" +
-        "        \t<div class=\"form-field form-group form-field-login-pwd\">\n" +
-        "           \t \t<input type=\"password\" class=\"form-control\" id=\"j_password\" name=\"j_password\" placeholder=\"Password\" required data-minlength=\"6\">\n" +
-        "           \t \t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "        \t</div>\n" +
         "\n" +
-        "        \t<input type=\"submit\" class=\"btn btn-action\" value=\"Sign In\" />\n" +
+        "\t\t<script async type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD1Le64JQzjqBT580Y9QJUD73eDVTZi8J0\"></script>\n" +
         "\n" +
-        "            <p class=\"password-reminder\"><a href=\"javascript:;\" onclick=\"changeSignInRegisterPanel('forgot_password_panel');\" data-role=\"none\" data-ajax=\"false\">Forgotten your password?</a></p>\n" +
         "\n" +
-        "        \t<div class=\"sign-in-option-separator\">\n" +
-        "\t\t\t\t<strong>or</strong>\n" +
-        "\t\t\t</div>\n" +
+        "<script>\n" +
+        "\t(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');\n" +
+        "\tga('create', 'UA-838381-2', 'auto');\n" +
+        "\tga('require', 'ec');\n" +
+        "</script>\n" +
+        "<script async type=\"text/javascript\" src=\"//www.googleadservices.com/pagead/conversion_async.js\" charset=\"utf-8\"></script>\n" +
         "\n" +
-        "            <div class=\"social-login-options\">\n" +
-        "                <a href=\"/login/facebook?nextView=%2fcart\" class=\"login-facebook\">\n" +
-        "                    <span class=\"icon icon-facebook\"></span> Continue with Facebook</a>\n" +
-        "                <a href=\"/login/tw?nextView=%2fcart\" class=\"login-twitter\">\n" +
-        "                    <span class=\"icon icon-twitter\"></span> Continue with Twitter</a>\n" +
-        "            </div>\n" +
-        "        </fieldset>\n" +
-        "    </form><div class=\"sign-in-register-footer\">\n" +
-        "        Don't have an account?<br><a href=\"javascript:;\" onclick=\"changeSignInRegisterPanel('register_panel');\">Create an account</a>\n" +
-        "    </div>\n" +
-        "</div><div class=\"login_register_panel register full\" id=\"register_panel\">\n" +
-        "\t<h2>Create an account</h2>\n" +
-        "    <form id=\"registerForm\" data-toggle=\"validator\" role=\"form\" class=\"row\" action=\"/register/newcustomer\" method=\"post\"><fieldset>\n" +
-        "\t\t\t<input type=\"hidden\" name=\"currentPage\" value=\"\" />\n" +
-        "\t\t\t<input type=\"hidden\" name=\"nextView\" value=\"/cart\"/>\n" +
-        "\t\t\t<div class=\"form-field-firstname\">\n" +
-        "            \t<div class=\"form-field form-group\">\n" +
-        "\t            \t<input id=\"regFirstName\" class=\"form-control\" name=\"firstName\" placeholder=\"First Name *\" required=\"required\" value=\"\" type=\"text\">\n" +
-        "\t           \t \t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t            </div>\n" +
-        "            </div>\n" +
-        "            <div class=\"form-field-lastname\">\n" +
-        "            \t<div class=\"form-field form-group\">\n" +
-        "\t            \t<input id=\"regLastName\" class=\"form-control\" name=\"lastName\" placeholder=\"Last Name *\" required=\"required\" value=\"\" type=\"text\">\n" +
-        "\t           \t \t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "\t            </div>\n" +
-        "            </div>\n" +
-        "           \t<div class=\"form-field form-group\">\n" +
-        "            \t<input id=\"regEmail\" class=\"form-control\" name=\"email\" placeholder=\"Email Address *\" required=\"required\" value=\"\" type=\"email\">\n" +
-        "           \t \t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "            </div>\n" +
-        "            <input id=\"regCheckEmail\" name=\"checkEmail\" data-match=\"#regEmail\" value=\"\" type=\"hidden\">\n" +
-        "           \t<div class=\"form-field form-group\">\n" +
-        "            \t<input id=\"regPassword\" class=\"form-control\" name=\"pwd\" data-minlength=\"8\" data-minlength-error=\"Your password is shorter than the required eight characters\" data-validatealpha=\"regPassword\" data-validatedigit=\"regPassword\" placeholder=\"Password (min 8 characters and 1 number) *\" required=\"required\" value=\"\" type=\"password\">\n" +
-        "           \t \t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "            </div>\n" +
-        "            <input id=\"regCheckPwd\" name=\"checkPwd\" required=\"required\" data-match=\"#regPassword\" value=\"\" type=\"hidden\">\n" +
-        "           \t<div class=\"form-field form-group\">\n" +
-        "            \t<input id=\"regMobileNumber\" class=\"form-control\" name=\"mobileNumber\" maxlength=\"10\" minlength=\"10\" placeholder=\"Mobile Number (optional)\" data-restrictnumeric=\"true\" value=\"\" type=\"text\">\n" +
-        "           \t \t<span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "\t\t\t\t<div class=\"help-block with-errors\"></div>\n" +
-        "            </div>\n" +
-        "           \t<div class=\"form-field form-group\">\n" +
-        "\t\t\t\t<label>\n" +
-        "\t\t\t\t\t<input id=\"regEmailSignup\" name=\"signedUpForEmail\" inputCSS=\"form-control\" type=\"checkbox\" value=\"true\" checked=\"checked\"/>\n" +
-        "\t\t\t\t\t<input type=\"hidden\" name=\"_signedUpForEmail\" value=\"on\"/><label for=\"regEmailSignup\"><span></span></label>\n" +
-        "\t\t\t\t\t<span class=\"register-signup-message\">I would like to receive emails with the latest releases, great offers and exclusive content</span>\n" +
-        "\t\t\t\t</label>\n" +
-        "\t\t\t\t<p class=\"hint-msg\"><a href=\"/privacy\">Privacy Collection Statement</a></p>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t\t<button id=\"modalRegisterSubmit\" type=\"submit\" class=\"btn btn-action btn-wide disabled\">Sign Up</button>\n" +
+        "<script async src=\"//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script>\n" +
+        "<script>\n" +
+        "(adsbygoogle = window.adsbygoogle || []).push({\n" +
+        "google_ad_client: \"ca-pub-9616249507674022\",\n" +
+        "enable_page_level_ads: true\n" +
+        "});\n" +
+        "</script>\n" +
+        "<script>\n" +
+        "\tvar gts = gts || [];\n" +
+        "\tgts.push([\"id\", \"577100\"]);\n" +
+        "\tgts.push([\"badge_position\", \"BOTTOM_RIGHT\"]);\n" +
+        "\tgts.push([\"locale\", \"en_AU\"]);\n" +
+        "\t(function() {var gts = document.createElement(\"script\");gts.type = \"text/javascript\";gts.async = true;gts.src = \"https://www.googlecommerce.com/trustedstores/api/js\";var s = document.getElementsByTagName(\"script\")[0];s.parentNode.insertBefore(gts, s);})();</script>\n" +
+        "<script type=\"text/javascript\"> var ScarabQueue = ScarabQueue || []; (function(id) { if (document.getElementById(id)) return; var js = document.createElement('script'); js.id = id; js.src = '//cdn.scarabresearch.com/js/1CCE7FE836D5096D/scarab-v2.js'; var fs = document.getElementsByTagName('script')[0]; fs.parentNode.insertBefore(js, fs); })('scarab-js-api'); </script>\n" +
+        "<script type=\"text/javascript\">\n" +
+        "\tsetTimeout(function(){var a=document.createElement(\"script\");\n" +
+        "\t\tvar b=document.getElementsByTagName(\"script\")[0];\n" +
+        "\t\ta.src=document.location.protocol+\"//script.crazyegg.com/pages/scripts/0063/7368.js?\"+Math.floor(new Date().getTime()/3600000);\n" +
+        "\t\ta.async=true;a.type=\"text/javascript\";b.parentNode.insertBefore(a,b)}, 1);\n" +
+        "</script>\n" +
+        "<script>\n" +
+        "\t!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');\n" +
+        "\tfbq( 'init', '1363355063717390' );\n" +
+        "</script>\n" +
+        "<noscript><img height=\"1\" width=\"1\" style=\"display:none\" src=\"https://www.facebook.com/tr?id=1363355063717390&ev=PageView&noscript=1\" /></noscript>\n" +
         "\n" +
-        "        \t<div class=\"sign-in-option-separator\">\n" +
-        "\t\t\t\t<strong>or</strong>\n" +
-        "\t\t\t</div>\n" +
-        "            <div class=\"social-login-options\">\n" +
-        "                <a href=\"/login/facebook?nextView=%2fcart\" class=\"login-facebook\" target=\"_blank\">\n" +
-        "                    <span class=\"icon icon-facebook\"></span> Sign up with Facebook</a>\n" +
-        "                <a href=\"/login/tw?nextView=%2fcart\" class=\"login-twitter\" target=\"_blank\">\n" +
-        "                    <span class=\"icon icon-twitter\"></span> Sign up with Twitter</a>\n" +
-        "            </div>\n" +
-        "        </fieldset>\n" +
-        "    </form><div class=\"sign-in-register-footer\">\n" +
-        "        Have an account?&nbsp;<a href=\"javascript:;\" onclick=\"changeSignInRegisterPanel('login_panel');\">Sign in</a>\n" +
-        "    </div>\n" +
-        "</div><div class=\"login_register_panel forgot-pwd full\" id=\"forgot_password_panel\">\n" +
-        "\t<h2>Forgot your password?</h2>\n" +
-        "    <form id=\"forgotPwdForm\" data-toggle=\"validator\" role=\"form\" class=\"row\" action=\"/ajax/password-reminder\" method=\"post\"><div class=\"form-group has-feedback\">\n" +
-        "            <input id=\"forgottenPwd.email\" name=\"email\" value=\"\" placeholder=\"Email Address\" type=\"email\" required=\"required\" class=\"form-control\">\n" +
-        "            <span class=\"glyphicon form-control-feedback\" aria-hidden=\"true\"></span>\n" +
-        "            <div class=\"help-block with-errors\"></div>\n" +
-        "        </div>\n" +
-        "        <p class=\"small-grey-text clearfix\">This is the email address that you previously registered with on angusrobertson.com.au or bookworld.com.au.<br><br> We will send you an email with instructions on how to reset your password.</p>\n" +
-        "        <input id=\"forgottenPassword\" class=\"button-login-register button-reset-password\" value=\"Reset Password\" type=\"submit\">\n" +
-        "    </form><div class=\"pwd-result-message\"></div>\n" +
-        "\t<div class=\"sign-in-register-footer\">\n" +
-        "        <a href=\"javascript:;\" onclick=\"changeSignInRegisterPanel('login_panel');\" class=\"sign-in-link\" data-role=\"none\" data-ajax=\"false\">Sign in</a>\n" +
-        "    </div>\n" +
-        "</div></div>\n" +
-        "\t\t\t\t<div class=\"modal-footer\">\n" +
-        "\t\t\t\t\t<button type=\"button\" class=\"btn btn-link\" data-dismiss=\"modal\">Close</button>\n" +
-        "\t\t\t\t</div>\n" +
-        "\t\t\t</div>\n" +
-        "\t\t</div>\n" +
-        "\t</div><div class=\"modal fade\" id=\"marketingModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"marketingModalLabel\">\n" +
-        "\t  <div class=\"modal-dialog\" role=\"document\">\n" +
-        "\t\t<div class=\"modal-content\">\n" +
-        "\t\t  <div class=\"modal-header\">\n" +
-        "\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n" +
-        "\t\t  </div>\n" +
-        "\t\t  <div class=\"modal-body\">\n" +
-        "\t\t\tHold on while we process your request.</div>\n" +
-        "\t\t  <div class=\"modal-footer\">\n" +
-        "\t\t  </div>\n" +
-        "\t\t</div>\n" +
-        "\t  </div>\n" +
-        "\t</div>\n" +
-        "\t\n" +
-        "\t<script src=\"/wro/20180719 1128/arbw.js\"></script>\n" +
+        "<script type=\"text/javascript\" src=\"//static.criteo.net/js/ld/ld.js\" async></script>\n" +
         "\n" +
-        "\t<div class=\"modal fade\" id=\"accountMigrationModal\" tabindex=\"-1\" role=\"dialog\">\n" +
-        "    <div class=\"modal-dialog\" role=\"document\">\n" +
-        "        <div class=\"modal-content\">\n" +
-        "            <div class=\"modal-body\">\n" +
-        "                <div id=\"accountMigrationPopup\">\n" +
-        "                    <div class=\"greeting\">\n" +
-        "                        <h1>Welcome!</h1>\n" +
-        "                        <strong>Angus & Robertson</strong> and <strong>Bookworld</strong> have recently merged to create the exciting new bookshop, <strong>Angus & Robertson</strong>.</div>\n" +
-        "\n" +
-        "                    <div class=\"migration-messages\">\n" +
-        "                        <p>\n" +
-        "                            We have kept your A&amp;R details for your new Angus & Robertson account.</p>\n" +
-        "                        <p class=\"migrate-prompt-guest\" style=\"display:none;\">\n" +
-        "                            We also noticed that you have previously shopped at Bookworld. Would you like us to keep your Bookworld order history?</p>\n" +
-        "                        <p class=\"migrate-prompt-registered\" style=\"display:none;\">\n" +
-        "                            We also noticed that you have an account on Bookworld. Would you like us to keep your Bookworld details, including delivery addresses, order history and citizenship information?</p>\n" +
-        "                    </div>\n" +
-        "\n" +
-        "                    <form id=\"mergeForm\" name=\"migrateDetailsForm\" action=\"/ajax/migration/mergeUser\" method=\"post\">\n" +
-        "                        <div>\n" +
-        "                            <button id=\"migrateDetails-yes\" class=\"btn btn-action btn-wide\" name=\"migrateDetails\" value=\"true\">Yes</button>\n" +
-        "                            <label>\n" +
-        "                                <span class=\"migrate-prompt-accept-guest\" style=\"display:none;\">\n" +
-        "                                    Yes, please keep my Bookworld order history on Angus & Robertson.</span>\n" +
-        "                                <span class=\"migrate-prompt-accept-registered\" style=\"display:none;\">\n" +
-        "                                    Yes, please keep my Bookworld details on Angus & Robertson.</span>\n" +
-        "                            </label>\n" +
-        "                        </div>\n" +
-        "                        <div>\n" +
-        "                            <button id=\"migrateDetails-no\" class=\"btn btn-action btn-wide\" name=\"migrateDetails\" value=\"false\">No</button>\n" +
-        "                            <label>\n" +
-        "                                No, I don't need my Bookworld details anymore.</label>\n" +
-        "                        </div>\n" +
-        "                    </form>\n" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div><div id=\"fadefocus-backdrop\" class=\"modal-backdrop\"></div>\n" +
-        "\n" +
-        "\t\n" +
-        "<script type=\"text/javascript\">window.NREUM||(NREUM={});NREUM.info={\"errorBeacon\":\"bam.nr-data.net\",\"licenseKey\":\"ca060ef88a\",\"agent\":\"\",\"beacon\":\"bam.nr-data.net\",\"applicationTime\":330,\"applicationID\":\"44927853\",\"transactionName\":\"b1YDYRZTWUFUBhcKW1YcMkUWW1lVdgoNF0ZXXw1QFh1UU0cRQ0tzfWdI\",\"queueTime\":0}</script><script type=\"text/javascript\" src=\"//cdn.optimizely.com/js/3434090278.js\"></script>\n" +
-        "\n" +
-        "</body>\n" +
-        "\n" +
-        "</html>\n";
+        "<script async src=\"https://t.cfjump.com/tag/54934\"></script>\n" +
+        "\t\t<script async type=\"text/javascript\" src=\"/res/js/main.v4.js?v=201804111145\"></script>\n" +
+        "\t</body>\n" +
+        "</html>"
 }
 
 
-        //let array_thingo = {};
-        //let site_list = ['angus', 'qbd'];
+//let array_thingo = {};
+//let site_list = ['angus', 'qbd'];
 
-        //let html = document.documentElement.innerHTML;
-        //array_thingo = check_site(html, array_thingo);
+//let html = document.documentElement.innerHTML;
+//array_thingo = check_site(html, array_thingo);
 
 //        for (var key in array_thingo ) {
 //            if (object.hasOwnProperty(key)) {
@@ -2074,29 +261,67 @@ function get_html() {
 //}
 
 
-
 //    });
 //});
 
+
+function search_websites(site_list, array_thingo, isbn_list) {
+    console.log(Object.keys(site_list).length);
+    for (i = 0; i < Object.keys(site_list).length; i++) {
+        console.log(i);
+        for (j = 0; j < isbn_list.length; j++) {
+            console.log(j)
+            var key = Object.keys(site_list)[i]
+            var url = site_list[key].replace(/\{\}/, isbn_list[j]);
+            console.log(url)
+            data = get_data_placeholder()
+            array_thigno = check_site(data, array_thingo, individual = true)
+            array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book properties
+        }
+
+    }
+    return array_thingo
+}
+
 //Determine which site the data is from and scrape appropriate book data
-function check_site(data, array_thingo) {
+function check_site(data, array_thingo, individual = false) {
     let angus_pattern = /Angus &amp; Robertson/;
     let qbd_pattern = /www.qbd.com.au/;
 
     //Scrape A&R data
+
     if (angus_pattern.test(data) === true) {
-        var identifier = 'angus';
-        angus_isbn = /id:.*?"([0-9]{13})/g;
-        angus_price = /ubtotal:.*?([0-9.]*),/g;
-        nested_match = /line_items:.*?language/g;
-        return scrape_page(data, angus_isbn, angus_price, identifier, array_thingo, nested_match);
+        // var identifier = 'angus';
+        if (individual === false) {
+            var angus_isbn = /id:.*?"([0-9]{13})/g;
+            var angus_price = /ubtotal:.*?([0-9.]*),/g;
+            var angus_image = /image-modal.*?src="(.*?)"/g;
+            var nested_match = /line_items:.*?language/gs;
+        } else {
+            var angus_isbn = /id:.*?\\"([0-9]{13})/g;
+            var angus_price = /itemprop=\\"price\\">([0-9.]*)/g;
+            var angus_image = /image-modal.*?src=\\"(.*?)\\"/;
+            var nested_match = false;
+        }
+
+        return scrape_page(data, angus_isbn, angus_price, angus_image, 'angus', array_thingo, nested_match);
 
         //Scrape QBD Data
     } else if (qbd_pattern.test(data) === true) {
-        var identifier = 'qbd';
-        qdb_isbn = /isbn="([0-9]{13})/;
-        qdb_price = /data-price="([0-9.]*)/;
-        return scrape_page(data, qdb_isbn, qdb_price, identifier, array_thingo);
+        // var identifier = 'qbd';
+        if (individual === false) {
+            var qbd_isbn = /data-isbn="([0-9]{13})" data-price="[0-9.]+" \//g;
+            var qbd_price = /data-isbn="[0-9]{13}" data-price="([0-9.]*)" \//g;
+            var qbd_image = /line product.*?src="(.*?)"/g
+        } else {
+            var qbd_isbn = /isbn=\\"([0-9]{13})/; //
+            var qbd_price = /data-price=\\"([0-9.]*)/; // <-----------For not checkout page
+            var qbd_image = /cover.*?img src=\\"(https.*?)\\";
+        }
+
+        // data-isbn="([0-9]{13})" data-price="([0-9.]*)" \//g <----------------------------------------------------------------- for checkout page isbn
+        console.log(qbd_isbn);
+        return scrape_page(data, qbd_isbn, qbd_price, qbd_image, 'qbd', array_thingo);
 
     } else {
         console.log('Unable to identify site');
@@ -2125,13 +350,14 @@ function cheaperElsewhere() {
     }
 }
 
-function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo, nested_match) {
-
+function scrape_page(data, isbn_pattern, price_pattern, image_pattern, identifier, array_thingo, nested_match = false) {
+    var identifier = identifier;
     if (nested_match !== false) {
         while (match = nested_match.exec(data)) {
             match_string = match[0];
             var isbns = get_matched_groups(isbn_pattern, match_string);
             var prices = get_matched_groups(price_pattern, match_string);
+            var images = get_matched_groups(image_pattern, match_string);
             // var isbns = match_string.match(isbn_pattern);
             // var prices = match_string.match(price_pattern);
             console.log(isbns, prices);
@@ -2140,16 +366,17 @@ function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo
     } else {
         var isbns = get_matched_groups(isbn_pattern, data);
         var prices = get_matched_groups(price_pattern, data);
+        var images = get_matched_groups(image_pattern, data);
     }
 
     //Array containing price/isbn pairs
+    console.log('Line 370:', isbns, prices, images)
     var combined_array = array_thingo;
     for (var i = 0; i < isbns.length; i++) {
         try {
-            combined_array[isbns[i]][identifier] = prices[i];
-        } catch (err)
-        {
-            combined_array[isbns[i]] = {identifier: prices[i]};
+            combined_array[isbns[i]][[identifier]] = [prices[i], images[i]];
+        } catch {
+            combined_array[isbns[i]] = {[identifier]: [prices[i], images[i]]};
         }
 
 
@@ -2159,7 +386,18 @@ function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo
     return combined_array;
 }
 
-function GetCurrentISBN() 
-{
-    alert("ISBN");
+
+function scraper() {
+    $.ajax({
+        url: "https://www.qbd.com.au/going-to-the-mountain/nbada-mandela/9781786331564/",
+        type: "GET",
+        dataType: "jsonp",
+        success: function () {
+            alert("this")
+        },
+        error: function () {
+            alert('not that')
+        }
+    })
+
 }
