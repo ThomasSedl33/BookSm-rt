@@ -29,7 +29,8 @@ $(function () {
         let website_keys = Object.keys(array_thingo[isbn_keys[0]]);
         delete site_list[website_keys[0]]
 
-        search_websites(site_list, array_thingo, isbn_keys)
+        array_thingo = search_websites(site_list, array_thingo, isbn_keys)
+
 
         // console.log(isbn_keys, website_keys)
 
@@ -274,6 +275,7 @@ function search_websites(site_list, array_thingo, isbn_list) {
             console.log(url)
             data = get_data_placeholder()
             array_thigno = check_site(data, array_thingo, individual = true)
+            array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book properties
         }
 
     }
@@ -295,9 +297,9 @@ function check_site(data, array_thingo, individual = false) {
             var angus_image = /image-modal.*?src="(.*?)"/g;
             var nested_match = /line_items:.*?language/gs;
         } else {
-            var angus_isbn = /id:.*?"([0-9]{13})/g;
-            var angus_price = /itemprop="price">([0-9.]*)/g;
-            var angus_image = /image-modal.*?src="(.*?)"/;
+            var angus_isbn = /id:.*?\\"([0-9]{13})/g;
+            var angus_price = /itemprop=\\"price\\">([0-9.]*)/g;
+            var angus_image = /image-modal.*?src=\\"(.*?)\\"/;
             var nested_match = false;
         }
 
@@ -311,9 +313,9 @@ function check_site(data, array_thingo, individual = false) {
             var qbd_price = /data-isbn="[0-9]{13}" data-price="([0-9.]*)" \//g;
             var qbd_image = /line product.*?src="(.*?)"/g
         } else {
-            var qbd_isbn = /isbn="([0-9]{13})/; //
-            var qbd_price = /data-price="([0-9.]*)/; // <-----------For not checkout page
-            var qbd_image = /cover.*?src="(.*?)"/;
+            var qbd_isbn = /isbn=\\"([0-9]{13})/; //
+            var qbd_price = /data-price=\\"([0-9.]*)/; // <-----------For not checkout page
+            var qbd_image = /cover.*?img src=\\"(https.*?)\\";
         }
 
         // data-isbn="([0-9]{13})" data-price="([0-9.]*)" \//g <----------------------------------------------------------------- for checkout page isbn
