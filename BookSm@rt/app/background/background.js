@@ -1,10 +1,30 @@
 ﻿chrome.tabs.onUpdated.addListener(function () {
+    
     chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function (tabs) {
         var url = tabs[0].url;
-        if (checkURL(url)) {
-            scraper(url);
+        //if (checkURL(url)) {
+            if (true) {
+                //scraper(url);
+                //var test = $.getJSON('https://allorigins.me/get?url=' + url, function (data) { alert("me"); $('#output').html(data.contents); });
+                alert("mine");
+                $.getJSON('http://allorigins.me/get?url=www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/', function (data) {
+                    var iframe = $("#output").html(data.contents);
+                    var doc = iframe.document;
+                    if (iframe.contentDocument) {
+                        doc = iframe.contentDocument;
+                    } else if (iframe.contentWindow) {
+                        doc = iframe.contentWindow.document;
+                    }
+                    doc.open();
+                    doc.writeln(data.contents);
+                    doc.close();
+
+                    $('#output').html(data.contents);
+                });
         }
     });
+
+   
 })
 
 // gloabl var for storing the current url if it is a book site
@@ -37,19 +57,23 @@ function checkURL(url)
 //
 function scraper(url) {
     $.ajax({
-        url: url,
-        headers: {
-            'Accept': 'application/json'
-        },
-        //type: "GET",
-        dataType: "text/html",
-        contentType: "text/html",
+        url: "https://www.bookdepository.com/Barefoot-Investor-Scott-Pape/9780730324218?ref=grid-view",
+        //headers: {
+        //    'Accept': 'application/json'
+        //},
+        type: "GET",
+        cache: false,
+        dataType: "json",
+        processdata: false,
+        context: document.body,
+        //contentType: "text/html",
         success: function (data) {
-            alert("this" + data);
+            alert("success" + data)
+            currentHTML = "" + data;
         },
         error: function (data) {
-            currentHTML = JSON.stringify(data.responseText);
-            alert(currentHTML);
+            alert("error" + JSON.stringify(data))
+            currentHTML = "" + data;
         }
     })
 

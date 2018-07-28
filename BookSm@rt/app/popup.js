@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     var bg = chrome.extension.getBackgroundPage();
     currentHTML = bg.GetCurrentHTML();
+    alert("1  " + currentHTML);
 
 });
 
