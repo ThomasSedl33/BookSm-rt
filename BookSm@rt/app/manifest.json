@@ -5,10 +5,7 @@
   "description": "Find cheaper options of a book you're attempting to purchase",
   "version": "1.0",
 
-  "background": 
-  {
-    "scripts": ["jquery-3.2.1.js"]
-  },
+
 
   "permissions": [
     "https://secure.flickr.com/",
