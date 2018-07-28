@@ -9,7 +9,6 @@
     "persistent": false,
     "scripts": [ "background/background.js" ]
   },
-
   "permissions": [
     "https://secure.flickr.com/",
     "activeTab",

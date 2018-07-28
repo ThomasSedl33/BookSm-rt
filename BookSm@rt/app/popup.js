@@ -8,10 +8,38 @@ $(function () {
 
 
     })
-    
 
-    $("#theBODY").load(dissapear());
+    dissapear();
+
 })
+
+function dissapear() {
+    document.getElementById("CheaperElsewhere").style.display = "none";
+}
+
+function isItCheapest() {
+    //let 0 representfalse and 1 represent true
+    var cheapest = 0; //is it possible to change this to a boolean,
+    //so that if it's not the cheapest it'll change the visibility
+    if (cheapest == 0) {//if it is not the cheapest
+        CheapestOption.style.display = 'none';//if it is NOT the cheapest,don't display cheapestOption div
+    }
+
+    if (cheapest == 1) {
+        CheaperElsewhere.style.display = 'none'; //if it is the cheapest, don't display cheaperElseWherediv               
+    }
+
+}
+
+
+//display the div
+//function toggle_visibility(id) {
+//    var z = document.getElementById(id);
+//    if (e.style.display == 'block')
+//        e.style.display = 'none';
+//    else
+//        e.style.display = 'block';
+//}
 
 
         //let array_thingo = {};
