@@ -2,27 +2,31 @@ $(function () {
     $("#btnsave").click(function () {
         var name = $("#txt_name").val();
 
-        alert("Hi" + " " + name);
+        //alert("Hi" + " " + name);
+
+        scraper();
+
+    })
+})
+
+        //let array_thingo = {};
+        //let site_list = ['angus', 'qbd'];
+
+        //let html = document.documentElement.innerHTML;
+        //array_thingo = check_site(html, array_thingo);
+
+//        for (var key in array_thingo ) {
+//            if (object.hasOwnProperty(key)) {
+//                if (!(key in site_list)){
+//                //    Fetch Data and redo check_site thingy
+//                }
+//    }
+//}
 
 
-        let array_thingo = {};
-        let site_list = ['angus', 'qbd'];
 
-        let html = document.documentElement.innerHTML;
-        array_thingo = check_site(html, array_thingo);
-
-        for (var key in array_thingo ) {
-            if (object.hasOwnProperty(key)) {
-                if (!(key in site_list)){
-                //    Fetch Data and redo check_site thingy
-                }
-    }
-}
-
-
-
-    });
-});
+//    });
+//});
 
 //Determine which site the data is from and scrape appropriate book data
 function check_site(data, array_thingo) {
@@ -67,12 +71,17 @@ function cheaperElsewhere() {
     }
 }
 
-//function doalert() {
-//    alert("this");
-//    alert("that");
-//}
+function scraper() {
+    $.ajax({
+        url: "https://www.qbd.com.au/going-to-the-mountain/nbada-mandela/9781786331564/",
+        type: "GET",
+        dataType: "jsonp",
+        success: function () {
+            alert("this")
+        },
+        error: function () {
+            alert('not that')
+        }
+    })
 
-//akjsdlajsdkajldjaslkdjaskld
-//My Test stuff
-
-//aklsjdlajskdjakljdl
+}
