@@ -7,31 +7,47 @@ document.addEventListener('DOMContentLoaded', function () {
 var currentHTML = "";
 
 $(function () {
-        $("#btnsave").click(function () {
-            var name = $("#txt_name").val();
+    $("#btnsave").click(function () {
+        var name = $("#txt_name").val();
 
         //alert("Hi" + " " + name);
 
-            let array_thingo = {};
-            let site_list = {
-                'angus': 'www.angusrobertson.com.au',
-                'qbd': 'www.qbd.com.au'
-            };
+        let array_thingo = {};
+        let site_list = {
+            'angus': 'https://www.angusrobertson.com.au/search?text={}&mediatype=BOOKS',
+            'qbd': 'https://www.qbd.com.au/product/{}'
+        };
 
-            // let html = document.documentElement.innerHTML;
-            // console.log(html)
-            html = get_html();
-            array_thingo = check_site(html, array_thingo);
-            console.log(array_thingo);
+        // scraper();
 
-            keys = array_thingo.Object.keys();
-            alert(keys)
+        // let html = document.documentElement.innerHTML;
+        // console.log(html)
+        html = get_html();
+        array_thingo = check_site(html, array_thingo);
+        console.log(array_thingo);
+        let isbn_keys = Object.keys(array_thingo);
+        let website_keys = Object.keys(array_thingo[isbn_keys[0]]);
+        delete site_list[website_keys[0]]
+
+        search_websites(site_list, array_thingo, isbn_keys)
+
+        // console.log(isbn_keys, website_keys)
+
+        // for (var key in array_thingo) {
+        //     for (var keyy in array_thingo[key]) {
+        //         console.log(keyy, array_thingo[key][keyy])
+        //         }
+        // }
+        // keys = array_thingo.Object.keys();
+        // alert(keys)
     })
 
     //dissapear();
         var test = GetCurrentHTML();
         alert(test);
 })
+dissapear();
+
 
 function dissapear() {
     document.getElementById("CheaperElsewhere").style.display = "none";
@@ -51,7 +67,7 @@ function isItCheapest() {
 
 }
 
-        
+        }
 
 //display the div
 //function toggle_visibility(id) {
@@ -61,7 +77,6 @@ function isItCheapest() {
 //    else
 //        e.style.display = 'block';
 //}
-
 
 
 
@@ -2058,11 +2073,11 @@ function get_html() {
 }
 
 
-        //let array_thingo = {};
-        //let site_list = ['angus', 'qbd'];
+//let array_thingo = {};
+//let site_list = ['angus', 'qbd'];
 
-        //let html = document.documentElement.innerHTML;
-        //array_thingo = check_site(html, array_thingo);
+//let html = document.documentElement.innerHTML;
+//array_thingo = check_site(html, array_thingo);
 
 //        for (var key in array_thingo ) {
 //            if (object.hasOwnProperty(key)) {
@@ -2073,29 +2088,65 @@ function get_html() {
 //}
 
 
-
 //    });
 //});
 
+
+function search_websites(site_list, array_thingo, isbn_list) {
+    console.log(Object.keys(site_list).length);
+    for (i = 0; i < Object.keys(site_list).length; i++) {
+        console.log(i);
+        for (j = 0; j < isbn_list.length; j++) {
+            console.log(j)
+            var key = Object.keys(site_list)[i]
+            var url = site_list[key].replace(/\{\}/, isbn_list[j]);
+            console.log(url)
+            data = get_data_placeholder()
+            array_thigno = check_site(data, array_thingo, individual = true)
+        }
+
+    }
+    return array_thingo
+}
+
 //Determine which site the data is from and scrape appropriate book data
-function check_site(data, array_thingo) {
+function check_site(data, array_thingo, individual = false) {
     let angus_pattern = /Angus &amp; Robertson/;
     let qbd_pattern = /www.qbd.com.au/;
 
     //Scrape A&R data
+
     if (angus_pattern.test(data) === true) {
-        var identifier = 'angus';
-        angus_isbn = /id:.*?"([0-9]{13})/g;
-        angus_price = /ubtotal:.*?([0-9.]*),/g;
-        nested_match = /line_items:.*?language/g;
-        return scrape_page(data, angus_isbn, angus_price, identifier, array_thingo, nested_match);
+        // var identifier = 'angus';
+        if (individual === false) {
+            angus_isbn = /id:.*?"([0-9]{13})/g;
+            angus_price = /ubtotal:.*?([0-9.]*),/g;
+            angus_image = /image-modal.*?src="(.*?)"/g;
+            nested_match = /line_items:.*?language/gs;
+        } else {
+            angus_isbn = /id:.*?"([0-9]{13})/g;
+            angus_price = /itemprop="price">([0-9.]*)/g;
+            angus_image = /image-modal.*?src="(.*?)"/;
+            nested_match = false
+        }
+
+        return scrape_page(data, angus_isbn, angus_price, angus_image,'angus', array_thingo, nested_match);
 
         //Scrape QBD Data
     } else if (qbd_pattern.test(data) === true) {
-        var identifier = 'qbd';
-        qdb_isbn = /isbn="([0-9]{13})/;
-        qdb_price = /data-price="([0-9.]*)/;
-        return scrape_page(data, qdb_isbn, qdb_price, identifier, array_thingo);
+        // var identifier = 'qbd';
+        if (individual === false) {
+            gdb_isbn = /data-isbn="([0-9]{13})" data-price="[0-9.] \//g
+            qdb_price = /data-isbn="[0-9]{13}" data-price="([0-9.]*)" \//g
+            qdb_image = /line product.*?src="(.*?)"/g
+        } else {
+            qdb_isbn = /isbn="([0-9]{13})/; //
+            qdb_price = /data-price="([0-9.]*)/; // <-----------For not checkout page
+            qdb_image = /cover.*?src="(.*?)"/
+        }
+
+        // data-isbn="([0-9]{13})" data-price="([0-9.]*)" \//g <----------------------------------------------------------------- for checkout page isbn
+        return scrape_page(data, qdb_isbn, qdb_price, qdb_image,'qbd', array_thingo);
 
     } else {
         console.log('Unable to identify site');
@@ -2124,13 +2175,14 @@ function cheaperElsewhere() {
     }
 }
 
-function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo, nested_match) {
-
+function scrape_page(data, isbn_pattern, price_pattern, image_pattern,identifier, array_thingo, nested_match = false) {
+    var identifier = identifier;
     if (nested_match !== false) {
         while (match = nested_match.exec(data)) {
             match_string = match[0];
             var isbns = get_matched_groups(isbn_pattern, match_string);
             var prices = get_matched_groups(price_pattern, match_string);
+            var images = get_matched_groups(image_pattern, match_string);
             // var isbns = match_string.match(isbn_pattern);
             // var prices = match_string.match(price_pattern);
             console.log(isbns, prices);
@@ -2139,16 +2191,16 @@ function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo
     } else {
         var isbns = get_matched_groups(isbn_pattern, data);
         var prices = get_matched_groups(price_pattern, data);
+        var images = get_matched_groups(image_pattern, match_string);
     }
 
     //Array containing price/isbn pairs
     var combined_array = array_thingo;
     for (var i = 0; i < isbns.length; i++) {
         try {
-            combined_array[isbns[i]][identifier] = prices[i];
-        } catch (err)
-        {
-            combined_array[isbns[i]] = {identifier: prices[i]};
+            combined_array[isbns[i]][[identifier]] = [prices[i],images[i]];
+        } catch {
+            combined_array[isbns[i]] = {[identifier]: [prices[i], images[i]]};
         }
 
 
@@ -2158,7 +2210,18 @@ function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo
     return combined_array;
 }
 
-function GetCurrentISBN() 
-{
-    alert("ISBN");
+
+function scraper() {
+    $.ajax({
+        url: "https://www.qbd.com.au/going-to-the-mountain/nbada-mandela/9781786331564/",
+        type: "GET",
+        dataType: "jsonp",
+        success: function () {
+            alert("this")
+        },
+        error: function () {
+            alert('not that')
+        }
+    })
+
 }
