@@ -1,3 +1,11 @@
+document.addEventListener('DOMContentLoaded', function () {
+    var bg = chrome.extension.getBackgroundPage();
+    currentHTML = bg.GetCurrentHTML();
+
+});
+
+var currentHTML = "";
+
 $(function () {
         $("#btnsave").click(function () {
             var name = $("#txt_name").val();
@@ -9,7 +17,6 @@ $(function () {
                 'angus': 'www.angusrobertson.com.au',
                 'qbd': 'www.qbd.com.au'
             };
-        scraper();
 
             // let html = document.documentElement.innerHTML;
             // console.log(html)
@@ -22,7 +29,8 @@ $(function () {
     })
 
     //dissapear();
-
+        var test = GetCurrentHTML();
+        alert(test);
 })
 
 function dissapear() {
@@ -43,7 +51,7 @@ function isItCheapest() {
 
 }
 
-        }
+        
 
 //display the div
 //function toggle_visibility(id) {
@@ -54,7 +62,7 @@ function isItCheapest() {
 //        e.style.display = 'block';
 //}
 
-)
+
 
 
 function get_html() {
@@ -2079,7 +2087,7 @@ function check_site(data, array_thingo) {
         var identifier = 'angus';
         angus_isbn = /id:.*?"([0-9]{13})/g;
         angus_price = /ubtotal:.*?([0-9.]*),/g;
-        nested_match = /line_items:.*?language/gs;
+        nested_match = /line_items:.*?language/g;
         return scrape_page(data, angus_isbn, angus_price, identifier, array_thingo, nested_match);
 
         //Scrape QBD Data
@@ -2116,7 +2124,7 @@ function cheaperElsewhere() {
     }
 }
 
-function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo, nested_match = false) {
+function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo, nested_match) {
 
     if (nested_match !== false) {
         while (match = nested_match.exec(data)) {
@@ -2138,7 +2146,8 @@ function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo
     for (var i = 0; i < isbns.length; i++) {
         try {
             combined_array[isbns[i]][identifier] = prices[i];
-        } catch {
+        } catch (err)
+        {
             combined_array[isbns[i]] = {identifier: prices[i]};
         }
 
@@ -2149,24 +2158,7 @@ function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo
     return combined_array;
 }
 
-// 
-//  Scrapper gets the html for the given url, currently returns through the error function 
-//
-function scraper(url) {
-    $.ajax({
-        url: url,
-        headers: {
-            'Accept': 'application/json'
-        },
-        //type: "GET",
-        dataType: "text/html",
-        contentType: "text/html",
-        success: function (data) {
-            alert("this" + data);
-        },
-        error: function (data) {
-            alert('not that' + JSON.stringify(data.responseText));
-        }
-    })
-
+function GetCurrentISBN() 
+{
+    alert("ISBN");
 }
