@@ -9,7 +9,7 @@ $(function () {
 
     })
 
-    dissapear();
+    //dissapear();
 
 })
 
@@ -104,16 +104,23 @@ function cheaperElsewhere() {
     }
 }
 
-function scraper() {
+// 
+//  Scrapper gets the html for the given url, currently returns through the error function 
+//
+function scraper(url) {
     $.ajax({
-        url: "https://www.qbd.com.au/going-to-the-mountain/nbada-mandela/9781786331564/",
-        type: "GET",
-        dataType: "jsonp",
-        success: function () {
-            alert("this")
+        url: url,
+        headers: {
+            'Accept': 'application/json'
         },
-        error: function () {
-            alert('not that')
+        //type: "GET",
+        dataType: "text/html",
+        contentType: "text/html",
+        success: function (data) {
+            alert("this" + data);
+        },
+        error: function (data) {
+            alert('not that' + JSON.stringify(data.responseText));
         }
     })
 
