@@ -1,4 +1,19 @@
-﻿chrome.extension.onConnect.addListener(function (port) {
+﻿chrome.tabs.onUpdated.addListener(function (TabId, changeInfo, Tab) {
+
+    if (changeInfo.url != "aaa") {
+        //chrome.tabs.sendMessage(TabId, { url: changeInfo.url }, function (response) {
+        //    console.log(response); }
+        alert("hi");
+        var array = scrappy("https://www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/");
+        alert(array);
+        
+
+    } else {
+        alert('working')
+    }
+})
+
+chrome.extension.onConnect.addListener(function (port) {
     if (port.name != 'XHRProxy_')
         return;
     port.onMessage.addListener(function (xhrOptions) {
@@ -16,19 +31,6 @@
         xhr.send();
     });
 });
-
-
-// Thomas 
-//chrome.tabs.onUpdated.addListener(function (TabId, changeInfo, Tab) {
-
-//    if (changeInfo.url != null) {
-//        chrome.tabs.sendMessage(TabId, { url: changeInfo.url }, function (response) {
-//            console.log(response);
-//        })
-//    } else {
-//        console.log('working')
-//    }
-//})
 
 // gloabl variables
 var currentURL = "";
@@ -57,3 +59,14 @@ function checkURL(url)
 function GetCurrentHTML() {
     return currentHTML;
 }
+
+function scrappy(url, individual_boolean = true) {
+    proxyXHR.get(url).onSuccess(function (data) {
+        console.log(data)
+        //array_thingo = check_site(data, array_thingo, individual = individual_boolean)
+        //console.log()
+        return data //array_thingo
+    }).onFailure(function (status) {
+        alert("HTTP Error " + status + " while retrieving data.");
+    });
+}}
