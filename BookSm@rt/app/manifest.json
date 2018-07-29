@@ -9,6 +9,7 @@
     "persistent": false,
     "scripts": [ "background/background.js" ]
   },
+
   "permissions": [
     "https://secure.flickr.com/",
     "activeTab",
@@ -20,8 +21,8 @@
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.qbd.com.au/; object-src 'self'",
   "browser_action": {
-    "default_icon": "img/p02vdpfn.jpg",
+    "default_icon": "img/black.png",
     "default_popup": "popup.html",
-      "icons": { "128": "p02vdpfn.jpg" } 
+      "icons": { "128": "img/black.png" } 
   }
 }

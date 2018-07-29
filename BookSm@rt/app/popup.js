@@ -1,65 +1,58 @@
 $(function () {
-    $("#btnsave").click(function () {
-        var name = $("#txt_name").val();
 
-        //alert("Hi" + " " + name);
-
-        scraper();
-
-
-    })
-
-    dissapear();
-
+    isItCheapest();
+    whichSiteIsCheapest();
 })
 
-function dissapear() {
+function disappearElsewhere() {
     document.getElementById("CheaperElsewhere").style.display = "none";
 }
 
-function isItCheapest() {
-    //let 0 representfalse and 1 represent true
-    var cheapest = 0; //is it possible to change this to a boolean,
-    //so that if it's not the cheapest it'll change the visibility
-    if (cheapest == 0) {//if it is not the cheapest
-        CheapestOption.style.display = 'none';//if it is NOT the cheapest,don't display cheapestOption div
-    }
-
-    if (cheapest == 1) {
-        CheaperElsewhere.style.display = 'none'; //if it is the cheapest, don't display cheaperElseWherediv               
-    }
-
+function disappearCheapest() {
+    document.getElementById("CheapestOption").style.display = "none";
+}
+function goingThroughDictionary() {
+    var dict = {
+        ISBN: "12345",
+        Price: "$1.50",
+        Photo: "http://www.google.com",
+    };
+    //var shopNameString = str.slice() 
 }
 
-
-//display the div
-//function toggle_visibility(id) {
-//    var z = document.getElementById(id);
-//    if (e.style.display == 'block')
-//        e.style.display = 'none';
-//    else
-//        e.style.display = 'block';
-//}
+var storeName = "aWord";
 
 
-        //let array_thingo = {};
-        //let site_list = ['angus', 'qbd'];
+function isItCheapest() {
+    var cheapest = false; 
 
-        //let html = document.documentElement.innerHTML;
-        //array_thingo = check_site(html, array_thingo);
+    if (cheapest == false) {//if it is not the cheapest it'll change the visibility
+        disappearCheapest();
+    }
+    else {
+        disappearElsewhere(); //if it is the cheapest, don't display cheaperElseWherediv
+    }
+}
 
-//        for (var key in array_thingo ) {
-//            if (object.hasOwnProperty(key)) {
-//                if (!(key in site_list)){
-//                //    Fetch Data and redo check_site thingy
-//                }
-//    }
-//}
+function whichSiteIsCheapest() {
+    var str = "https://covers.angusrobertson.com.au/images/9781925483598.jpg?width=250"
+    var isItThere = str.search('angusrobertson');
+    if (isItThere > -1) {
+        storeName = "Angus and Robertson";
+    }
+    if (isItThere === false) {
+        storeName = "QBD The Bookstore";
+       
+    }
 
+    var shoppingCartLink = 'https://www.angusrobertson.com.au/'; //shoppingCartLink is the url for the chopping cart of the book
+    var bookPhotoImage = "https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/lrg/9780/0081/9780008172145.jpg";
 
+    $('#AnotherID').attr('href', shoppingCartLink); //replace the url link for the button with the shopping cart link to the cheapest shop
+    document.getElementById("storeNameAndLink").innerText = storeName;
+    $('#bookPhoto').attr('src', bookPhotoImage);
+}
 
-//    });
-//});
 
 //Determine which site the data is from and scrape appropriate book data
 function check_site(data, array_thingo) {
@@ -90,18 +83,6 @@ function scrape_page(data, isbn_pattern, price_pattern, identifier, array_thingo
     let price = price_pattern.exec(data);
     array_thingo[identifier] = [isbn, price];
     return array_thingo;
-}
-
-//Zoey's code
-//hide the div "cheaperElsewhere"
-function cheaperElsewhere() {
-    var x = document.getElementById("CheaperElsewhere");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    }
-    else {
-        x.style.display = "none";
-    }
 }
 
 function scraper() {
