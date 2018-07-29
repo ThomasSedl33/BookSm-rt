@@ -5,22 +5,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+// Global Variables
 var currentHTML = "";
+var storeName = "aWord";
+
 
 $(function () {
-
-        alert("thes");
-        $.getJSON('http://allorigins.me/get?url=www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/', function (data) {
-            alert(JSON.stringify(data));});
-        //alert("Hi" + " " + name);
+    //Thomas - This doesn't Work
+        //$.getJSON('http://allorigins.me/get?url=www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/', function (data) {
+        //    alert(JSON.stringify(data));});
 
         let array_thingo = {};
         let site_list = {
             'angus': 'https://allorigins.me/get?url=https://www.angusrobertson.com.au/search?text={}&mediatype=BOOKS',
             'qbd': 'https://allorigins.me/get?url=https://www.qbd.com.au/product/{}'
         };
-
-        // scraper();
 
         // let html = document.documentElement.innerHTML;
         // console.log(html)
@@ -71,8 +70,8 @@ function goingThroughDictionary() {
 }
 
 
-}
-var storeName = "aWord";
+
+
 
 //display the div
 //function toggle_visibility(id) {
