@@ -267,6 +267,7 @@ function get_html() {
 
 
 function search_websites(site_list, array_thingo, isbn_list) {
+    var url_list = [];
     console.log(Object.keys(site_list).length);
     for (i = 0; i < Object.keys(site_list).length; i++) {
         console.log(i);
@@ -274,16 +275,25 @@ function search_websites(site_list, array_thingo, isbn_list) {
             console.log(j)
             var key = Object.keys(site_list)[i]
             var url = site_list[key].replace(/\{\}/, isbn_list[j]);
-            console.log(url)
-            array_thigno = scrappy(url, array_thingo, individual = true)
+            url_list.push(url)
             // console.log(util.inspect(array_thingo, { depth: 4 }))
             // array_thigno = check_site(data, array_thingo, individual = true)
-            array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book
-            // properties
+            // array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book
+
         }
+        array_list = do_stuff(url_list)
+        console.log(array_list)
 
     }
     return array_thingo
+}
+
+function do_stuff(url) {
+    list = []
+    for (i = 0, i < url.length, i++) {
+        list.push(scrappy(url))
+    }
+    return list
 }
 
 //Determine which site the data is from and scrape appropriate book data
@@ -406,11 +416,9 @@ function scraper(book_url) {
 }
 
 function scrappy(url, array_thingo, individual_boolean = true) {
-    proxyXHR.get(url).onSuccess(function (data) {
-        console.log(data)
+    proxyXHR.get(url).onSuccess(function (data) {console.log(data)
         array_thingo = check_site(data, array_thingo, individual = individual_boolean)
-        console.log()
-        return array_thingo
+        return
     }).onFailure(function (status) {
         alert("HTTP Error " + status + " while retrieving data.");
     });
