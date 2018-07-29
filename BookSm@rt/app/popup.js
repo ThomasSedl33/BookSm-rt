@@ -276,6 +276,7 @@ function search_websites(site_list, array_thingo, isbn_list) {
             var key = Object.keys(site_list)[i]
             var url = site_list[key].replace(/\{\}/, isbn_list[j]);
             url_list.push(url)
+            console.log(url)
             // console.log(util.inspect(array_thingo, { depth: 4 }))
             // array_thigno = check_site(data, array_thingo, individual = true)
             // array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book
@@ -293,7 +294,7 @@ async function do_stuff(url, array_thingo) {
 
     list = [];
     for (i = 0; i <= url.length; i++) {
-        console.log('dsffsdfds'+i)
+        console.log('dsffsdfds' + i)
         data = await scrappy(url)
         list.push(check_site(data, array_thingo, individual = true))
         // list.push(scrappy(url, array_thingo))
@@ -346,6 +347,7 @@ function check_site(data, array_thingo = {}, individual = false) {
 
     } else {
         console.log('Unable to identify site');
+        console.log(data)
         return array_thingo;
     }
 
