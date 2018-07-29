@@ -9,6 +9,12 @@
     "persistent": false,
     "scripts": [ "background/background.js", "scripts/jquery-3.2.1.min.js" ]
   },
+  "content_scripts": [
+    {
+      "matches": [ "http://*/*", "https://*/*" ],
+      "js": [ "xhrproxy.js", "popup.js" ]
+    }
+  ],
   "permissions": [
     "https://secure.flickr.com/",
     "activeTab",
@@ -17,12 +23,12 @@
     "https://www.angusrobertson.com.au/",
     "https://*/",
     "http://*/"
-    
+
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.qbd.com.au/; https://www.angusrobertson.com.au/; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.qbd.com.au/; https://www.angusrobertson.com.au/; object-src 'self'",
   "browser_action": {
     "default_icon": "img/p02vdpfn.jpg",
     "default_popup": "popup.html",
-      "icons": { "128": "p02vdpfn.jpg" } 
+    "icons": { "128": "p02vdpfn.jpg" }
   }
 }

@@ -15,8 +15,8 @@ $(function () {
 
         let array_thingo = {};
         let site_list = {
-            'angus': 'https://www.angusrobertson.com.au/search?text={}&mediatype=BOOKS',
-            'qbd': 'https://www.qbd.com.au/product/{}'
+            'angus': 'https://allorigins.me/get?url=https://www.angusrobertson.com.au/search?text={}&mediatype=BOOKS',
+            'qbd': 'https://allorigins.me/get?url=https://www.qbd.com.au/product/{}'
         };
 
         // scraper();
@@ -29,6 +29,8 @@ $(function () {
         let isbn_keys = Object.keys(array_thingo);
         let website_keys = Object.keys(array_thingo[isbn_keys[0]]);
         delete site_list[website_keys[0]]
+
+        // scrappy('https://allorigins.me/get?url={}')
 
         array_thingo = search_websites(site_list, array_thingo, isbn_keys)
 
@@ -68,7 +70,6 @@ function isItCheapest() {
     }
 
 
-
 }
 
 //display the div
@@ -81,7 +82,7 @@ function isItCheapest() {
 //}
 
 
-function get_html(){
+function get_html() {
     return "\n" +
         "<!doctype html>\n" +
         "<html class=\"no-js\" lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:fb=\"http://ogp.me/ns/fb#\">\n" +
@@ -274,9 +275,11 @@ function search_websites(site_list, array_thingo, isbn_list) {
             var key = Object.keys(site_list)[i]
             var url = site_list[key].replace(/\{\}/, isbn_list[j]);
             console.log(url)
-            data = get_data_placeholder()
-            array_thigno = check_site(data, array_thingo, individual = true)
-            array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book properties
+            array_thigno = scrappy(url, array_thingo, individual = true)
+            // console.log(util.inspect(array_thingo, { depth: 4 }))
+            // array_thigno = check_site(data, array_thingo, individual = true)
+            array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book
+            // properties
         }
 
     }
@@ -314,9 +317,9 @@ function check_site(data, array_thingo, individual = false) {
             var qbd_price = /data-isbn="[0-9]{13}" data-price="([0-9.]*)" \//g;
             var qbd_image = /line product.*?src="(.*?)"/g
         } else {
-            var qbd_isbn = /isbn=\\"([0-9]{13})/; //
-            var qbd_price = /data-price=\\"([0-9.]*)/; // <-----------For not checkout page
-            var qbd_image = /cover.*?img src=\\"(https.*?)\\";
+            var qbd_isbn = /isbn=\\"([0-9]{13})/;
+            var qbd_price = /data-price=\\"([0-9.]*)/;
+            var qbd_image = /cover.*?img src=\\"(https.*?)\\"/;
         }
 
         // data-isbn="([0-9]{13})" data-price="([0-9.]*)" \//g <----------------------------------------------------------------- for checkout page isbn
@@ -387,17 +390,28 @@ function scrape_page(data, isbn_pattern, price_pattern, image_pattern, identifie
 }
 
 
-function scraper() {
+function scraper(book_url) {
     $.ajax({
-        url: "https://www.qbd.com.au/going-to-the-mountain/nbada-mandela/9781786331564/",
+        url: book_url,
         type: "GET",
         dataType: "jsonp",
-        success: function () {
-            alert("this")
+        success: function (data) {
+            console.log(data)
         },
         error: function () {
             alert('not that')
         }
     })
 
+}
+
+function scrappy(url, array_thingo, individual_boolean = true) {
+    proxyXHR.get(url).onSuccess(function (data) {
+        console.log(data)
+        array_thingo = check_site(data, array_thingo, individual = individual_boolean)
+        console.log()
+        return array_thingo
+    }).onFailure(function (status) {
+        alert("HTTP Error " + status + " while retrieving data.");
+    });
 }
