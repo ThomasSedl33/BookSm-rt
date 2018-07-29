@@ -1,30 +1,28 @@
-﻿chrome.tabs.onUpdated.addListener(function () {
+﻿chrome.tabs.onUpdated.addListener(function (TabId, changeInfo, Tab) {
     
-    chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function (tabs) {
-        var url = tabs[0].url;
-        //if (checkURL(url)) {
-            if (true) {
-                //scraper(url);
-                //var test = $.getJSON('https://allorigins.me/get?url=' + url, function (data) { alert("me"); $('#output').html(data.contents); });
-                alert("mine");
-                $.getJSON('http://allorigins.me/get?url=www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/', function (data) {
-                    var iframe = $("#output").html(data.contents);
-                    var doc = iframe.document;
-                    if (iframe.contentDocument) {
-                        doc = iframe.contentDocument;
-                    } else if (iframe.contentWindow) {
-                        doc = iframe.contentWindow.document;
-                    }
-                    doc.open();
-                    doc.writeln(data.contents);
-                    doc.close();
+    //chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function (tabs) {
+    //    var url = tabs[0].url;
+    //    //if (checkURL(url)) {
+    //        if (true) {
+    //            //scraper(url);
+    //            //var test = $.getJSON('https://allorigins.me/get?url=' + url, function (data) { alert("me"); $('#output').html(data.contents); })
 
-                    $('#output').html(data.contents);
-                });
-        }
-    });
+    //            //$.getJSON('http://allorigins.me/get?url=www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/', function (data) {
+    //            //    alert(JSON.stringify(data));
+                    
+    //            });
+    //    }
+    //});
 
-   
+    if (changeInfo.url != null) {
+        chrome.tabs.sendMessage(TabId, { url: changeInfo.url }, function (response) {
+            console.log(response);
+            alert("1  3  " + response);
+        })
+        alert('new url');
+    } else {
+        console.log('working')
+    }
 })
 
 // gloabl var for storing the current url if it is a book site

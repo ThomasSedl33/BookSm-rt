@@ -11,6 +11,9 @@ $(function () {
     $("#btnsave").click(function () {
         var name = $("#txt_name").val();
 
+        alert("thes");
+        $.getJSON('http://allorigins.me/get?url=www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/', function (data) {
+            alert(JSON.stringify(data));});
         //alert("Hi" + " " + name);
 
         let array_thingo = {};
