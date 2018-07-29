@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
 var currentHTML = "";
 
 $(function () {
-    $("#btnsave").click(function () {
-        var name = $("#txt_name").val();
 
         alert("thes");
         $.getJSON('http://allorigins.me/get?url=www.qbd.com.au/harriet-blue-03-liar-liar/james-patterson-candice-fox/9780143787471/', function (data) {
@@ -18,8 +16,8 @@ $(function () {
 
         let array_thingo = {};
         let site_list = {
-            'angus': 'https://www.angusrobertson.com.au/search?text={}&mediatype=BOOKS',
-            'qbd': 'https://www.qbd.com.au/product/{}'
+            'angus': 'https://allorigins.me/get?url=https://www.angusrobertson.com.au/search?text={}&mediatype=BOOKS',
+            'qbd': 'https://allorigins.me/get?url=https://www.qbd.com.au/product/{}'
         };
 
         // scraper();
@@ -32,6 +30,8 @@ $(function () {
         let isbn_keys = Object.keys(array_thingo);
         let website_keys = Object.keys(array_thingo[isbn_keys[0]]);
         delete site_list[website_keys[0]]
+
+        // scrappy('https://allorigins.me/get?url={}')
 
         array_thingo = search_websites(site_list, array_thingo, isbn_keys)
 
@@ -58,21 +58,21 @@ function dissapear() {
     document.getElementById("CheaperElsewhere").style.display = "none";
 }
 
-function isItCheapest() {
-    //let 0 representfalse and 1 represent true
-    var cheapest = 0; //is it possible to change this to a boolean,
-    //so that if it's not the cheapest it'll change the visibility
-    if (cheapest == 0) {//if it is not the cheapest
-        CheapestOption.style.display = 'none';//if it is NOT the cheapest,don't display cheapestOption div
-    }
-
-    if (cheapest == 1) {
-        CheaperElsewhere.style.display = 'none'; //if it is the cheapest, don't display cheaperElseWherediv               
-    }
-
+function disappearCheapest() {
+    document.getElementById("CheapestOption").style.display = "none";
+}
+function goingThroughDictionary() {
+    var dict = {
+        ISBN: "12345",
+        Price: "$1.50",
+        Photo: "http://www.google.com",
+    };
+    //var shopNameString = str.slice() 
+}
 
 
 }
+var storeName = "aWord";
 
 //display the div
 //function toggle_visibility(id) {
@@ -84,7 +84,7 @@ function isItCheapest() {
 //}
 
 
-function get_html(){
+function get_html() {
     return "\n" +
         "<!doctype html>\n" +
         "<html class=\"no-js\" lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:fb=\"http://ogp.me/ns/fb#\">\n" +
@@ -252,20 +252,25 @@ function get_html(){
 //let array_thingo = {};
 //let site_list = ['angus', 'qbd'];
 
-//let html = document.documentElement.innerHTML;
-//array_thingo = check_site(html, array_thingo);
+function whichSiteIsCheapest() {
+    var str = "https://covers.angusrobertson.com.au/images/9781925483598.jpg?width=250"
+    var isItThere = str.search('angusrobertson');
+    if (isItThere > -1) {
+        storeName = "Angus and Robertson";
+    }
+    if (isItThere === false) {
+        storeName = "QBD The Bookstore";
+       
+    }
 
-//        for (var key in array_thingo ) {
-//            if (object.hasOwnProperty(key)) {
-//                if (!(key in site_list)){
-//                //    Fetch Data and redo check_site thingy
-//                }
-//    }
-//}
+    var shoppingCartLink = 'https://www.angusrobertson.com.au/'; //shoppingCartLink is the url for the chopping cart of the book
+    var bookPhotoImage = "https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/lrg/9780/0081/9780008172145.jpg";
 
+    $('#AnotherID').attr('href', shoppingCartLink); //replace the url link for the button with the shopping cart link to the cheapest shop
+    document.getElementById("storeNameAndLink").innerText = storeName;
+    $('#bookPhoto').attr('src', bookPhotoImage);
+}
 
-//    });
-//});
 
 
 function search_websites(site_list, array_thingo, isbn_list) {
@@ -277,9 +282,11 @@ function search_websites(site_list, array_thingo, isbn_list) {
             var key = Object.keys(site_list)[i]
             var url = site_list[key].replace(/\{\}/, isbn_list[j]);
             console.log(url)
-            data = get_data_placeholder()
-            array_thigno = check_site(data, array_thingo, individual = true)
-            array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book properties
+            array_thigno = scrappy(url, array_thingo, individual = true)
+            // console.log(util.inspect(array_thingo, { depth: 4 }))
+            // array_thigno = check_site(data, array_thingo, individual = true)
+            array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book
+            // properties
         }
 
     }
@@ -317,9 +324,9 @@ function check_site(data, array_thingo, individual = false) {
             var qbd_price = /data-isbn="[0-9]{13}" data-price="([0-9.]*)" \//g;
             var qbd_image = /line product.*?src="(.*?)"/g
         } else {
-            var qbd_isbn = /isbn=\\"([0-9]{13})/; //
-            var qbd_price = /data-price=\\"([0-9.]*)/; // <-----------For not checkout page
-            var qbd_image = /cover.*?img src=\\"(https.*?)\\";
+            var qbd_isbn = /isbn=\\"([0-9]{13})/;
+            var qbd_price = /data-price=\\"([0-9.]*)/;
+            var qbd_image = /cover.*?img src=\\"(https.*?)\\"/;
         }
 
         // data-isbn="([0-9]{13})" data-price="([0-9.]*)" \//g <----------------------------------------------------------------- for checkout page isbn
@@ -390,17 +397,28 @@ function scrape_page(data, isbn_pattern, price_pattern, image_pattern, identifie
 }
 
 
-function scraper() {
+function scraper(book_url) {
     $.ajax({
-        url: "https://www.qbd.com.au/going-to-the-mountain/nbada-mandela/9781786331564/",
+        url: book_url,
         type: "GET",
         dataType: "jsonp",
-        success: function () {
-            alert("this")
+        success: function (data) {
+            console.log(data)
         },
         error: function () {
             alert('not that')
         }
     })
 
+}
+
+function scrappy(url, array_thingo, individual_boolean = true) {
+    proxyXHR.get(url).onSuccess(function (data) {
+        console.log(data)
+        array_thingo = check_site(data, array_thingo, individual = individual_boolean)
+        console.log()
+        return array_thingo
+    }).onFailure(function (status) {
+        alert("HTTP Error " + status + " while retrieving data.");
+    });
 }

@@ -3,11 +3,15 @@
 <head>
     <script src="scripts/jquery-3.2.1.min.js"></script>
     <script src="popup.js"></script>
+    <script src="xhrproxy.js"></script>
+    <script>
+        setupXHRProxy();
+    </script>
 </head>
 
 <body id="theBODY">
     <!--CHEAPEST AVAILABLE-->
-    <div id="CheapestOption" class="w3-display-middle">
+    <div id="CheapestOption" class="displayNow">
                 <h1 title="This is the cheapest option available!">Cheapest option!</h1>
         </div>
 
@@ -16,36 +20,60 @@
     </div>
 
     <!--CHEAPER ELSEWHERE-->
-    <div  id="CheaperElsewhere">
+    <div  id="CheaperElsewhere" class="displayNow">
             <h1 style="font-family:courier;">This book is available cheaper at:</h1>
-            <p title="Click To Start Saving!">
-                <a href="https://www.qbd.com.au/">QBD The Bookstore</a>
+        <h2 id="storeNameAndLink">QBD The Bookstore</h2>
+            <p id="mainP">
+              
+                <img id="bookPhoto" src="https://www.qbd.com.au/img/products/0/9781460751756.jpg" width="100" height="100">
+              
+
                 <br />
-                <img src="book_image.jpg" width="100" height="100">
-                <!--<img src="***bookpicVariable***"
-                 alt="Image Not Available" align="center" , width="100" , height ="100">-->
-                <br />
-                <button>Buy Cheaper?</button>
+
+                <a title="Click To Start Saving!" id="AnotherID" href="https://www.qbd.com.au/" target="_blank"><button>Buy Cheaper?</button></a>
+                      
+                <!--<Buy Cheaper?</button>-->
             </p>
 
 
 
-            <input type="text" id="txt_name" />
+            <!--<input type="text" id="txt_name" />
         <input type="submit" id="btnsave"
 
-               title="save" value="save" />
+               title="save" value="save" />-->
+       
 
         </div>
+    <!--<table id="table" style="width:100%">
+        <tr>
+            <th>
+                <img id="IMGbook" src="https://upload.wikimedia.org/wikipedia/commons/8/81/Book_SVG.svg" vertically-align:right>
+                BookSm@rt
+            </th>
+        </tr>
+        
 
+        
+    </table>-->
+
+        <div id="Banner" class="pictureLogo">
+            <img id="IMGbook" src="https://upload.wikimedia.org/wikipedia/commons/8/81/Book_SVG.svg">
+           BookSm@rt
+        </div>
 
 </body>
+
 </html>
 
 <style>
     .popup {
         position: relative;
         display: inline-block;
+         width: 100px;
+    height: 100px;
+    padding: 5px;
         cursor: pointer;
+
     }
 
     .popup .popuptext {
@@ -72,17 +100,29 @@
     to {opacity:1 ;}
 
     }
-    p {
+    #mainP {
         text-align: center;
     }
 
-    h1 {
-        /*margin-left: 15%;
-        margin-right: 15%;*/
+    img {
+        height: 150px;
+        padding: 5px;
+    }
+
+    h1 {font-family: "Verdana, Geneva, sans-serif";
+        margin-left: 5px;
+        margin-right: 5px;
         text-align: center ;
+        padding: 5px;
+    }
+
+    h2{
+        text-align: center ;
+
     }
 
     body {
+       
         /*height: 20%;
         width: 50%;*/
         margin: auto;
@@ -93,15 +133,41 @@
         width: 100px;
     }
 
+
+/*#Banner{
+                  
+background:#00bfff;
+height: 30px;
+    }
+#IMGbook{
+    height: 30px;
+    width: 40px;
+}
+
+#GroupName{
+    /*width: -40px; /*changes left for positive, right for negative*/
+    position: relative;
+    text-align: right;
+
+}
+
+#table{
+    background-color: blue;
+}
+
+th {
+    text-align:right;
+}*/
+
 /*.wrapper{
     position: relative;
 }*/
 
 #CheaperElsewhere {
     /*z-index: 1;*/
-
-
 }
+
+
 
 
 #CheapestOption {
