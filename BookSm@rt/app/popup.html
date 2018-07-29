@@ -3,6 +3,10 @@
 <head>
     <script src="scripts/jquery-3.2.1.min.js"></script>
     <script src="popup.js"></script>
+    <script src="xhrproxy.js"></script>
+    <script>
+        setupXHRProxy();
+    </script>
 </head>
 
 <body id="theBODY">
@@ -10,6 +14,10 @@
     <div id="CheapestOption" class="displayNow">
                 <h1 title="This is the cheapest option available!">Cheapest option!</h1>
         </div>
+
+    <div id="output">
+
+    </div>
 
     <!--CHEAPER ELSEWHERE-->
     <div  id="CheaperElsewhere" class="displayNow">
