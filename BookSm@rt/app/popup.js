@@ -295,15 +295,15 @@ async function do_stuff(url, array_thingo) {
     list = [];
     for (i = 0; i <= url.length; i++) {
         console.log('dsffsdfds' + i)
-        data = await scrappy(url,function (data){
-            console.log(data)
+        data = scrappy(url,function (data){
+            list.push(check_site(data, array_thingo, individual = true));
+
+            if (list.length == url.length) {
+                console.log(list);
+                return list;
+            }
         })
-
-        list.push(check_site(data, array_thingo, individual = true))
-
     }
-    console.log(list)
-    return list
 }
 
 //Determine which site the data is from and scrape appropriate book data
@@ -428,10 +428,11 @@ function scraper(book_url) {
 
 }
 
-async function scrappy(url,callback){
+function scrappy(url,callback){
     proxyXHR.get(url).onSuccess(function (data) {
         callback(data)
     }).onFailure(function (status) {
         alert("HTTP Error " + status + " while retrieving data.");
+        callback({failed: true});
     });
 }
