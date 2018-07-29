@@ -281,29 +281,36 @@ function search_websites(site_list, array_thingo, isbn_list) {
             // array_thingo[isbn_list[j]][key] = array_thingo[isbn_list[j]][key].push(url) //Add url to book
 
         }
-        array_list = do_stuff(url_list)
+        console.log('list: ' + url_list.length)
+        array_list = do_stuff(url_list, array_thingo);
         console.log(array_list)
 
     }
     return array_thingo
 }
 
-function do_stuff(url) {
-    list = []
-    for (i = 0, i < url.length, i++) {
-        list.push(scrappy(url))
+async function do_stuff(url, array_thingo) {
+
+    list = [];
+    for (i = 0; i <= url.length; i++) {
+        console.log('dsffsdfds'+i)
+        data = await scrappy(url)
+        list.push(check_site(data, array_thingo, individual = true))
+        // list.push(scrappy(url, array_thingo))
     }
+    console.log(list)
     return list
 }
 
 //Determine which site the data is from and scrape appropriate book data
-function check_site(data, array_thingo, individual = false) {
+function check_site(data, array_thingo = {}, individual = false) {
     let angus_pattern = /Angus &amp; Robertson/;
     let qbd_pattern = /www.qbd.com.au/;
 
     //Scrape A&R data
 
     if (angus_pattern.test(data) === true) {
+        console.log('angus')
         // var identifier = 'angus';
         if (individual === false) {
             var angus_isbn = /id:.*?"([0-9]{13})/g;
@@ -321,6 +328,7 @@ function check_site(data, array_thingo, individual = false) {
 
         //Scrape QBD Data
     } else if (qbd_pattern.test(data) === true) {
+        console.log('qbd')
         // var identifier = 'qbd';
         if (individual === false) {
             var qbd_isbn = /data-isbn="([0-9]{13})" data-price="[0-9.]+" \//g;
@@ -415,10 +423,9 @@ function scraper(book_url) {
 
 }
 
-function scrappy(url, array_thingo, individual_boolean = true) {
-    proxyXHR.get(url).onSuccess(function (data) {console.log(data)
-        array_thingo = check_site(data, array_thingo, individual = individual_boolean)
-        return
+function scrappy(url) {
+    proxyXHR.get(url).onSuccess(function (data) {
+        return data
     }).onFailure(function (status) {
         alert("HTTP Error " + status + " while retrieving data.");
     });
