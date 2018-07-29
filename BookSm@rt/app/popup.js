@@ -295,9 +295,12 @@ async function do_stuff(url, array_thingo) {
     list = [];
     for (i = 0; i <= url.length; i++) {
         console.log('dsffsdfds' + i)
-        data = await scrappy(url)
+        data = await scrappy(url,function (data){
+            console.log(data)
+        })
+
         list.push(check_site(data, array_thingo, individual = true))
-        // list.push(scrappy(url, array_thingo))
+
     }
     console.log(list)
     return list
@@ -425,9 +428,9 @@ function scraper(book_url) {
 
 }
 
-function scrappy(url) {
+async function scrappy(url,callback){
     proxyXHR.get(url).onSuccess(function (data) {
-        return data
+        callback(data)
     }).onFailure(function (status) {
         alert("HTTP Error " + status + " while retrieving data.");
     });
